@@ -1,0 +1,24 @@
+import express from "express";
+import "dotenv/config";
+import cors from "cors";
+import rootRouter from "./src/routers/root.router.js";
+import { PORT } from "./src/common/constant/config.constant.js";
+
+const app = express();
+
+app.use(
+  cors({
+    origin: "http://localhost:3000", // Your frontend URL
+    credentials: true,
+  }),
+);
+
+app.use(express.json());
+
+const port = PORT ?? 3000;
+
+app.use(rootRouter);
+
+app.listen(PORT, () => {
+  console.log(`Dự án đang chạy trên PORT ${port}!`);
+});
