@@ -5,7 +5,7 @@ import {
   NotFoundError,
 } from "../helpers/handleError.js";
 
-export const databaseService = {
+export const filmService = {
 	create: async function(req){
 		console.log(req.body);
 	}

@@ -1,15 +1,13 @@
 import express from "express";
-import databaseRouter from "./database.router.js"
+import filmRouter from "./film.router.js"
 
 const rootRouter = express.Router();
 
-rootRouter.use("/database", databaseRouter);
+rootRouter.use("/film", filmRouter);
 
-rootRouter.get(
-	'/', (req, res) =>
-	{
-		rootController.send('Hello World')
-	}
-)
+rootRouter.use(express.static('static'))
+rootRouter.get('/', (req, res) => {
+	res.send('Hello World');
+})
 
 export default rootRouter;

@@ -1,11 +1,11 @@
-import {databaseService} from "../services/database.service.js"
+import {filmService} from "../services/film.service.js"
 import { handleSuccessResponse } from "../helpers/handleResponse.js";
 
 
-export const databaseController = {
+export const filmController = {
 	create: async function(req, res, next) {
 		try{
-			const result = await databaseService.create(req)
+			const result = await filmService.create(req)
 			const response = handleSuccessResponse(
 				'Success',
 				undefined,
