@@ -12,9 +12,12 @@
     --color-cyan-400: oklch(78.9% 0.154 211.53);
     --color-violet-200: oklch(89.4% 0.057 293.283);
     --color-violet-600: oklch(54.1% 0.281 293.009);
+    --color-fuchsia-700: oklch(51.8% 0.253 323.949);
     --color-slate-700: oklch(37.2% 0.044 257.287);
     --color-gray-600: oklch(44.6% 0.03 256.802);
     --color-gray-700: oklch(37.3% 0.034 259.733);
+    --color-zinc-700: oklch(37% 0.013 285.805);
+    --color-zinc-800: oklch(27.4% 0.006 286.033);
     --color-white: #fff;
     --spacing: 0.25rem;
     --container-2xs: 18rem;
@@ -233,6 +236,9 @@
   .m-4 {
     margin: calc(var(--spacing) * 4);
   }
+  .m-5 {
+    margin: calc(var(--spacing) * 5);
+  }
   .m-10 {
     margin: calc(var(--spacing) * 10);
   }
@@ -241,6 +247,12 @@
   }
   .mx-auto {
     margin-inline: auto;
+  }
+  .mt-5 {
+    margin-top: calc(var(--spacing) * 5);
+  }
+  .mt-10 {
+    margin-top: calc(var(--spacing) * 10);
   }
   .mr-10 {
     margin-right: calc(var(--spacing) * 10);
@@ -278,6 +290,9 @@
   .h-32 {
     height: calc(var(--spacing) * 32);
   }
+  .w-2xs {
+    width: var(--container-2xs);
+  }
   .w-4 {
     width: calc(var(--spacing) * 4);
   }
@@ -289,6 +304,9 @@
   }
   .w-full {
     width: 100%;
+  }
+  .w-screen {
+    width: 100vw;
   }
   .max-w-2xl {
     max-width: var(--container-2xl);
@@ -307,6 +325,9 @@
   }
   .max-w-xl {
     max-width: var(--container-xl);
+  }
+  .min-w-7xl {
+    min-width: var(--container-7xl);
   }
   .min-w-sm {
     min-width: var(--container-sm);
@@ -356,11 +377,20 @@
   .border-violet-600 {
     border-color: var(--color-violet-600);
   }
+  .bg-fuchsia-700 {
+    background-color: var(--color-fuchsia-700);
+  }
+  .bg-gray-700 {
+    background-color: var(--color-gray-700);
+  }
   .bg-slate-700 {
     background-color: var(--color-slate-700);
   }
   .bg-violet-200 {
     background-color: var(--color-violet-200);
+  }
+  .bg-zinc-700 {
+    background-color: var(--color-zinc-700);
   }
   .p-1 {
     padding: calc(var(--spacing) * 1);
@@ -453,6 +483,13 @@
   .select-none {
     -webkit-user-select: none;
     user-select: none;
+  }
+  .hover\:bg-zinc-800 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-zinc-800);
+      }
+    }
   }
   .hover\:text-gray-600 {
     &:hover {

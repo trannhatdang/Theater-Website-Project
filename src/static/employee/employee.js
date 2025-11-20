@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", function(){
 	var replacers = document.querySelectorAll('[data-replace]');
-	console.log(replacers);
 	for(var i=0; i<replacers.length; i++){
 		let replaceClasses = JSON.parse(replacers[i].dataset.replace.replace(/'/g, '"'));
 		Object.keys(replaceClasses).forEach(function(key) {
@@ -9,3 +8,17 @@ document.addEventListener("DOMContentLoaded", function(){
 		});
 	}
 });
+
+window.onload = async function(){
+	const url = 'localhost:3069/employees';
+	try{
+		const res = await fetch(url, {
+			method: "GET",
+			body: JSON.stringify({})
+		});
+	}
+	catch (error)
+	{
+		console.log('err');
+	}
+}

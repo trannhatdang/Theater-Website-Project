@@ -7,6 +7,17 @@ import {
 
 export const filmService = {
 	create: async function(req){
-		console.log(req.body);
+		try{
+			filters = req.filters;
+
+
+
+			films = prisma.film.findMany({
+
+			})
+		}
+		catch (error){
+
+		}
 	}
 }
