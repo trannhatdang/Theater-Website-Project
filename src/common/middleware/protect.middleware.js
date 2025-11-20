@@ -2,40 +2,6 @@ import jwt from "jsonwebtoken";
 import { ACCESS_TOKEN_SECRET } from "../constant/config.constant.js";
 import prisma from "../prisma/prisma.init.js";
 import { NotFoundError, UnAuthorizedError } from "../../helpers/handleError.js";
-// const protect = async (req, res, next) => {
-//     try {
-//         console.log("kiểm tra TOKEN");
-
-//         console.log(req.headers);
-//         const accessToken = req.headers?.authorization?.split(" ")[1];
-//         // console.log(accessToken);
-//         if (!accessToken) {
-//             throw new UnAuthorizedError("Cần cung cấp access token");
-//         }
-
-//         const verifyToken = jwt.verify(accessToken, ACCESS_TOKEN_SECRET);
-//         // if (!verifyToken) {
-//         //     throw new ForbiddenError("Token hết hạn");
-//         // }
-//         console.log(verifyToken);
-
-//         const user = await prisma.users.findUnique({
-//             where: {
-//                 user_id: verifyToken.user_id,
-//             },
-//         });
-//         if (!user) {
-//             throw new ForbiddenError("Không tìm thấy user đó");
-//         }
-//         req.user = user;
-
-//         next();
-//     } catch (error) {
-//         next(error);
-//     }
-// };
-
-// export default protect;
 
 const protect = async (req, res, next) => {
   try {

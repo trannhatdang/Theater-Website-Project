@@ -29,12 +29,12 @@ export class BadRequestError extends Error {
   }
 }
 
-export class ForbiddenError extends Error {
+/*export class ForbiddenError extends Error {
   constructor(message = "ForbiddenError") {
     super(message);
     this.code = 403;
   }
-}
+}*/
 
 export class ConflictError extends Error {
   constructor(message = "ConflictError") {

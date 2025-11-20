@@ -5,5 +5,5 @@ import {
   NotFoundError,
 } from "../helpers/handleError.js";
 
-export const filmService = {
+export const employeeService = {
 }

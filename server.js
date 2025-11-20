@@ -5,17 +5,16 @@ import rootRouter from "./src/routers/root.router.js";
 import { PORT } from "./src/common/constant/config.constant.js";
 
 const app = express();
+const port = PORT ?? 3000;
 
-app.use(
+/*app.use(
   cors({
     origin: "http://localhost:3000", // Your frontend URL
     credentials: true,
   }),
-);
+);*/
 
 app.use(express.json());
-
-const port = PORT ?? 3000;
 
 app.use(rootRouter);
 
