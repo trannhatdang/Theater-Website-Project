@@ -6,14 +6,13 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link href='../output.css' rel="stylesheet">
 </head>
-
-<script src='employee.js'></script>
+<script src='./employee.js'></script>
 <body>
 	<div class='banner_top'>
 		<!--<img class='max-w-sm mx-auto' src='../image/dienmayxanh.jpg'></img>-->
 	</div>
 
-	<header class='flex bg-slate-700'>
+	<header class='flex bg-slate-700 rounded-md m-10'>
 		<div class='flex'>
 			<h1 class='text-5xl font-medium text-cyan-400'>BK_PHIM</h1>
 			<p class='text-s font-thin text-cyan-200'>Your location for the best films</p>
@@ -27,22 +26,40 @@
 	</header>
 
 
-	<div id='main' class='max-w-2xs bg-slate-700 m-10 rounded-md'>
-		<div>
-			Filters:
-		</div>
-		<div>
-			<p>lao</p>
-			<div class="block after:content-[''] w-full border-b h-0 my-2 border-iconDividerOnWhite">
+	<div id='main' class='flex m-10 duration-500 transition transition-all translate-y-12 ease-out' data-replace="{'translate-y-12':'translate-y-0'}">
+		<div id='filters' class='max-w-2xs bg-slate-700 rounded-md '>
+			<div class='text-xl text-heading font-semibold'>
+				Filters:
+			</div>
+			<div class='flex'>
+				<div class="flex items-center mb-4">
+					<div class="flex items-center ps-4 bg-neutral-primary-soft">
+						<label for="bordered-checkbox-1" class="select-none w-full text-lg">Default checkbox</label>
+						<input id="bordered-checkbox-1" type="checkbox" value="" name="bordered-checkbox" class="mx-4 w-4 h-4 bg-neutral-secondary-medium focus:ring-2 focus:ring-brand-soft">
+					</div>
+				</div>
 			</div>
 		</div>
-		<div>
-			Filters:
+
+		<div id='items' class='ml-10 max-w-7xl bg-slate-700 rounded-md'>
+
+			<label for="search" class="block mb-2.5 text-sm font-medium text-heading sr-only ">Search</label>
+
+			<div class='relative'>
+				<div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+				<svg class="w-4 h-4 text-body" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/></svg>
+				</div>
+				<input type="search" id="search" class="block w-full p-3 ps-9 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body" placeholder="Search" required />
+				<button type="button" class="absolute end-1.5 bottom-1.5 text-white bg-brand hover:bg-brand-strong box-border border border-transparent focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded text-xs px-3 py-1.5 focus:outline-none">Search</button>
+			</div>
+
+
+			<div>
+			</div>
+
 		</div>
-		<div>
-			Filters:
-		</div>
-	</div>
+
+	<div>
 
 </body>
 </html>
