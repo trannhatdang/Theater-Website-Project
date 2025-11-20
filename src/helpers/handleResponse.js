@@ -1,5 +1,5 @@
 export const handleSuccessResponse = (
-  message = "Lấy dữ liệu thành công",
+  message = "Success",
   code = 200,
   metaData = null,
 ) => {

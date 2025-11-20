@@ -15,9 +15,9 @@ const port = PORT ?? 3000;
 );*/
 
 app.use(express.json());
-
+app.use(express.urlencoded({extended: true}));
 app.use(rootRouter);
 
 app.listen(PORT, () => {
-  console.log(`Dự án đang chạy trên PORT ${port}!`);
+	console.log(`Dự án đang chạy trên PORT ${port}!`);
 });

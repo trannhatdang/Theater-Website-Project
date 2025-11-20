@@ -6,4 +6,6 @@ import {
 } from "../helpers/handleError.js";
 
 export const authService = {
+	login: async function(req, res){
+	}
 }

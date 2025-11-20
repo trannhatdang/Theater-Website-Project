@@ -13,7 +13,6 @@ const __dirname = dirname(__filename);
 
 const rootRouter = express.Router();
 
-
 rootRouter.use('/auth', authRouter);
 rootRouter.use("/film", filmRouter);
 rootRouter.use("/employee", employeeRouter);
