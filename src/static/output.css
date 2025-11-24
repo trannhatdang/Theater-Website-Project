@@ -24,7 +24,6 @@
     --color-zinc-800: oklch(27.4% 0.006 286.033);
     --color-white: #fff;
     --spacing: 0.25rem;
-    --container-3xs: 16rem;
     --container-2xs: 18rem;
     --container-sm: 24rem;
     --text-xs: 0.75rem;
@@ -38,7 +37,6 @@
     --text-xl: 1.25rem;
     --text-xl--line-height: calc(1.75 / 1.25);
     --text-2xl: 1.5rem;
-    --text-2xl--line-height: calc(2 / 1.5);
     --text-5xl: 3rem;
     --text-5xl--line-height: 1;
     --font-weight-thin: 100;
@@ -324,9 +322,6 @@
   }
   .w-44 {
     width: calc(var(--spacing) * 44);
-  }
-  .w-auto {
-    width: auto;
   }
   .w-full {
     width: 100%;

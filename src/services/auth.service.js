@@ -7,5 +7,12 @@ import {
 
 export const authService = {
 	login: async function(req, res){
+		console.log(req.body.username);
+		console.log(req.body.password);
+
+	}
+
+	register: async function(req, res){
+
 	}
 }
