@@ -7,12 +7,12 @@ import { PORT } from "./src/common/constant/config.constant.js";
 const app = express();
 const port = PORT ?? 3000;
 
-/*app.use(
+app.use(
   cors({
     origin: "http://localhost:3000", // Your frontend URL
     credentials: true,
   }),
-);*/
+);
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
