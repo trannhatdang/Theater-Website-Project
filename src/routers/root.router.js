@@ -4,6 +4,7 @@ import filmRouter from "./film.router.js"
 import employeeRouter from "./employee.router.js"
 import eventRouter from "./event.router.js"
 import promotionRouter from "./promotion.router.js"
+
 import path from 'path'
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -19,9 +20,8 @@ rootRouter.use("/employee", employeeRouter);
 rootRouter.use('/event', eventRouter);
 rootRouter.use('/promotion', promotionRouter);
 
-rootRouter.use(express.static('./src/static'))
 rootRouter.get('/', (req, res) => {
-	res.sendFile(path.resolve('./src/static/main.html'))
+	res.sendFile(path.resolve('./src/build/index.html'))
 })
 
 export default rootRouter;
