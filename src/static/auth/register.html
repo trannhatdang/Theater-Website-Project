@@ -10,15 +10,16 @@
 <script src='./register.js'></script>
 
 <body class='h-full'>
-	<div id='errorPopup' class='absolute max-h-xs max-h-xs bg-red-200'>
-		<div class='bg-red-500'>
+	<div id='ErrorPopup' class='absolute max-h-xs max-h-xs rounded-md bg-red-200 right-5 top-5'>
+		<div class='p-1 bg-red-500 rounded-t-md'>
 			Error!
 		</div>
 
-		<div id='content'>
+		<div id='ErrorContent' class='p-1'>
 			insert content here
 		</div>
 	</div>
+
 
 	<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
 		<div class="sm:mx-auto sm:w-full">
@@ -46,16 +47,20 @@
 					</div>
 
 					<div class="mt-2">
-						<input id="password" type="password" name="password" required autocomplete="current-password" class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" />
+						<input id="password" type="password" name="password" required class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" />
 					</div>
 				</div>
 				<div>
 					<div class="flex items-center justify-between">
-						<label for="password" class="block text-sm/6 font-medium text-gray-100">Confirm Password</label>
+						<label for="confirm_password" class="block text-sm/6 font-medium text-gray-100">Confirm Password</label>
 					</div>
 
-					<div class="mt-2">
-						<input id="password" type="password" name="password" required autocomplete="current-password" class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" />
+					<div class="flex mt-2">
+						<input id="confirm_password" type="password" name="confirm_password" required class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" />
+
+						<div id='confirm_password_message' class='absolute max-h-xs max-h-xs text-red-700 right-40 py-1 hidden'>
+							Incorrect Password
+						</div>
 					</div>
 				</div>
 

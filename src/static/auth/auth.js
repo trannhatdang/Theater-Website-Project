@@ -1,4 +1,4 @@
-window.onload = function(){
+$(document).ready(function() {
 	const form = document.querySelector('form')
 	async function submitClick(e)
 	{
@@ -27,4 +27,3 @@ window.onload = function(){
 
 	$('#login').on('submit', submitClick)
 }
-

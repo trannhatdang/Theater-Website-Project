@@ -19,9 +19,13 @@ rootRouter.use("/film", filmRouter);
 rootRouter.use("/employee", employeeRouter);
 rootRouter.use('/event', eventRouter);
 rootRouter.use('/promotion', promotionRouter);
+rootRouter.use(express.static('./src/static'));
 
 rootRouter.get('/', (req, res) => {
-	res.sendFile(path.resolve('./src/build/index.html'))
+	res.sendFile(path.resolve('./src/static/index.html'))
+})
+rootRouter.get('/admin', (req, res) => {
+	res.sendFile(path.resolve('./src/static/admin/admin.html'))
 })
 
 export default rootRouter;

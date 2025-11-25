@@ -20,7 +20,7 @@ export const authController = {
 
 	register: async function(req, res, next){
 		try{
-			const result = authService.register(req)
+			const result = authService.register(req, res)
 			const response = handleSuccessResponse(
 				"Register Success",
 				undefined,
