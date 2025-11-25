@@ -78,7 +78,7 @@ FOREIGN KEY (ma_nv_quan_ly) REFERENCES quan_tri_vien(ma_nv);
 
 #tao khach hang
 CREATE TABLE khach_hang(
-	ma_khach_hang VARCHAR(10) PRIMARY KEY,
+	ma_khach_hang VARCHAR(10) PRIMARY KEY auto_increment,
     ten VARCHAR(50),
     sdt VARCHAR(10),
     gioi_tinh VARCHAR(3),

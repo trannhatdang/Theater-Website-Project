@@ -10,12 +10,12 @@
 <script src='./register.js'></script>
 
 <body class='h-full'>
-	<div id='ErrorPopup' class='absolute max-h-xs max-h-xs rounded-md bg-red-200 right-5 top-5'>
+	<div id='error_popup' class='absolute max-h-xs max-h-xs rounded-md bg-red-200 right-5 top-5 hidden'>
 		<div class='p-1 bg-red-500 rounded-t-md'>
 			Error!
 		</div>
 
-		<div id='ErrorContent' class='p-1'>
+		<div id='error_content' class='p-1'>
 			insert content here
 		</div>
 	</div>
@@ -34,33 +34,66 @@
 		<div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
 			<form id='register' action="register" method="POST" class="space-y-6">
 				<div>
-					<label for="username" class="block text-sm/6 font-medium text-gray-100">Username</label>
+					<label for="username" class="flex block text-sm/6 font-medium text-gray-100">Username<p class='text-red-600'>*</p></label>
 
 					<div class="mt-2">
-						<input id="username" type="username" name="username" class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" />
+						<input id="username" type="usertext" name="username" required class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" />
 					</div>
 				</div>
 
 				<div>
 					<div class="flex items-center justify-between">
-						<label for="password" class="block text-sm/6 font-medium text-gray-100">Password</label>
+						<label for="password" class="flex block text-sm/6 font-medium text-gray-100">Password<p class='text-red-600'>*</p></label>
 					</div>
 
 					<div class="mt-2">
 						<input id="password" type="password" name="password" required class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" />
 					</div>
 				</div>
+
 				<div>
 					<div class="flex items-center justify-between">
-						<label for="confirm_password" class="block text-sm/6 font-medium text-gray-100">Confirm Password</label>
+						<label for="confirm_password" class="flex block text-sm/6 font-medium text-gray-100">Confirm Password<p class='text-red-600'>*</p></label>
 					</div>
 
-					<div class="flex mt-2">
+					<div id='confirm_password_box' class="flex mt-2">
 						<input id="confirm_password" type="password" name="confirm_password" required class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" />
+					</div>
+				</div>
 
-						<div id='confirm_password_message' class='absolute max-h-xs max-h-xs text-red-700 right-40 py-1 hidden'>
-							Incorrect Password
-						</div>
+				<div>
+					<label for="phone" class="flex block text-sm/6 font-medium text-gray-100">Phone<p class='text-red-600'>*</p></label>
+
+					<div class="mt-2">
+						<input id="phone" type="tel" name="phone" required class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" />
+					</div>
+				</div>
+
+				<div>
+					<label for="name" class="flex block text-sm/6 font-medium text-gray-100">Full Name<p class='text-red-600'>*</p></label>
+
+					<div class="mt-2">
+						<input id="name" type="text" name="name" required class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" />
+					</div>
+				</div>
+
+				<div>
+					<label for="email" class="flex block text-sm/6 font-medium text-gray-100">Email<p class='text-red-600'>*</p></label>
+
+					<div class="mt-2">
+						<input id="email" type="email" name="email" required class="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6" />
+					</div>
+				</div>
+
+				<div>
+					<label for="gender" class="flex block text-sm/6 font-medium text-gray-100">Gender<p class='text-red-600'>*</p></label>
+
+					<div class="mt-2">
+						<select id='gender' class='block rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6'>
+							<option value='M' class='bg-slate-700'>M</option>
+							<option value='F' class='bg-slate-700'>F</option>
+							<option value='Other' class='bg-slate-700'>Other</option>
+						</select>
 					</div>
 				</div>
 

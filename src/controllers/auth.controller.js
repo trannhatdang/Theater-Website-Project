@@ -1,6 +1,7 @@
 import express from 'express'
 import {authService} from '../services/auth.service.js'
 import {handleSuccessResponse} from '../helpers/handleResponse.js'
+import {handleError} from '../helpers/handleError.js'
 
 export const authController = {
 	login: async function(req, res, next){
@@ -14,7 +15,7 @@ export const authController = {
 			res.send(response)
 		}
 		catch (error){
-			console.log(error);
+			handleError(error, req, res, next);
 		}
 	},
 
@@ -29,7 +30,7 @@ export const authController = {
 			res.send(response)
 		}
 		catch (error){
-			console.log(error);
+			handleError(error, req, res, next);
 		}
 	}
 }
