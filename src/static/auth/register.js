@@ -19,6 +19,7 @@ $(document).ready(function(){
 
 async function register(event){
 	event.preventDefault();
+	$('#submit').val('Loading...');
 	const formData = $('#register').serialize();
 
 	response = $.ajax({
