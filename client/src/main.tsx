@@ -3,12 +3,14 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router'
 import './index.css'
 import App from './App.tsx'
+import Header from './header.tsx'
 import HomePage from './home/homepage.tsx'
 import Employee from './employee/employee.tsx'
 import Dashboard from './dashboard/dashboard.tsx'
 
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
+		<Header/>
 		<BrowserRouter>
 			<Routes>
 				<Route index element={<HomePage />}/>
