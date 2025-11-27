@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html class='bg-gray-900'>
+
+<head>
+	<meta charset='utf-8'>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href='../output.css' rel="stylesheet">
+</head>
+<script src="../../../node_modules/nouislider/dist/nouislider.min.js"></script>
+<script src="../../../node_modules/preline/dist/preline.js"></script>
+<script src='./employee.js'></script>
+<body>
+	<div class='banner_top'>
+		<!--<img class='max-w-sm mx-auto' src='../image/dienmayxanh.jpg'></img>-->
+	</div>
+
+	<header class='flex bg-slate-700 rounded-md m-10'>
+		<div class='flex'>
+			<h1 class='text-5xl font-medium text-cyan-400'>BK_PHIM</h1>
+			<p class='text-s font-thin text-cyan-200'>Your location for the best films</p>
+		</div>
+		<nav class='flex ml-auto justify-end-safe text-xl font-xs'>
+			<a href="../employee/employee.html" class = 'p-1 m-4 hover:text-gray-600 border-violet-600 rounded-md'>Employees</a>
+			<a href="../film/film.html" class = 'p-1 m-4 hover:text-gray-600 border-violet-600 rounded-md'>Films</a>
+			<a href="../event/event.html" class = 'p-1 m-4 hover:text-gray-600 border-violet-600 rounded-md'>Events</a>
+			<a href="../promotion/promotion.html" class = 'p-1 m-4 hover:text-gray-600 border-violet-600 rounded-md'>Promotions</a>
+		</nav>
+	</header>
+
+
+	<div id='main' class='flex ml-10 mr-10 duration-500 transition transition-all translate-y-12 ease-out' data-replace="{'translate-y-12':'translate-y-0'}">
+		<div id='filters_tab' class='w-2xs bg-slate-700 rounded-md p-2'>
+			<div class='flex'>
+				<div class="flex items-center mb-4">
+					<div class="flex items-center ps-4 bg-neutral-primary-soft">
+						<label for="bordered-checkbox-1" class="select-none w-full text-lg">Default checkbox</label>
+						<input id="bordered-checkbox-1" type="checkbox" value="" name="bordered-checkbox" class="mx-4 w-4 h-4 bg-neutral-secondary-medium focus:ring-2 focus:ring-brand-soft">
+					</div>
+				</div>
+			</div>
+
+			<div class='flex'>
+				<div class="flex items-center mb-4">
+					<div class="flex items-center ps-4 bg-neutral-primary-soft">
+						<label for="bordered-checkbox-1" class="select-none w-full text-lg">Default double-range slider</label>
+						<input id="bordered-checkbox-1" type="checkbox" value="" name="bordered-checkbox" class="mx-4 w-4 h-4 bg-neutral-secondary-medium focus:ring-2 focus:ring-brand-soft">
+					</div>
+				</div>
+			</div>
+
+			<label class="sr-only">Example range</label>
+			<div data-hs-range-slider='{
+			  "start": 50,
+			  "connect": "lower",
+			  "range": {
+			    "min": 0,
+			    "max": 100
+			  },
+			  "cssClasses": {
+			    "target": "relative h-2 rounded-full bg-gray-100 dark:bg-neutral-700",
+			    "base": "size-full relative z-1",
+			    "origin": "absolute top-0 end-0 size-full origin-[0_0] rounded-full",
+			    "handle": "absolute top-1/2 end-0 size-4.5 bg-white border-4 border-blue-600 rounded-full cursor-pointer translate-x-2/4 -translate-y-2/4 dark:border-blue-500",
+			    "connects": "relative z-0 size-full rounded-full overflow-hidden",
+			    "connect": "absolute top-0 end-0 z-1 size-full bg-blue-600 origin-[0_0] dark:bg-blue-500",
+			    "touchArea": "absolute -inset-1"
+			  }
+			}'></div>
+
+
+		</div>
+
+		<div id='items_tab' class='ml-10 w-screen'>
+			<div class='bg-slate-700 rounded-md'>
+				<label for="search" class="block mb-2.5 text-sm font-medium text-heading sr-only ">Search</label>
+
+				<div class='relative'>
+					<div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+					<svg class="w-4 h-4 text-body" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"/></svg>
+					</div>
+					<input type="search" id="search" class="block w-full p-3 ps-9 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body" placeholder="Search" required />
+					<button type="search_button" class="absolute end-1.5 bottom-1.5 text-white bg-zinc-700 hover:bg-zinc-800 box-border border border-transparent focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded text-xs px-3 py-1.5 focus:outline-none">Search</button>
+				</div>
+			</div>
+
+			<div id='items' class='bg-slate-700 rounded-md mt-10' onload='findEmployees()' >
+				<div>
+				</div>
+			</div>
+		</div>
+
+	<div>
+
+</body>
+</html>
+
