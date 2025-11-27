@@ -1,3 +1,8 @@
+import Filter from '../filter.tsx';
 export default function Employee(){
-	return <h1>eyy employee</h1>
+	return (
+		<div class='flex'>
+			<Filter />
+		</div>
+	)
 }
