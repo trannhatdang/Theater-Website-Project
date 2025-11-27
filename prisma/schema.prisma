@@ -82,7 +82,7 @@ model hoa_don {
   ma_nhan_vien_phu_trach          String?                           @db.VarChar(10)
   ma_khach_hang                   String?                           @db.VarChar(10)
   ma_km                           String?                           @db.VarChar(10)
-  tong_tien                       Int?
+  tong_tien                       Int?                              @default(0)
   nhan_vien_ban_hang              nhan_vien_ban_hang?               @relation(fields: [ma_nhan_vien_phu_trach], references: [ma_nv], onDelete: NoAction, onUpdate: NoAction, map: "hoa_don_ibfk_1")
   khach_hang                      khach_hang?                       @relation(fields: [ma_khach_hang], references: [ma_khach_hang], onDelete: NoAction, onUpdate: NoAction, map: "hoa_don_ibfk_2")
   khuyen_mai                      khuyen_mai?                       @relation(fields: [ma_km], references: [ma_km], onDelete: NoAction, onUpdate: NoAction, map: "hoa_don_ibfk_3")
@@ -181,7 +181,7 @@ model phim {
   ma_phim              String       @id @db.VarChar(10)
   ten_phim             String?      @db.VarChar(100)
   thoi_luong           DateTime?    @db.Time(0)
-  do_tuoi_yeu_cau      Int?
+  do_tuoi_yeu_cau      Int?         @default(3)
   thoi_gian_cong_chieu DateTime?    @db.Date
   tom_tat_noi_dung     String?      @db.VarChar(1000)
   dao_dien             String?      @db.VarChar(50)
@@ -193,7 +193,7 @@ model phim {
 model phong_chieu_phim {
   ma_rap     String       @db.VarChar(10)
   ma_phong   String       @db.VarChar(10)
-  so_ghe     Int?
+  so_ghe     Int?         @default(0)
   ghe        ghe[]
   rap_phim   rap_phim     @relation(fields: [ma_rap], references: [ma_rap], onDelete: NoAction, onUpdate: NoAction, map: "phong_chieu_phim_ibfk_1")
   suat_chieu suat_chieu[]
@@ -225,7 +225,7 @@ model rap_phim {
   ten                         String?                       @db.VarChar(100)
   dia_chi                     String?                       @db.VarChar(255)
   sdt                         String?                       @db.VarChar(10)
-  so_phong                    Int?
+  so_phong                    Int?                          @default(0)
   nhan_vien                   nhan_vien[]
   phong_chieu_phim            phong_chieu_phim[]
   rap_phim_ap_dung_khuyen_mai rap_phim_ap_dung_khuyen_mai[]
@@ -278,8 +278,8 @@ model tai_khoan_khach_hang {
   ten_tai_khoan       String               @db.VarChar(50)
   ma_khach_hang       String               @db.VarChar(10)
   mat_khau            String?              @db.VarChar(50)
-  cap                 Int?
-  so_diem_tich_duoc   Int?
+  cap                 Int?                 @default(0)
+  so_diem_tich_duoc   Int?                 @default(0)
   so_diem_can_len_cap Int?
   quy_doi_khuyen_mai  quy_doi_khuyen_mai[]
   khach_hang          khach_hang           @relation(fields: [ma_khach_hang], references: [ma_khach_hang], onDelete: NoAction, onUpdate: NoAction, map: "tai_khoan_khach_hang_ibfk_1")

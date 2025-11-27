@@ -3,5 +3,6 @@ import express from "express";
 
 const eventRouter = express.Router();
 
+eventRouter.get('/', eventController.get);
 
 export default eventRouter;

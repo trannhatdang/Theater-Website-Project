@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html class='bg-gray-900'>
 
 <head>
 	<meta charset='utf-8'>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link href='../output.css' rel="stylesheet">
 </head>
+<script src="../../../node_modules/nouislider/dist/nouislider.min.js"></script>
+<script src="../../../node_modules/preline/dist/preline.js"></script>
 <script src='./employee.js'></script>
 <body>
 	<div class='banner_top'>
@@ -27,14 +29,20 @@
 
 
 	<div id='main' class='flex ml-10 mr-10 duration-500 transition transition-all translate-y-12 ease-out' data-replace="{'translate-y-12':'translate-y-0'}">
-		<div id='filters_tab' class='w-2xs bg-slate-700 rounded-md '>
-			<div class='text-xl text-heading font-semibold'>
-				Filters:
-			</div>
+		<div id='filters_tab' class='w-2xs bg-slate-700 rounded-md p-2'>
 			<div class='flex'>
 				<div class="flex items-center mb-4">
 					<div class="flex items-center ps-4 bg-neutral-primary-soft">
 						<label for="bordered-checkbox-1" class="select-none w-full text-lg">Default checkbox</label>
+						<input id="bordered-checkbox-1" type="checkbox" value="" name="bordered-checkbox" class="mx-4 w-4 h-4 bg-neutral-secondary-medium focus:ring-2 focus:ring-brand-soft">
+					</div>
+				</div>
+			</div>
+
+			<div class='flex'>
+				<div class="flex items-center mb-4">
+					<div class="flex items-center ps-4 bg-neutral-primary-soft">
+						<label for="bordered-checkbox-1" class="select-none w-full text-lg">Default double-range slider</label>
 						<input id="bordered-checkbox-1" type="checkbox" value="" name="bordered-checkbox" class="mx-4 w-4 h-4 bg-neutral-secondary-medium focus:ring-2 focus:ring-brand-soft">
 					</div>
 				</div>

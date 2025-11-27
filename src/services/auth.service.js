@@ -7,13 +7,16 @@ import {
 
 export const authService = {
 	login: async function(req){
-		console.log(req.body.username);
-		console.log(req.body.password);
 
 	},
 
 	register: async function(req){
 		const body = req.body;
+		const in_ten = body.ten;
+		const in_sdt = body.sdt;
+		const in_gioi_tinh = body.gioi_tinh;
+		const in_email = body.email;
+
 		const customer = await prisma.khach_hang.findOne({
 			where:{
 				ten: req.body.FullName,
@@ -28,10 +31,10 @@ export const authService = {
 
 		const new_cus = await prisma.khach_hang.create({
 			data: {
-				ten:,
-				sdt:,
-				gioi_tinh:,
-				email:,
+				ten: in_ten,
+				sdt: in_sdt,
+				gioi_tinh: in_gioi_tinh,
+				email: in_email,
 			}
 			
 		})

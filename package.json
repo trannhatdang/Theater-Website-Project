@@ -9,6 +9,8 @@
     "express": "^5.1.0",
     "jquery": "^3.7.1",
     "jsonwebtoken": "^9.0.2",
+    "nouislider": "^15.8.1",
+    "preline": "^3.2.3",
     "tailwindcss": "^4.1.17"
   },
   "name": "database-assignment2",
@@ -16,16 +18,17 @@
   "description": "",
   "main": "index.js",
   "devDependencies": {
-	"@types/node": "^24.10.1",
-	"prisma": "^6.19.0",
-	"tsx": "^4.20.6",
-	"typescript": "^5.9.3"
+    "@tailwindcss/forms": "^0.5.10",
+    "@types/node": "^24.10.1",
+    "prisma": "^6.19.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
   },
   "scripts": {
-	"test": "echo \"Error: no test specified\" && exit 1",
-	"server": "node index.js",
-	"tailwind": "npx @tailwindcss/cli -i ./src/static/input.css -o ./src/static/output.css --watch",
-	"dev": "concurrently \"npm run server\" \"npm run tailwind\""
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "node index.js",
+    "tailwind": "npx @tailwindcss/cli -i ./src/static/input.css -o ./src/static/output.css --watch",
+    "dev": "concurrently \"npm run server\" \"npm run tailwind\""
   },
   "keywords": [],
   "author": "",
