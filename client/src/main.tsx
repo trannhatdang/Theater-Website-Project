@@ -3,14 +3,15 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router'
 import './index.css'
 import App from './App.tsx'
-import Header from './header.tsx'
-import HomePage from './home/homepage.tsx'
-import Employee from './employee/employee.tsx'
-import Dashboard from './dashboard/dashboard.tsx'
+import Header from './components/header.tsx'
+import Sidebar from './components/sidebar.tsx'
+import HomePage from './components/homepage.tsx'
+import Employee from './components/employee.tsx'
+import Dashboard from './components/dashboard.tsx'
 
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
-		<Header/>
+		<Header />
 		<BrowserRouter>
 			<Routes>
 				<Route index element={<HomePage />}/>
