@@ -5,6 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import Slider from '@mui/material/Slider';
 import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
 
 let salary = [0, 100]
 
@@ -23,7 +24,16 @@ function EmployeeSalaryRangeSlider(){
 				className='w-md'
 			/>
 		</div>
+	)
+}
 
+function EmployeeSearch(){
+	return(
+		<TextField 
+			label="Search" 
+			variant="outlined" 
+			className='w-full'
+		/>
 	)
 }
 
@@ -36,6 +46,7 @@ function EmployeeFilterMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   const handleApply = () =>{
 	console.log(salary);
 
@@ -50,7 +61,7 @@ function EmployeeFilterMenu() {
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
       >
-      <FilterAltIcon className='text-black'/>
+      <FilterAltIcon className='text-cyan-500'/>
       </Button>
       <Menu
         id="employee-filter-menu"
@@ -62,6 +73,7 @@ function EmployeeFilterMenu() {
             'aria-labelledby': 'basic-button',
           },
         }}
+	sx={{"& .MuiMenu-paper": {backgroundColor: "black"}}}
       >
         <MenuItem disableRipple disableTouchRipple className = 'flex flex-row items-center gap-10'>Salary <EmployeeSalaryRangeSlider /> </MenuItem>
         <MenuItem disableRipple disableTouchRipple onClick={handleClose}>My account</MenuItem>
@@ -74,11 +86,9 @@ function EmployeeFilterMenu() {
 
 export default function EmployeeTopBar(){
 	return (
-		<div className='shadow-md flex flex-row-reverse bg-slate-700 items-center'>
+		<div className='shadow-md flex flex-row bg-slate-700 items-center p-2'>
+			<EmployeeSearch className='flex-1 w-full'/>
 			<EmployeeFilterMenu/>
-			<div>
-				hi
-			</div>
 		</div>
 	)
 

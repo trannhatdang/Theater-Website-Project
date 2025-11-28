@@ -10,7 +10,7 @@ import EmployeeTopBar from './EmployeeTopBar.tsx'
 
 export default function Employee(){
 	return (
-		<div className='flex flex-col my-10 gap-2'>
+		<div className='flex flex-col m-10 gap-2 w-full'>
 			<EmployeeTopBar />
 			<EmployeeData />
 		</div>
