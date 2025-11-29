@@ -13,14 +13,14 @@ export const employeeService = {
 		const in_cccd = body?.cccd;
 		const in_min_ngay_sinh = body?.min_ngay_sinh;
 		const in_max_ngay_sinh = body?.max_ngay_sinh;
-		const in_min_gioi_tinh = body?.min_gioi_tinh;
-		const in_max_gioi_tinh = body?.max_gioi_tinh;
 		const in_min_luong = body?.min_luong;
 		const in_max_luong = body?.max_luong;
 		const in_chuc_vu = body?.chuc_vu;
 		const in_dia_chi = body?.dia_chi;
 		const in_ma_nv_quan_ly = body?.ma_nv_quan_ly;
 		const in_ma_rap_phim = body?.ma_rap_phim;
+		const in_gioi_tinh = body?.gioi_tinh;
+		const in_sdt = body?.sdt;
 		
 		const employee = await prisma.nhan_vien.findMany({
 			where: {
@@ -36,10 +36,6 @@ export const employeeService = {
 				ngay_sinh: {
 					gte: min_in_ngay_sinh,
 					lte: max_in_ngay_sinh,
-				},
-				gioi_tinh: {
-					gte: min_in_gioi_tinh,
-					lte: max_in_gioi_tinh,
 				},
 				luong: {
 					gte: min_in_luong,
@@ -57,6 +53,7 @@ export const employeeService = {
 				ma_rap_phim: {
 					contains: in_ma_rap_phim,
 				},
+				gioi_tinh: in_gioi_tinh
 			},
 		});
 

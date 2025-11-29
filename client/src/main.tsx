@@ -5,7 +5,7 @@ import './index.css'
 import Header from './components/Header.tsx'
 import Sidebar from './components/Sidebar.tsx'
 import HomePage from './components/Homepage.tsx'
-import Employee from './components/Employee.tsx'
+import EmployeeView from './components/EmployeeView.tsx'
 import Dashboard from './components/Dashboard.tsx'
 
 createRoot(document.getElementById('root')!).render(
@@ -15,7 +15,7 @@ createRoot(document.getElementById('root')!).render(
 			<BrowserRouter>
 				<Routes>
 					<Route index element={<HomePage />}/>
-					<Route path='/employee' element={<Employee />}/>
+					<Route path='/employee' element={<EmployeeView />}/>
 					<Route path='/dashboard' element={<Dashboard />}/>
 				</Routes>
 			</BrowserRouter>
