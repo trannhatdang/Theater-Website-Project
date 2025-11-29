@@ -10,11 +10,16 @@ import RangeSlider from '../utils/RangeSlider.tsx'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 
-
-
 interface SalaryRangeProps{
 	salaryRange: number[]
 	onChange(e: Event, newValue: number[]): void
+}
+
+interface FilterProps{
+	salaryRange: number[],
+	gender: string,
+	position: string,
+	onApply(e: Event, salaryRange: number[], gender: string, position: string): void
 }
 
 function EmployeeSalaryRangeSlider({salaryRange, onChange}: SalaryRangeProps){
@@ -49,13 +54,6 @@ function EmployeeSearch(onChange){
 			onChange={handleChange}
 		/>
 	)
-}
-
-interface FilterProps{
-	salaryRange: number[],
-	gender: string,
-	position: string,
-	onApply(e: Event, salaryRange: number[], gender: string, position: string): void
 }
 
 function EmployeeFilterMenu(props: FilterProps) {

@@ -5,7 +5,6 @@ import Breadcrumbs, { breadcrumbsClasses } from '@mui/material/Breadcrumbs'
 import Stack from '@mui/material/Stack'
 import RangeSlider from '../utils/RangeSlider.tsx';
 import Sidebar from './Sidebar.tsx'
-import Employee from './Employee.tsx'
 import EmployeeTopBar from './EmployeeTopBar.tsx'
 
 export interface FilterProps{
@@ -22,49 +21,58 @@ export interface FilterProps{
 	TheaterID: string
 }
 
-export default function EmployeeView(){
-	const [ID, setID] = React.useState<number | null>(null);
-	const [SID, setSID] = React.useState<number | null>(null);
-	const [Name, setName] = React.useState<string | null>(null);
-	/*const [ID, setID] = React.useState<number | null>(null);
-	const [ID, setID] = React.useState<number | null>(null);
-	const [ID, setID] = React.useState<number | null>(null);
-	const [ID, setID] = React.useState<number | null>(null);
-	const [ID, setID] = React.useState<number | null>(null);*/
+export default async function EmployeeView(){
+	const [Filters, setFilters] = React.useState<FilterProps | null>(null)
 	const handleChange = (
 		e: Event, 
-		ID: string, 
-		SID: string, 
-		EmployeeName: string, 
-		SalaryRange: number[], 
-		BirthdateRange: Date[],
-		Occupation: string,
-		HomeAddress: string,
-		Phone: string,
-		Gender: string,
-		ManagerID: string,
-		TheaterID: string
+		newID: string, 
+		newSID: string, 
+		newEmployeeName: string, 
+		newSalaryRange: number[], 
+		newBirthdateRange: Date[],
+		newOccupation: string,
+		newHomeAddress: string,
+		newPhone: string,
+		newGender: string,
+		newManagerID: string,
+		newTheaterID: string
 	) =>{
-
+		setFilters({newID, newSID, newEmployeeName, newSalaryRange, newBirthdateRange, newOccupation, newHomeAddress, newPhone, newGender, newManagerId, newTheaterID});
 	}
 
-	let employees = fetch('localhost:3000/employee', {
-		body: Json.stringify({
-			in_ma_nv: ID,
-			in_ten: Name,
-			in_cccd: SID,
-			in_min_ngay_sinh: BirthdateRange[0],
-			in_max_ngay_sinh: BirthdateRange[1],
-			in_min_luong: SalaryRange[0],
-			in_max_luong: SalaryRange[1],
-			in_chuc_vu: Occupation,
-			in_dia_chi: HomeAddress,
-			in_sdt: Phone,
-			in_ma_nv_quan_ly: ManagerID,
-			in_ma_rap_phim: TheaterID
-		}),
-		method: "POST"
-	})
+	React.useEffect(()=> {
+		fetchData();
+
+	}, [])
+
+	const fetchData = async() => {
+		try{
+			let employees = await fetch('localhost:3000/employee', {
+				body: JSON.stringify({
+					in_ma_nv: Filters.ID,
+					in_ten: Filters.Name,
+					in_cccd: Filters.SID,
+					in_min_ngay_sinh: Filters.BirthdateRange[0],
+					in_max_ngay_sinh: Filters.BirthdateRange[1],
+					in_min_luong: Filters.SalaryRange[0],
+					in_max_luong: Filters.SalaryRange[1],
+					in_chuc_vu: Filters.Occupation,
+					in_dia_chi: Filters.HomeAddress,
+					in_sdt: Filters.Phone,
+					in_ma_nv_quan_ly: Filters.ManagerID,
+					in_ma_rap_phim: Filters.TheaterID
+				}),
+				method: "POST"
+			})
+
+			if(!employees.ok){
+				throw Error('lmao')
+			}
+		}
+		catch(e){
+			console.error(e)
+		}
+	}
 
 	return (
 		<div className='flex flex-col m-10 gap-2 w-full'>
