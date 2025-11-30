@@ -1,33 +1,33 @@
 interface EmployeeProps{
-	ID: string,
-	SID: string,
-	Name: string,
-	Salary: number,
-	Birthdate: Date,
-	Occupation: string,
-	HomeAddress: string,
-	Phone: string,
-	Gender: string,
-	ManagerID: string,
-	TheaterID: string
+	ma_nv: string,
+	cccd: string,
+	ten: string,
+	luong: number,
+	ngay_sinh: Date,
+	chuc_vu: string,
+	dia_chi: string,
+	sdt: string,
+	gioi_tinh: string,
+	ma_nv_quan_ly: string,
+	ma_rap_phim: string
 }
 
 function Employee({
-	ID,
-	SID,
-	Name,
-	Salary,
-	Birthdate,
-	Occupation,
-	HomeAddress,
-	Phone,
-	Gender,
-	ManagerID,
-	TheaterID
+	ma_nv,
+	cccd,
+	ten,
+	luong,
+	ngay_sinh,
+	chuc_vu,
+	dia_chi,
+	sdt,
+	gioi_tinh,
+	ma_nv_quan_ly,
+	ma_rap_phim	
 }: EmployeeProps){
 	return (
 		<>
-			{ID} {SID} {Name} {Salary} {Birthdate}
+			{ma_nv} {SID} {ten} {luong} {ngay_sinh}
 		</>
 	)
 
@@ -36,12 +36,12 @@ function Employee({
 export default function EmployeeTable(employees){
 
 
-			/*{employees.map(employee => () {
-				<EmployeeView ID={employee.} SID={employee.SID} Name={employee.Name} Salary={employee.Salary} Birthdate={employee.Birthdate} Occupation={employee.Occupation}/>
-			})}*/
 
 	return (
 		<>
+			{employees.map(employee => () {
+				<EmployeeView ma_nv={employee.ma_nv} cccd={employee.cccd} ten={employee.ten} luong={employee.luong} ngay_sinh={employee.ngay_sinh} chuc_vu={employee.chuc_vu} dia_chi={employee.dia_chi} sdt={employee.sdt} gioi_tinh={employee.gioi_tinh} ma_nv_quan_ly={employee.ma_nv_quan_ly} ma_rap_phim={employee.ma_rap_phim}/>
+			})}
 		</>
 	)
 

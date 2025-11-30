@@ -10,17 +10,17 @@ import EmployeeTable from './EmployeeTable.tsx'
 import {useQuery} from "@tanstack/react-query";
 
 export interface FilterProps{
-	ID: string,
-	SID: string,
-	EmployeeName: string,
-	SalaryRange: number[],
-	BirthdateRange: Date[]
-	Occupation: string,
-	HomeAddress: string,
-	Phone: string,
-	Gender: string,
-	ManagerID: string,
-	TheaterID: string
+	ma_nv: string,
+	cccd: string,
+	ten: string,
+	khoang_luong: number[],
+	khoang_ngay_sinh: Date[]
+	chuc_vu: string,
+	dia_chi: string,
+	sdt: string,
+	gioi_tinh: string,
+	ma_nv_quan_ly: string,
+	ma_rap_phim: string
 }
 
 const fetchEmployeeData = async({ queryKey }) => {
@@ -47,19 +47,19 @@ export default function EmployeeView(){
 	const {isPending, isError, data, error } = useQuery({ queryKey: [Filters], queryFn: fetchEmployeeData});
 	const handleChange = (
 		e: Event,
-		newID: string,
-		newSID: string,
-		newEmployeeName: string,
-		newSalaryRange: number[],
-		newBirthdateRange: Date[],
-		newOccupation: string,
-		newHomeAddress: string,
-		newPhone: string,
-		newGender: string,
-		newManagerID: string,
-		newTheaterID: string
+		new_ma_nv: string,
+		new_cccd: string,
+		new_ten: string,
+		new_khoang_luong: number[],
+		new_khoang_ngay_sinh: Date[],
+		new_chuc_vu: string,
+		new_dia_chi: string,
+		new_sdt: string,
+		new_gioi_tinh: string,
+		new_ma_nv_quan_ly: string,
+		new_ma_rap_phim: string
 	) => {
-		setFilters({newID, newSID, newEmployeeName, newSalaryRange, newBirthdateRange, newOccupation, newHomeAddress, newPhone, newGender, newManagerId, newTheaterID});
+		setFilters({new_ma_nv, new_cccd, new_ten, new_khoang_luong, new_khoang_ngay_sinh, new_chuc_vu, new_dia_chi, new_sdt, new_gioi_tinh, new_ma_nv_quan_ly, new_ma_rap_phim});
 	}
 
 	if (isPending) {
