@@ -297,8 +297,8 @@ export const theaterService = {
 						contains: query_ma_rap,
 					},
 					so_ghe:{
-						gte: query_min_so_ghe,
-						lte: query_max_so_ghe
+						gte: parseInt(query_min_so_ghe),
+						lte: parseInt(query_max_so_ghe)
 					},
 				},
 			})
@@ -325,8 +325,8 @@ export const theaterService = {
 					contains: query_ma_phong,
 				},
 				so_ghe: {
-					gte: query_min_so_ghe,
-					lte: query_max_so_ghe,
+					gte: parseInt(query_min_so_ghe),
+					lte: parseInt(query_max_so_ghe),
 				},
 			},
 		})
