@@ -12,7 +12,7 @@ interface EmployeeProps{
 	ma_rap_phim: string
 }
 
-function Employee({
+const Employee = ({
 	ma_nv,
 	cccd,
 	ten,
@@ -24,24 +24,20 @@ function Employee({
 	gioi_tinh,
 	ma_nv_quan_ly,
 	ma_rap_phim	
-}: EmployeeProps){
+}: EmployeeProps) => {
 	return (
-		<>
-			{ma_nv} {SID} {ten} {luong} {ngay_sinh}
-		</>
+		<div className='text-white'>
+			{ma_nv} {cccd} {ten} {luong} {new Intl.DateTimeFormat("en-GB").format(new Date(ngay_sinh))}
+		</div>
 	)
-
 }
 
-export default function EmployeeTable(employees){
-
-
-
+export default function EmployeeTable({employees}){
 	return (
 		<>
-			{employees.map(employee => () {
-				<EmployeeView ma_nv={employee.ma_nv} cccd={employee.cccd} ten={employee.ten} luong={employee.luong} ngay_sinh={employee.ngay_sinh} chuc_vu={employee.chuc_vu} dia_chi={employee.dia_chi} sdt={employee.sdt} gioi_tinh={employee.gioi_tinh} ma_nv_quan_ly={employee.ma_nv_quan_ly} ma_rap_phim={employee.ma_rap_phim}/>
-			})}
+			{employees.map(employee => ( 
+				<Employee key={employee.ma_nv} ma_nv={employee.ma_nv} cccd={employee.cccd} ten={employee.ten} luong={employee.luong} ngay_sinh={employee.ngay_sinh} chuc_vu={employee.chuc_vu} dia_chi={employee.dia_chi} sdt={employee.sdt} gioi_tinh={employee.gioi_tinh} ma_nv_quan_ly={employee.ma_nv_quan_ly} ma_rap_phim={employee.ma_rap_phim}/>)
+			)}
 		</>
 	)
 

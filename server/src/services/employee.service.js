@@ -56,7 +56,6 @@ export const employeeService = {
 				gioi_tinh: in_gioi_tinh
 			},
 		});
-		console.log(employee)
 
 		return employee;
 	},
