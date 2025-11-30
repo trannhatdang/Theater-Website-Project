@@ -7,19 +7,32 @@ import {
 
 export const authService = {
 	login: async function(req){
+		const query = req.query;
+		const in_username = body.username;
+		const in_password = body.password;
 
+		const user = await prisma.tai_khoan_khach_hang.findOne({
+			where:{
+				ten_tai_khoan: in_username,
+				mat_khau: in_password
+			}
+		})
+
+		return user;
 	},
 
 	register: async function(req){
 		const body = req.body;
-		const in_ten = body.ten;
-		const in_sdt = body.sdt;
-		const in_gioi_tinh = body.gioi_tinh;
-		const in_email = body.email;
+		const in_ten = body?.ten;
+		const in_sdt = body?.sdt;
+		const in_gioi_tinh = body?.gioi_tinh;
+		const in_email = body?.email;
+		const in_username = body?.username;
+		const in_password = body?.password;
 
 		const customer = await prisma.khach_hang.findOne({
 			where:{
-				ten: req.body.FullName,
+				ten: in_ten,
 			}
 
 		});
@@ -29,7 +42,7 @@ export const authService = {
 			throw ConflictError;
 		}
 
-		const new_cus = await prisma.khach_hang.create({
+		const new_customer = await prisma.khach_hang.create({
 			data: {
 				ten: in_ten,
 				sdt: in_sdt,
@@ -37,13 +50,13 @@ export const authService = {
 				email: in_email,
 			}
 			
-		})
+		});
 
 		const user = await prisma.tai_khoan_khach_hang.create({
 			data: {
-				ten_tai_khoan: req.body.username,
-				mat_khau: req.body.password
+				ten_tai_khoan: in_username,
+				mat_khau: in_password
 			}
-		})
+		});
 	}
 }

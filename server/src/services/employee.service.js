@@ -7,20 +7,20 @@ import {
 
 export const employeeService = {
 	get: async function(req){
-		const body = req.query;
-		const in_ma_nv = body?.ma_nv;
-		const in_ten = body?.ten;
-		const in_cccd = body?.cccd;
-		const in_min_ngay_sinh = body?.min_ngay_sinh;
-		const in_max_ngay_sinh = body?.max_ngay_sinh;
-		const in_min_luong = body?.min_luong;
-		const in_max_luong = body?.max_luong;
-		const in_chuc_vu = body?.chuc_vu;
-		const in_dia_chi = body?.dia_chi;
-		const in_ma_nv_quan_ly = body?.ma_nv_quan_ly;
-		const in_ma_rap_phim = body?.ma_rap_phim;
-		const in_gioi_tinh = body?.gioi_tinh;
-		const in_sdt = body?.sdt;
+		const query = req.query;
+		const in_ma_nv = query?.ma_nv;
+		const in_ten = query?.ten;
+		const in_cccd = query?.cccd;
+		const in_min_ngay_sinh = query?.min_ngay_sinh;
+		const in_max_ngay_sinh = query?.max_ngay_sinh;
+		const in_min_luong = query?.min_luong;
+		const in_max_luong = query?.max_luong;
+		const in_chuc_vu = query?.chuc_vu;
+		const in_dia_chi = query?.dia_chi;
+		const in_ma_nv_quan_ly = query?.ma_nv_quan_ly;
+		const in_ma_rap_phim = query?.ma_rap_phim;
+		const in_gioi_tinh = query?.gioi_tinh;
+		const in_sdt = query?.sdt;
 		
 		const employee = await prisma.nhan_vien.findMany({
 			where: {

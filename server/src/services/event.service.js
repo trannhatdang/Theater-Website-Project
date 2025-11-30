@@ -30,16 +30,16 @@ export const eventService = {
 					contains: in_quy_mo,
 				},
 				do_tuoi_gioi_han:{
-					gte: min_do_tuoi_gioi_han,
-					lte: max_do_tuoi_gioi_han,
+					gte: in_min_do_tuoi_gioi_han,
+					lte: in_max_do_tuoi_gioi_han,
 				},
 				chi_phi:{
-					gte: min_chi_phi,
-					lte: max_chi_phi,
+					gte: in_min_chi_phi,
+					lte: in_max_chi_phi,
 				},
 				thoi_gian:{
-					gte: min_thoi_gian,
-					lte: max_thoi_gian,
+					gte: in_min_thoi_gian,
+					lte: in_max_thoi_gian,
 				},
 			},
 		});

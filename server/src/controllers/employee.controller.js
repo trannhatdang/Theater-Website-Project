@@ -8,9 +8,10 @@ export const employeeController = {
 		try{
 			const result = await employeeService.get(req)
 			const response = handleSuccessResponse(
-				"Get Employee Success",
-				undefined,
-				result
+				message="Get Employee Success",
+				code=200,
+				metaData=undefined,
+				data=result
 			)
 			res.send(response)
 		}
