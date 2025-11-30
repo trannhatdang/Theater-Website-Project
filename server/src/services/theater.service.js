@@ -46,6 +46,20 @@ export const theaterService = {
 		const body_sdt = body?.sdt;
 		const body_so_phong = body?.so_phong;
 
+		if(body_ma_rap !== undefined){
+			throw BadRequestError("Theater must have an ID!");
+		}
+
+		const find_theater = await prisma.rap_phim.find({
+			where:{
+				ma_rap: body_ma_rap
+			}
+		})
+
+		if(find_theater !== null){
+			throw BadRequestError("Multiple theaters can't have the same ID!")
+		}
+
 		const theater = await prisma.rap_phim.create({
 			data:{
 				ma_rap: body_ma_rap,
@@ -184,9 +198,24 @@ export const theaterService = {
 	},
 	postRoom: async function(req){
 		const body = req.body;
-		const body_ma_rap = body.ma_rap;
-		const body_ma_phong = body.ma_phong;
+		const body_ma_rap = body?.ma_rap;
+		const body_ma_phong = body?.ma_phong;
 		const body_so_ghe = body?.so_ghe;
+
+		if(body_ma_rap !== undefined || body_ma_phong !== undefined){
+			throw BadRequestError("Room must have all required ID fields!")
+		}
+
+		const find_room = await prisma.phong_chieu_phim.findUnique({
+			where:{
+				ma_rap: body_ma_rap,
+				ma_phong: body_ma_phong
+			}
+		})
+
+		if(find_room !== null){
+			throw BadRequestError("Multiple rooms can't have the same ID!")
+		}
 
 		const room = await prisma.phong_chieu_phim.create({
 			data:{
@@ -282,9 +311,9 @@ export const theaterService = {
 	},
 	getSeat: async function(req) {
 		const query = req.query;
-		const query_ma_rap = query.ma_rap;
-		const query_ma_phong = query.ma_phong;
-		const query_ma_ghe = query.ma_ghe;
+		const query_ma_rap = query?.ma_rap;
+		const query_ma_phong = query?.ma_phong;
+		const query_ma_ghe = query?.ma_ghe;
 		const query_loai_ghe = query?.loai_ghe;
 
 		const seat = await prisma.ghe.findMany({
@@ -306,10 +335,26 @@ export const theaterService = {
 	},
 	postSeat: async function(req){
 		const body = req.body;
-		const body_ma_rap = body.ma_rap;
-		const body_ma_phong = body.ma_phong;
-		const body_ma_ghe = body.ma_ghe;
+		const body_ma_rap = body?.ma_rap;
+		const body_ma_phong = body?.ma_phong;
+		const body_ma_ghe = body?.ma_ghe;
 		const body_loai_ghe = body?.loai_ghe;
+
+		if(body_ma_rap !== undefined || body_ma_phong !== undefined || body_ma_ghe !== undefined){
+			throw BadRequestError("Seat must have all required ID fields!")
+		}
+
+		const find_seat = await prisma.ghe.findMany({
+			where:{
+				ma_rap: body_ma_rap,
+				ma_phong: body_ma_phong,
+				ma_ghe: body_ma_ghe
+			}
+		})
+
+		if(find_seat !== null){
+			throw BadRequestError("Multiple seats can't have the same ID!")
+		}
 
 		const seat = await prisma.ghe.create({
 			data:{
@@ -384,29 +429,24 @@ export const theaterService = {
 	deleteSeat: async function(req){
 		const query = req.query;
 		const query_ma_rap = query?.ma_rap;
-		const query_ten = query?.ten;
-		const query_dia_chi = query?.dia_chi;
-		const query_sdt = query?.sdt;
-		const query_so_phong = query?.so_phong;
+		const query_ma_phong = query?.ma_phong;
+		const query_ma_ghe = query?.ma_ghe;
+		const query_loai_ghe = query?.loai_ghe;
 
 		try{
-			const theater = await prisma.ghe.delete({
+			const seat = await prisma.ghe.delete({
 				where:{
 					ma_rap: {
 						contains: query_ma_rap,
 					},
-					ten:{
-						contains: query_ten,
+					ma_phong: {
+						contains: query_ma_phong,
 					},
-					dia_chi:{
-						contains: query_dia_chi,
+					ma_ghe: {
+						contains: query_ma_ghe,
 					},
-					sdt:{
-						contains: query_sdt,
-					},
-					so_phong: {
-						gte: query_min_so_phong,
-						lte: query_max_so_phong,
+					loai_ghe: {
+						contains: query_loai_ghe,
 					},
 				},
 			})
@@ -416,6 +456,6 @@ export const theaterService = {
 			throw BadRequestError(e.message);
 		}
 
-		return theater;
+		return seat;
 	},
 }
