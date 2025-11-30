@@ -19,7 +19,7 @@ export const handleError = (err, req, res, next) => {
   }
 
   const resError = handleErrorResponse(err.message, err.code, err.stack);
-  res.status(resErorr.code).json(resError);
+  res.status(resError.code).json(resError);
 };
 
 export class BadRequestError extends Error {

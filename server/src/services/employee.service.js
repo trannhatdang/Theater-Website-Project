@@ -7,7 +7,7 @@ import {
 
 export const employeeService = {
 	get: async function(req){
-		const body = req.body;
+		const body = req.query;
 		const in_ma_nv = body?.ma_nv;
 		const in_ten = body?.ten;
 		const in_cccd = body?.cccd;
@@ -31,15 +31,15 @@ export const employeeService = {
 					contains: in_ten,
 				},
 				cccd: {
-					contains: cccd,
+					contains: in_cccd,
 				},
 				ngay_sinh: {
-					gte: min_in_ngay_sinh,
-					lte: max_in_ngay_sinh,
+					gte: in_min_ngay_sinh,
+					lte: in_max_ngay_sinh,
 				},
 				luong: {
-					gte: min_in_luong,
-					lte: max_in_luong,
+					gte: in_min_luong,
+					lte: in_max_luong,
 				},
 				chuc_vu: {
 					contains: in_chuc_vu,
@@ -56,6 +56,7 @@ export const employeeService = {
 				gioi_tinh: in_gioi_tinh
 			},
 		});
+		console.log(employee)
 
 		return employee;
 	},

@@ -129,20 +129,6 @@ export default function EmployeeTopBar(props){
 		props.onChange(e, salaryRange, gender, position);
 	};
 
-	const fetchData = async() => {
-		try{
-			const response = await fetch('localhost:3000/employee',{
-				method: "GET",
-				body: JSON.stringify({
-					type: "limit"
-				}),
-			});
-		}
-		catch(error){
-			console.error(error)
-		}
-	}
-
 	return (
 		<div className='shadow-md flex flex-row bg-slate-700 items-center p-2'>
 			<EmployeeSearch className='flex-1 w-full'/>

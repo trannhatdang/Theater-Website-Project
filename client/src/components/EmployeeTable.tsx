@@ -35,11 +35,11 @@ function Employee({
 
 export default function EmployeeTable(employees){
 
-	console.log(employees);
 
-	//employees.map(employee => () {
-	//	<EmployeeView />
-	//})
+			/*{employees.map(employee => () {
+				<EmployeeView ID={employee.} SID={employee.SID} Name={employee.Name} Salary={employee.Salary} Birthdate={employee.Birthdate} Occupation={employee.Occupation}/>
+			})}*/
+
 	return (
 		<>
 		</>
