@@ -30,8 +30,8 @@ export const theaterService = {
 					contains: query_sdt,
 				},
 				so_phong: {
-					gte: query_min_so_phong,
-					lte: query_max_so_phong,
+					gte: parseInt(query_min_so_phong),
+					lte: parseInt(query_max_so_phong),
 				}
 			}
 		})
@@ -66,7 +66,7 @@ export const theaterService = {
 				ten: body_ten,
 				dia_chi: body_dia_chi,
 				sdt: body_sdt,
-				so_phong: body_so_phong
+				so_phong: parseInt(body_so_phong)
 			}
 		})
 
@@ -98,8 +98,8 @@ export const theaterService = {
 					contains: query_sdt,
 				},
 				so_phong: {
-					gte: query_min_so_phong,
-					lte: query_max_so_phong,
+					gte: parseInt(query_min_so_phong),
+					lte: parseInt(query_max_so_phong),
 				},
 			},
 		})
@@ -120,8 +120,8 @@ export const theaterService = {
 					contains: query_sdt,
 				},
 				so_phong: {
-					gte: query_min_so_phong,
-					lte: query_max_so_phong,
+					gte: parseInt(query_min_so_phong),
+					lte: parseInt(query_max_so_phong),
 				},
 			},
 			data:{
@@ -129,7 +129,7 @@ export const theaterService = {
 				ten: body_ten,
 				dia_chi: body_dia_chi,
 				sdt: body_dt,
-				so_phong: body_so_phong
+				so_phong: parseInt(body_so_phong)
 			}
 		})
 
@@ -159,8 +159,8 @@ export const theaterService = {
 						contains: query_sdt,
 					},
 					so_phong: {
-						gte: query_min_so_phong,
-						lte: query_max_so_phong,
+						gte: parseInt(query_min_so_phong),
+						lte: parseInt(query_max_so_phong),
 					},
 				},
 			})
@@ -188,8 +188,8 @@ export const theaterService = {
 					contains: query_ma_phong,
 				},
 				so_ghe: {
-					gte: query_min_so_ghe,
-					lte: query_max_so_ghe,
+					gte: parseInt(query_min_so_ghe),
+					lte: parseInt(query_max_so_ghe),
 				},
 			},
 		})
@@ -221,7 +221,7 @@ export const theaterService = {
 			data:{
 				ma_rap: body_ma_rap,
 				ma_phong: body_ma_phong,
-				so_ghe: body_so_ghe,
+				so_ghe: parseInt(body_so_ghe),
 			}
 		})
 
@@ -247,8 +247,8 @@ export const theaterService = {
 					contains: query_ma_rap,
 				},
 				so_ghe: {
-					gte: query_min_so_ghe,
-					lte: query_max_so_ghe,
+					gte: parseInt(query_min_so_ghe),
+					lte: parseInt(query_max_so_ghe),
 				},
 			}
 		})
@@ -267,14 +267,14 @@ export const theaterService = {
 					contains: query_ma_rap,
 				},
 				so_ghe: {
-					gte: query_min_so_ghe,
-					lte: query_max_so_ghe,
+					gte: parseInt(query_min_so_ghe),
+					lte: parseInt(query_max_so_ghe),
 				},
 			},
 			data:{
 				ma_phong: body_ma_phong,
 				ma_rap: body_ma_rap,
-				so_ghe: body_so_ghe,
+				so_ghe: parseInt(body_so_ghe),
 			}
 		})
 
@@ -292,10 +292,10 @@ export const theaterService = {
 				where:{
 					ma_phong: {
 						contains: query_ma_phong,
-					}
+					},
 					ma_rap: {
 						contains: query_ma_rap,
-					}
+					},
 					so_ghe:{
 						gte: query_min_so_ghe,
 						lte: query_max_so_ghe

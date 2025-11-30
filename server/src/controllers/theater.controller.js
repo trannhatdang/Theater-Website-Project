@@ -8,10 +8,10 @@ export const theaterController = {
 		try{
 			const result = await theaterService.getTheater(req)
 			const response = handleSuccessResponse(
-				message="Get Theater Success",
-				code=200,
-				metaData=undefined,
-				data=result
+				"Get Theater Success",
+				200,
+				undefined,
+				result
 			)
 			res.send(response)
 		}
@@ -23,10 +23,10 @@ export const theaterController = {
 		try{
 			const result = await theaterService.postTheater(req)
 			const response = handleSuccessResponse(
-				message="Post Theater Success",
-				code=200,
-				metaData=undefined,
-				data=result
+				"Post Theater Success",
+				200,
+				undefined,
+				result
 			)
 			res.send(response)
 		}
@@ -38,10 +38,10 @@ export const theaterController = {
 		try{
 			const result = await theaterService.patchTheater(req)
 			const response = handleSuccessResponse(
-				message="Patch Theater Success",
-				code=200,
-				metaData=undefined,
-				data=result
+				"Patch Theater Success",
+				200,
+				undefined,
+				result
 			)
 			res.send(response)
 		}
@@ -53,10 +53,10 @@ export const theaterController = {
 		try{
 			const result = await theaterService.deleteTheater(req)
 			const response = handleSuccessResponse(
-				message="Delete Theater Success",
-				code=200,
-				metaData=undefined,
-				data=result
+				"Delete Theater Success",
+				200,
+				undefined,
+				result
 			)
 			res.send(response)
 		}
@@ -68,10 +68,10 @@ export const theaterController = {
 		try{
 			const result = await theaterService.getRoom(req)
 			const response = handleSuccessResponse(
-				message="Get Room Success",
-				code=200,
-				metaData=undefined,
-				data=result
+				"Get Room Success",
+				200,
+				undefined,
+				result
 			)
 			res.send(response)
 		}
@@ -83,10 +83,10 @@ export const theaterController = {
 		try{
 			const result = await theaterService.getTheater(req)
 			const response = handleSuccessResponse(
-				message="Post Room Success",
-				code=200,
-				metaData=undefined,
-				data=result
+				"Post Room Success",
+				200,
+				undefined,
+				result
 			)
 			res.send(response)
 		}
@@ -98,10 +98,10 @@ export const theaterController = {
 		try{
 			const result = await theaterService.getTheater(req)
 			const response = handleSuccessResponse(
-				message="Get Room Success",
-				code=200,
-				metaData=undefined,
-				data=result
+				"Get Room Success",
+				200,
+				undefined,
+				result
 			)
 			res.send(response)
 		}
@@ -113,10 +113,10 @@ export const theaterController = {
 		try{
 			const result = await theaterService.deleteTheater(req)
 			const response = handleSuccessResponse(
-				message="Get Room Success",
-				code=200,
-				metaData=undefined,
-				data=result
+				"Get Room Success",
+				200,
+				undefined,
+				result
 			)
 			res.send(response)
 		}
@@ -124,14 +124,14 @@ export const theaterController = {
 			handleError(error, req, res, next);
 		}
 	},
-	getRoom: async function(req, res, next) {
+	getSeat: async function(req, res, next) {
 		try{
-			const result = await theaterService.getRoom(req)
+			const result = await theaterService.getSeat(req)
 			const response = handleSuccessResponse(
-				message="Get Room Success",
-				code=200,
-				metaData=undefined,
-				data=result
+				"Get Seat Success",
+				200,
+				undefined,
+				result
 			)
 			res.send(response)
 		}
@@ -139,14 +139,14 @@ export const theaterController = {
 			handleError(error, req, res, next);
 		}
 	},
-	postRoom: async function(req, res, next) {
+	postSeat: async function(req, res, next) {
 		try{
-			const result = await theaterService.getTheater(req)
+			const result = await theaterService.getSeat(req)
 			const response = handleSuccessResponse(
-				message="Post Room Success",
-				code=200,
-				metaData=undefined,
-				data=result
+				"Post Seat Success",
+				200,
+				undefined,
+				result
 			)
 			res.send(response)
 		}
@@ -154,14 +154,14 @@ export const theaterController = {
 			handleError(error, req, res, next);
 		}
 	},
-	patchRoom: async function(req, res, next) {
+	patchSeat: async function(req, res, next) {
 		try{
-			const result = await theaterService.getTheater(req)
+			const result = await theaterService.patchSeat(req)
 			const response = handleSuccessResponse(
-				message="Get Room Success",
-				code=200,
-				metaData=undefined,
-				data=result
+				"Patch Seat Success",
+				200,
+				undefined,
+				result
 			)
 			res.send(response)
 		}
@@ -169,14 +169,14 @@ export const theaterController = {
 			handleError(error, req, res, next);
 		}
 	},
-	deleteRoom: async function(req, res, next) {
+	deleteSeat: async function(req, res, next) {
 		try{
-			const result = await theaterService.deleteTheater(req)
+			const result = await theaterService.deleteSeat(req)
 			const response = handleSuccessResponse(
-				message="Get Room Success",
-				code=200,
-				metaData=undefined,
-				data=result
+				"Delete Seat Success",
+				200,
+				undefined,
+				result
 			)
 			res.send(response)
 		}
