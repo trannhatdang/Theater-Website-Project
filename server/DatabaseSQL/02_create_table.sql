@@ -1,5 +1,4 @@
-CREATE database myDB;
-use myDB;
+
 
 # tao rap
 CREATE TABLE rap_phim (
@@ -67,7 +66,7 @@ CREATE TABLE ca_lam_viec(
     ngay_lam DATE NOT NULL  ,
     thoi_gian_lam INT DEFAULT 8,
     
-    PRIMARY KEY(ma_nv,ca_lam_viec),
+    PRIMARY KEY(ma_nv,ca_lam_viec,ngay_lam),
     FOREIGN KEY (ma_nv) REFERENCES nhan_vien(ma_nv)
 );
 
