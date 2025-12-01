@@ -9,7 +9,6 @@ import {
 export const theaterService = {
 	getTheater: async function(req) {
 		const {ma_rap, ten, dia_chi, sdt, min_so_phong, max_so_phong, isStrict} = req.query;
-		console.log(req.params)
 
 		if(isStrict){
 			const result = await prisma.rap_phim.findMany({
@@ -50,10 +49,12 @@ export const theaterService = {
 		const {ma_rap, ten, dia_chi, sdt, so_phong} = req.body;
 
 		try{
+			//theater must have an ID
 			if(ma_rap === undefined){
 				throw Error("Theater must have an ID!");
 			}
 
+			//theater already exists
 			const find_theater = await prisma.rap_phim.findUnique({
 				where:{
 					ma_rap: ma_rap
@@ -162,10 +163,12 @@ export const theaterService = {
 		const {ma_rap, ma_phong, so_ghe} = req.body;
 
 		try{
+			//all required ID fields are required
 			if(ma_rap === undefined || ma_phong === undefined){
 				throw Error("Room must have all required ID fields!")
 			}
 
+			//room with that id already exists
 			const find_room = await prisma.phong_chieu_phim.findUnique({
 				where:{
 					ma_rap: ma_rap,
@@ -177,6 +180,7 @@ export const theaterService = {
 				throw Error("Multiple rooms can't have the same ID!")
 			}
 
+			//theater that has the room doesn't exist
 			const find_theater = await prisma.rap_phim.findUnique({
 				where:{
 					ma_rap: ma_rap

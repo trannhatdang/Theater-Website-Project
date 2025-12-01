@@ -1,6 +1,7 @@
 import pkg from "jsonwebtoken";
-const { TokenExpiredError, JsonWebTokenError } = pkg;
 import { handleErrorResponse } from "./handleResponse.js";
+
+const { TokenExpiredError, JsonWebTokenError } = pkg;
 
 export const handleError = (err, req, res) => {
 	if (err instanceof JsonWebTokenError) {
@@ -10,7 +11,10 @@ export const handleError = (err, req, res) => {
 		err.code = 403;
 	}
 
-	res.status(err.code).json({code: err.code, stack: err.stack});
+	res.status(err.code).json({
+		code: err.code, 
+		stack: err.stack
+	});
 };
 
 export class BadRequestError extends Error {
