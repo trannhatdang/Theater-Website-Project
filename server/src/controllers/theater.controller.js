@@ -1,19 +1,11 @@
-import {theaterService} from "../services/theater.service.js"
-import { handleSuccessResponse } from "../helpers/handleResponse.js";
-import {handleError} from '../helpers/handleError.js'
-
+import { theaterService } from "../services/theater.service.js"
+import { handleError } from '../helpers/handleError.js'
 
 export const theaterController = {
 	getTheater: async function(req, res, next) {
 		try{
-			const {data, metaData} = await theaterService.getTheater(req)
-			const response = handleSuccessResponse(
-				"Get Theater Success",
-				200,
-				undefined,
-				data
-			)
-			res.send(response)
+			const data = await theaterService.getTheater(req)
+			res.status(200).send(data)
 		}
 		catch (error){
 			handleError(error, req, res, next);
@@ -21,14 +13,8 @@ export const theaterController = {
 	},
 	postTheater: async function(req, res, next) {
 		try{
-			const result = await theaterService.postTheater(req)
-			const response = handleSuccessResponse(
-				"Post Theater Success",
-				200,
-				undefined,
-				result
-			)
-			res.send(response)
+			const data = await theaterService.postTheater(req)
+			res.status(200).send(data)
 		}
 		catch (error){
 			handleError(error, req, res, next);
@@ -36,14 +22,8 @@ export const theaterController = {
 	},
 	patchTheater: async function(req, res, next) {
 		try{
-			const result = await theaterService.patchTheater(req)
-			const response = handleSuccessResponse(
-				"Patch Theater Success",
-				200,
-				undefined,
-				result
-			)
-			res.send(response)
+			const data = await theaterService.patchTheater(req)
+			res.status(200).send(data)
 		}
 		catch (error){
 			handleError(error, req, res, next);
@@ -51,14 +31,8 @@ export const theaterController = {
 	},
 	deleteTheater: async function(req, res, next) {
 		try{
-			const result = await theaterService.deleteTheater(req)
-			const response = handleSuccessResponse(
-				"Delete Theater Success",
-				200,
-				undefined,
-				result
-			)
-			res.send(response)
+			const data = await theaterService.deleteTheater(req)
+			res.status(200).send(data)
 		}
 		catch (error){
 			handleError(error, req, res, next);
@@ -66,14 +40,8 @@ export const theaterController = {
 	},
 	getRoom: async function(req, res, next) {
 		try{
-			const result = await theaterService.getRoom(req)
-			const response = handleSuccessResponse(
-				"Get Room Success",
-				200,
-				undefined,
-				result
-			)
-			res.send(response)
+			const data = await theaterService.getRoom(req)
+			res.status(200).send(response)
 		}
 		catch (error){
 			handleError(error, req, res, next);
@@ -81,14 +49,8 @@ export const theaterController = {
 	},
 	postRoom: async function(req, res, next) {
 		try{
-			const result = await theaterService.getTheater(req)
-			const response = handleSuccessResponse(
-				"Post Room Success",
-				200,
-				undefined,
-				result
-			)
-			res.send(response)
+			const data = await theaterService.getTheater(req)
+			res.status(200).send(data)
 		}
 		catch (error){
 			handleError(error, req, res, next);
@@ -96,14 +58,8 @@ export const theaterController = {
 	},
 	patchRoom: async function(req, res, next) {
 		try{
-			const result = await theaterService.getTheater(req)
-			const response = handleSuccessResponse(
-				"Get Room Success",
-				200,
-				undefined,
-				result
-			)
-			res.send(response)
+			const data = await theaterService.getTheater(req)
+			res.status(200).send(data)
 		}
 		catch (error){
 			handleError(error, req, res, next);
@@ -111,14 +67,8 @@ export const theaterController = {
 	},
 	deleteRoom: async function(req, res, next) {
 		try{
-			const result = await theaterService.deleteTheater(req)
-			const response = handleSuccessResponse(
-				"Get Room Success",
-				200,
-				undefined,
-				result
-			)
-			res.send(response)
+			const data = await theaterService.deleteTheater(req)
+			res.status(200).send(data)
 		}
 		catch (error){
 			handleError(error, req, res, next);
@@ -126,14 +76,8 @@ export const theaterController = {
 	},
 	getSeat: async function(req, res, next) {
 		try{
-			const result = await theaterService.getSeat(req)
-			const response = handleSuccessResponse(
-				"Get Seat Success",
-				200,
-				undefined,
-				result
-			)
-			res.send(response)
+			const data = await theaterService.getSeat(req)
+			res.status(200).send(data)
 		}
 		catch (error){
 			handleError(error, req, res, next);
@@ -141,14 +85,8 @@ export const theaterController = {
 	},
 	postSeat: async function(req, res, next) {
 		try{
-			const result = await theaterService.getSeat(req)
-			const response = handleSuccessResponse(
-				"Post Seat Success",
-				200,
-				undefined,
-				result
-			)
-			res.send(response)
+			const data = await theaterService.getSeat(req)
+			res.status(200).send(data)
 		}
 		catch (error){
 			handleError(error, req, res, next);
@@ -156,14 +94,8 @@ export const theaterController = {
 	},
 	patchSeat: async function(req, res, next) {
 		try{
-			const result = await theaterService.patchSeat(req)
-			const response = handleSuccessResponse(
-				"Patch Seat Success",
-				200,
-				undefined,
-				result
-			)
-			res.send(response)
+			const {data, metaData} = await theaterService.patchSeat(req)
+			res.status(200).send(data)
 		}
 		catch (error){
 			handleError(error, req, res, next);
@@ -171,14 +103,8 @@ export const theaterController = {
 	},
 	deleteSeat: async function(req, res, next) {
 		try{
-			const result = await theaterService.deleteSeat(req)
-			const response = handleSuccessResponse(
-				"Delete Seat Success",
-				200,
-				undefined,
-				result
-			)
-			res.send(response)
+			const data = await theaterService.deleteSeat(req)
+			res.status(200).send(data)
 		}
 		catch (error){
 			handleError(error, req, res, next);

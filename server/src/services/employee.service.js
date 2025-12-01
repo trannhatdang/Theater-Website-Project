@@ -456,8 +456,8 @@ export const employeeService = {
 			ca_lam_viec,
 			min_ngay_lam,
 			max_ngay_lam,
-			min_thoi_gian_lam
-			max_thoi_gian_lam
+			min_thoi_gian_lam,
+			max_thoi_gian_lam,
 			isStrict
 		} = req.query;
 

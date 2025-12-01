@@ -3,6 +3,7 @@ import "dotenv/config";
 import cors from "cors";
 import rootRouter from "./src/routers/root.router.js";
 import { PORT } from "./src/common/constant/config.constant.js";
+import { handleError } from "./src/helpers/handleError.js"
 
 const app = express();
 const port = PORT ?? 3000;
