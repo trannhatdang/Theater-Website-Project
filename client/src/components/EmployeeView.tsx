@@ -7,7 +7,7 @@ import RangeSlider from '../utils/RangeSlider.tsx';
 import Sidebar from './Sidebar.tsx'
 import EmployeeTopBar from './EmployeeTopBar.tsx'
 import EmployeeTable from './EmployeeTable.tsx'
-import {useQuery} from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 export interface FilterProps{
 	ma_nv: string,
@@ -35,16 +35,12 @@ const fetchEmployeeData = async({ queryKey }) => {
 		method: "GET",
 	})
 
-	if(!employees.ok){
-		throw Error('i hate everyone')
-	}
-
 	return employees.json();
 };
 
 export default function EmployeeView(){
 	const [Filters, setFilters] = React.useState<FilterProps>()
-	const {isPending, isError, data, error } = useQuery({ queryKey: [Filters], queryFn: fetchEmployeeData});
+	const { isPending, isError, data, error } = useQuery({ queryKey: [Filters], queryFn: fetchEmployeeData});
 	const handleChange = (
 		e: Event,
 		new_ma_nv: string,
@@ -69,6 +65,7 @@ export default function EmployeeView(){
 	if (isError) {
 		return <span className="text-white"> Error: {error.message} </span>;
 	}
+
 	const employeesData = data.metaData;
 
 	return (
