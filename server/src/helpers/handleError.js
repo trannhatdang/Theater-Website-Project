@@ -56,3 +56,10 @@ export class ConflictError extends Error {
     this.code = 409;
   }
 }
+
+export class UnprocessableContentError extends Error{
+	constructor(message = "UnprocessableContent"){
+		super(message);
+		this.code = 422;
+	}
+}
