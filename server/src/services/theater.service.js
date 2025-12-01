@@ -8,7 +8,15 @@ import {
 
 export const theaterService = {
 	getTheater: async function(req) {
-		const {ma_rap, ten, dia_chi, sdt, min_so_phong, max_so_phong, isStrict} = req.query;
+		const {
+			ma_rap,
+			ten,
+			dia_chi,
+			sdt,
+			min_so_phong,
+			max_so_phong,
+			isStrict
+		} = req.query;
 
 		if(isStrict){
 			const result = await prisma.rap_phim.findMany({
@@ -46,11 +54,17 @@ export const theaterService = {
 		}
 	},
 	postTheater: async function(req){
-		const {ma_rap, ten, dia_chi, sdt, so_phong} = req.body;
+		const {
+			ma_rap,
+			ten,
+			dia_chi,
+			sdt,
+			so_phong
+		} = req.body;
 
 		try{
 			//theater must have an ID
-			if(ma_rap === undefined){
+			if(!ma_rap){
 				throw Error("Theater must have an ID!");
 			}
 
@@ -61,7 +75,7 @@ export const theaterService = {
 				}
 			})
 
-			if(find_theater !== null){
+			if(find_theater){
 				throw Error("Multiple theaters can't have the same ID!")
 			}
 		}
@@ -83,39 +97,48 @@ export const theaterService = {
 	},
 	patchTheater: async function(req){
 		const {ma_rap} = req.query;
-		const {new_ma_rap, new_ten, new_dia_chi, new_sdt, new_so_phong} = req.body;
+		const {
+			new_ma_rap,
+			new_ten,
+			new_dia_chi,
+			new_sdt,
+			new_so_phong
+		} = req.body;
 
-		const result = await prisma.rap_phim.upsert({
-			where:{
-				ma_rap: ma_rap,
-				dia_chi: dia_chi,
-				sdt: sdt,
-				so_phong:{
-					gte: min_so_phong,
-					lte: max_so_phong,
-				},
-			},
-			data:{
-				ma_rap: new_ma_rap,
-				ten: new_ten,
-				dia_chi: new_dia_chi,
-				sdt: new_sdt,
-				so_phong: new_so_phong,
+		try{
+			//update creates conflicting info
+			const find_theater = await prisma.rap_phim.findUnique({
+				where:{
+					ma_rap: new_ma_rap
+				}
+			})
+
+			if(find_theater){
+				throw Error("Update creates conflicting information!")
 			}
-		})
+
+			const result = await prisma.rap_phim.update({
+				where:{
+					ma_rap: ma_rap,
+				},
+				data:{
+					ma_rap: new_ma_rap,
+					ten: new_ten,
+					dia_chi: new_dia_chi,
+					sdt: new_sdt,
+					so_phong: new_so_phong,
+				}
+			})
+		}
 		return result;
 	},
 	deleteTheater: async function(req){
-		const {ma_rap, ten, dia_chi, sdt, min_so_phong, max_so_phong, isStrict} = req.query;
+		const {ma_rap} = req.query;
 
 		try{
 			const result = await prisma.rap_phim.delete({
 				where:{
-					ma_rap: ma_rap,
-					ten: ten,
-					dia_chi: dia_chi,
-					sdt: sdt,
-					so_phong: so_phong,
+					ma_rap: ma_rap
 				},
 			})
 			return result;
@@ -126,7 +149,13 @@ export const theaterService = {
 		}
 	},
 	getRoom: async function(req) {
-		const {ma_rap, ma_phong, min_so_ghe, max_so_ghe, isStrict} = req.query;
+		const {
+			ma_rap,
+			ma_phong,
+			min_so_ghe,
+			max_so_ghe,
+			isStrict
+		} = req.query;
 
 		if(isStrict){
 			const result = await prisma.phong_chieu_phim.findMany({
@@ -160,11 +189,15 @@ export const theaterService = {
 		}
 	},
 	postRoom: async function(req){
-		const {ma_rap, ma_phong, so_ghe} = req.body;
+		const {
+			ma_rap,
+			ma_phong,
+			so_ghe
+		} = req.body;
 
 		try{
 			//all required ID fields are required
-			if(ma_rap === undefined || ma_phong === undefined){
+			if(ma_rap || ma_phong){
 				throw Error("Room must have all required ID fields!")
 			}
 
@@ -176,7 +209,7 @@ export const theaterService = {
 				}
 			})
 
-			if(find_room !== null){
+			if(find_room){
 				throw Error("Multiple rooms can't have the same ID!")
 			}
 
@@ -187,7 +220,7 @@ export const theaterService = {
 				}
 			})
 
-			if(find_theater === null){
+			if(find_theater){
 				throw Error("Requested theater doesn't exist!")
 			}
 		}
@@ -207,9 +240,13 @@ export const theaterService = {
 	},
 	patchRoom: async function(req){
 		const {ma_phong} = req.query;
-		const {new_ma_phong, new_ma_rap, new_so_ghe} = req.body;
+		const {
+			new_ma_phong,
+			new_ma_rap,
+			new_so_ghe
+		} = req.body;
 
-		const result = await prisma.phong_chieu_phim.upsert({
+		const result = await prisma.phong_chieu_phim.update({
 			where:{
 				ma_rap: ma_rap,
 				ma_phong: ma_phong,
@@ -219,15 +256,19 @@ export const theaterService = {
 				},
 			},
 			data:{
-				ma_phong: ma_phong,
-				ma_rap: ma_rap,
-				so_ghe: so_ghe,
+				ma_phong: new_ma_phong,
+				ma_rap: new_ma_rap,
+				so_ghe: new_so_ghe,
 			}
 		})
 		return result;
 	},
 	deleteRoom: async function(req){
-		const {ma_phong, ma_rap, so_ghe} = req.query;
+		const {
+			ma_phong,
+			ma_rap,
+			so_ghe
+		} = req.query;
 
 		try{
 			const result = await prisma.phong_chieu_phim.delete({
@@ -244,7 +285,13 @@ export const theaterService = {
 		}
 	},
 	getSeat: async function(req) {
-		const {ma_rap, ma_phong, ma_ghe, loai_ghe, isStrict} = req.query;
+		const {
+			ma_rap,
+			ma_phong,
+			ma_ghe,
+			loai_ghe,
+			isStrict
+		} = req.query;
 
 		if(isStrict){
 			const result = await prisma.ghe.findMany({
@@ -278,20 +325,25 @@ export const theaterService = {
 		}
 	},
 	postSeat: async function(req){
-		const {ma_rap, ma_phong, ma_ghe, loai_ghe} = req.body;
+		const {
+			ma_rap,
+			ma_phong,
+			ma_ghe,
+			loai_ghe
+		} = req.body;
 
 		try{
 			//all ids are needed
-			if(ma_rap === undefined || body_ma_phong === undefined || body_ma_ghe === undefined){
+			if(!ma_rap || !body_ma_phong || !body_ma_ghe){
 				throw Error("Seat must have all required ID fields!")
 			}
 
 			//seat type is required
-			if(loai_ghe === undefined){
+			if(!loai_ghe){
 				throw Error("Seat must have a type!")
 			}
 
-			//there is a seat that has thesame id
+			//there is a seat that has the same id
 			const find_seat = await prisma.ghe.findMany({
 				where:{
 					ma_rap: ma_rap,
@@ -300,7 +352,7 @@ export const theaterService = {
 				}
 			})
 
-			if(find_seat !== null){
+			if(find_seat){
 				throw Error("Multiple seats can't have the same ID!")
 			}
 
@@ -312,7 +364,7 @@ export const theaterService = {
 				}
 			})
 
-			if(find_room === null){
+			if(!find_room){
 				throw Error("Requested room doesn't exist!");
 			}
 		}
@@ -332,27 +384,53 @@ export const theaterService = {
 		return result;
 	},
 	patchSeat: async function(req){
-		const {ma_rap} = req.query;
-		const {new_ma_rap, new_ma_phong, new_ma_ghe, new_loai_ghe} = req.body;
+		const { ma_rap}  = req.query;
+		const {
+			new_ma_rap,
+			new_ma_phong,
+			new_ma_ghe,
+			new_loai_ghe
+		} = req.body;
 
-		const result = await prisma.ghe.upsert({
-			where:{
-				ma_rap: ma_rap,
-				ma_phong: ma_phong,
-				ma_ghe: ma_rap,
-				loai_ghe: loai_ghe,
-			},
-			data:{
-				ma_rap: new_ma_rap,
-				ma_phong: new_ma_phong,
-				ma_ghe: new_ma_ghe,
-				loai_ghe: new_loai_ghe
-			},
-		})
+		try{
+			const find_seat = await prisma.get.findUnique({
+				where:{
+					ma_rap: new_ma_rap,
+					ma_phong: new_ma_phong,
+					ma_ghe: new_ma_ghe
+				}
+			})
+
+			//patch creates conflicting data
+			if(find_seat){
+				throw Error("New information conflicts with existing data!")
+			}
+
+			const result = await prisma.ghe.update({
+				where:{
+					ma_rap: ma_rap,
+				},
+				data:{
+					ma_rap: new_ma_rap,
+					ma_phong: new_ma_phong,
+					ma_ghe: new_ma_ghe,
+					loai_ghe: new_loai_ghe
+				},
+			})
+		}
+		catch(e){
+			throw new UnprocessableContentError(e.message)
+		}
+
 		return result
 	},
 	deleteSeat: async function(req){
-		const {ma_rap, ma_phong, ma_ghe, loai_ghe} = req.query;
+		const {
+			ma_rap,
+			ma_phong,
+			ma_ghe,
+			loai_ghe
+		} = req.query;
 
 		try{
 			const result = await prisma.ghe.delete({

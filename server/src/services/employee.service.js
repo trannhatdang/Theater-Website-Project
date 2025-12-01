@@ -26,7 +26,7 @@ export const employeeService = {
 		} = req.query
 
 		if(isStrict){
-			const data = await prisma.nhan_vien.findMany({
+			const result = await prisma.nhan_vien.findMany({
 				where: {
 					ma_nv: ma_nv,
 					ten: ten,
@@ -46,10 +46,10 @@ export const employeeService = {
 					gioi_tinh: gioi_tinh
 				},
 			});
-			return {data};
+			return result;
 		}
 		else{
-			const data = await prisma.nhan_vien.findMany({
+			const result = await prisma.nhan_vien.findMany({
 				where: {
 					ma_nv: {
 						contains: ma_nv,
@@ -83,7 +83,7 @@ export const employeeService = {
 					gioi_tinh: gioi_tinh
 				},
 			});
-			return {data};
+			return result;
 		}
 	},
 	postEmployee: async function(req){
@@ -102,10 +102,12 @@ export const employeeService = {
 		} = req.body
 
 		try{
+			//missing id
 			if(ma_nv === undefined){
 				throw Error("Employee must have an ID!");
 			}
 
+			//employee already exists
 			const find_employee = await prisma.nhan_vien.findUnique({
 				where:{
 					ma_nv: ma_nv
@@ -116,6 +118,7 @@ export const employeeService = {
 				throw Error("Employee Already Exists!")
 			}
 
+			//constraint: salary must be higher than 0
 			if(luong !== undefined && parseInt(luong) <= 0){
 				throw Error("Salary must not be lower than 0!");
 			}
@@ -125,7 +128,7 @@ export const employeeService = {
 		}
 
 
-		const data = await prisma.nhan_vien.create({
+		const result = await prisma.nhan_vien.create({
 			data:{
 				ma_nv: ma_nv,
 				ten: ten,
@@ -140,23 +143,11 @@ export const employeeService = {
 				sdt: sdt
 			}
 		})
-		return {data}
+		return result
 	},
 	patchEmployee: async function(req){
 		const {
 			ma_nv,
-			ten,
-			cccd,
-			min_ngay_sinh,
-			max_ngay_sinh,
-			min_luong,
-			max_luong,
-			chuc_vu,
-			dia_chi,
-			ma_nv_quan_ly,
-			ma_rap_phim,
-			gioi_tinh,
-			sdt,
 		} = req.query
 
 		const {
@@ -175,24 +166,14 @@ export const employeeService = {
 			new_sdt,
 		} = req.body
 
-		const data = await prisma.nhan_vien.upsert({
+		//constraint: salry must be non-negative
+		if(new_luong && parseInt(new_luong)){
+			throw new UnprocessableContentError("Salary must be non-negative!");
+		}
+
+		const result = await prisma.nhan_vien.upsert({
 			where: {
 				ma_nv: ma_nv,
-				ten: ten,
-				cccd: cccd,
-				ngay_sinh: {
-					gte: min_ngay_sinh,
-					lte: max_ngay_sinh,
-				},
-				luong: {
-					gte: min_luong ? parseInt(min_luong) : undefined,
-					lte: max_luong ? parseInt(max_luong) : undefined,
-				},
-				chuc_vu: chuc_vu,
-				dia_chi: dia_chi,
-				ma_nv_quan_ly: ma_nv_quan_ly,
-				ma_rap_phim: ma_rap_phim,
-				gioi_tinh: gioi_tinh
 			},
 			data:{
 				ma_nv: new_ma_nv,
@@ -208,42 +189,20 @@ export const employeeService = {
 				sdt: new_sdt
 			}
 		})
-		return {data}
+		return result
 	},
 	deleteEmployee: async function(req){
 		const {
 			ma_nv,
-			ten,
-			cccd,
-			min_ngay_sinh,
-			max_ngay_sinh,
-			min_luong,
-			max_luong,
-			chuc_vu,
-			dia_chi,
-			ma_nv_quan_ly,
-			ma_rap_phim,
-			gioi_tinh,
-			sdt,
 		} = req.query
 
 		try{
-			const data = await prisma.employee.delete({
+			const result = await prisma.employee.delete({
 				where:{
 					ma_nv: ma_nv,
-					ten: ten,
-					cccd: cccd,
-					ngay_sinh: ngay_sinh,
-					luong: luong ? parseInt(luong) : undefined,
-					chuc_vu: chuc_vu,
-					dia_chi: dia_chi,
-					ma_nv_quan_ly: ma_nv_quan_ly,
-					ma_rap_phim: ma_rap_phim,
-					gioi_tinh: gioi_tinh,
-					sdt: sdt
 				}
 			})
-			return {data};
+			return result;
 		}
 		catch (e){
 			throw UnprocessableContentError(e.message);
@@ -253,22 +212,22 @@ export const employeeService = {
 		const {ma_nv, isStrict} = req.query;
 
 		if(isStrict){
-			const data = await prisma.quan_tri_vien.findMany({
+			const result = await prisma.quan_tri_vien.findMany({
 				where:{
 					ma_nv: ma_nv,
 				},
 			})
-			return {data};
+			return result;
 		}
 		else{
-			const data = await prisma.quan_tri_vien.findMany({
+			const result = await prisma.quan_tri_vien.findMany({
 				where:{
 					ma_nv: {
 						contains: ma_nv,
 					}
 				},
 			})
-			return {data};
+			return result;
 		}
 	},
 	postManager: async function(req){
@@ -303,12 +262,12 @@ export const employeeService = {
 			throw UnprocessableContentError(e.message);
 		}
 
-		const data = await prisma.quan_tri_vien.create({
+		const result = await prisma.quan_tri_vien.create({
 			data:{
 				ma_nv: ma_nv,
 			},
 		})
-		return {data}
+		return result
 	},
 	patchManager: async function(req){
 		const { ma_nv } = req.query;
@@ -323,7 +282,7 @@ export const employeeService = {
 			throw new UnprocessableContentError("Create corresponding employee first!")
 		}
 
-		const data = await prisma.quan_tri_vien.upsert({
+		const result = await prisma.quan_tri_vien.upsert({
 			where:{
 				ma_nv: ma_nv
 			},
@@ -337,7 +296,7 @@ export const employeeService = {
 		const {ma_nv} = req.query;
 
 		try{
-			const data = await prisma.quan_tri_vien.delete({
+			const result = await prisma.quan_tri_vien.delete({
 				where:{
 					ma_nv: ma_nv
 				}
@@ -350,18 +309,18 @@ export const employeeService = {
 		}
 	},
 	getSalesperson: async function(req){
-		const { ma_nv, isStrict } = req.query;
+		const { ma_nv } = req.query;
 
 		if(isStrict){
-			const data = await prisma.nhan_vien_ban_hang.findMany({
+			const result = await prisma.nhan_vien_ban_hang.findMany({
 				where:{
 					ma_nv: ma_nv,
 				},
 			})
-			return {data};
+			return result;
 		}
 		else{
-			const data = await prisma.nhan_vien_ban_hang.findMany({
+			const result = await prisma.nhan_vien_ban_hang.findMany({
 				where:{
 					ma_nv: {
 						contains: ma_nv,
@@ -403,7 +362,7 @@ export const employeeService = {
 			throw UnprocessableContentError(e.message);
 		}
 
-		const data = await prisma.nhan_vien_ban_hang.create({
+		const result = await prisma.nhan_vien_ban_hang.create({
 			data:{
 				ma_nv: ma_nv,
 			},
@@ -411,7 +370,7 @@ export const employeeService = {
 		return { data }
 	},
 	patchSalesperson: async function(req){
-		const { ma_nv, isStrict } = req.query;
+		const { ma_nv } = req.query;
 		const { new_ma_nv } = req.body;
 
 		const find_employee = await prisma.nhan_vien.findUnique({
@@ -424,7 +383,7 @@ export const employeeService = {
 			throw new UnprocessableContentError("Create corresponding employee first!")
 		}
 
-		const data = await prisma.nhan_vien_ban_hang.upsert({
+		const result = await prisma.nhan_vien_ban_hang.upsert({
 			where:{
 				ma_nv: ma_nv
 			},
@@ -438,13 +397,13 @@ export const employeeService = {
 		const { ma_nv } = req.query;
 
 		try{
-			const data = await prisma.nhan_vien_ban_hang.delete({
+			const result = await prisma.nhan_vien_ban_hang.delete({
 				where:{
 					ma_nv: ma_nv
 				}
 			})
 
-			return {data}
+			return result
 		}
 		catch(e){
 			throw new UnprocessableContentError(e.message);
@@ -462,7 +421,7 @@ export const employeeService = {
 		} = req.query;
 
 		if(isStrict){
-			const data = prisma.ca_lam_viec.findMany({
+			const result = prisma.ca_lam_viec.findMany({
 				where:{
 					ma_nv: ma_nv,
 					ca_lam_viec: ca_lam_viec,
@@ -476,10 +435,10 @@ export const employeeService = {
 					},
 				}
 			})
-			return {data}
+			return result
 		}
 		else{
-			const data = prisma.ca_lam_viec.findMany({
+			const result = prisma.ca_lam_viec.findMany({
 				where:{
 					ma_nv: {
 						contains: ma_nv,
@@ -497,7 +456,7 @@ export const employeeService = {
 					},
 				}
 			})
-			return {data}
+			return result
 		}
 	},
 	postWorkShift: async function(req){
@@ -539,7 +498,7 @@ export const employeeService = {
 			throw new UnprocessableContentError(e.message);
 		}
 
-		const data = prisma.ca_lam_viec.create({
+		const result = prisma.ca_lam_viec.create({
 			data:{
 				ma_nv: ma_nv,
 				ca_lam_viec: ca_lam_viec,
@@ -548,16 +507,21 @@ export const employeeService = {
 			}
 		})
 		
-		return {data}
+		return result
 	},
 	patchWorkShift: async function(req){
 		const { 
 			ma_nv,
+		} = req.query;
+
+		const {
+			new_ma_nv,
 			ca_lam_viec,
 			ngay_lam,
 			thoi_gian_lam
-		} = req.body;
-		//TODO: finish ts
+		} = req.body
+
+
 	},
 	deleteWorkShift: async function(req){
 
