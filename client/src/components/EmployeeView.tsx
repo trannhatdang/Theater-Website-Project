@@ -17,7 +17,7 @@ export interface Employee {
 	min_luong: number,
 	max_luong: number,
 	min_ngay_sinh: Date,
-	max_ngay_sinh: Date
+	max_ngay_sinh: Date,
 	chuc_vu: string,
 	dia_chi: string,
 	sdt: string,
