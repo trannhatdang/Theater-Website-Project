@@ -83,6 +83,7 @@ export const employeeService = {
 					gioi_tinh: gioi_tinh
 				},
 			});
+
 			return result;
 		}
 	},
@@ -166,30 +167,47 @@ export const employeeService = {
 			new_sdt,
 		} = req.body
 
-		//constraint: salry must be non-negative
-		if(new_luong && parseInt(new_luong)){
-			throw new UnprocessableContentError("Salary must be non-negative!");
-		}
+		try{
+			//update creates conflicting data
+			const find_employee = await prisma.nhan_vien.findUnique({
+				where:{
+					ma_nv: new_ma_nv
+				}
+			})
 
-		const result = await prisma.nhan_vien.upsert({
-			where: {
-				ma_nv: ma_nv,
-			},
-			data:{
-				ma_nv: new_ma_nv,
-				ten: new_ten,
-				cccd: new_cccd,
-				ngay_sinh: new_ngay_sinh,
-				luong: new_luong ? parseInt(new_luong) : undefined,
-				chuc_vu: new_chuc_vu,
-				dia_chi: new_dia_chi,
-				ma_nv_quan_ly: new_ma_nv_quan_ly,
-				ma_rap_phim: new_ma_rap_phim,
-				gioi_tinh: new_gioi_tinh,
-				sdt: new_sdt
+			if(new_ma_nv && find_employee){
+				throw Error("Update creates conflicting data!")
 			}
-		})
-		return result
+
+			//constraint: salry must be non-negative
+			if(new_luong && parseInt(new_luong)){
+				throw Error("Salary must be non-negative!");
+			}
+
+			const result = await prisma.nhan_vien.update({
+				where: {
+					ma_nv: ma_nv,
+				},
+				data:{
+					ma_nv: new_ma_nv,
+					ten: new_ten,
+					cccd: new_cccd,
+					ngay_sinh: new_ngay_sinh,
+					luong: new_luong ? parseInt(new_luong) : undefined,
+					chuc_vu: new_chuc_vu,
+					dia_chi: new_dia_chi,
+					ma_nv_quan_ly: new_ma_nv_quan_ly,
+					ma_rap_phim: new_ma_rap_phim,
+					gioi_tinh: new_gioi_tinh,
+					sdt: new_sdt
+				}
+			});
+
+			return result;
+		}
+		catch(e){
+			throw new UnprocessableContentError(e.message)
+		}
 	},
 	deleteEmployee: async function(req){
 		const {
@@ -282,7 +300,7 @@ export const employeeService = {
 			throw new UnprocessableContentError("Create corresponding employee first!")
 		}
 
-		const result = await prisma.quan_tri_vien.upsert({
+		const result = await prisma.quan_tri_vien.update({
 			where:{
 				ma_nv: ma_nv
 			},
@@ -383,7 +401,7 @@ export const employeeService = {
 			throw new UnprocessableContentError("Create corresponding employee first!")
 		}
 
-		const result = await prisma.nhan_vien_ban_hang.upsert({
+		const result = await prisma.nhan_vien_ban_hang.update({
 			where:{
 				ma_nv: ma_nv
 			},

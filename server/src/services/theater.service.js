@@ -96,7 +96,7 @@ export const theaterService = {
 		return result;
 	},
 	patchTheater: async function(req){
-		const {ma_rap} = req.query;
+		const { ma_rap } = req.query;
 		const {
 			new_ma_rap,
 			new_ten,
@@ -133,7 +133,7 @@ export const theaterService = {
 		return result;
 	},
 	deleteTheater: async function(req){
-		const {ma_rap} = req.query;
+		const { ma_rap } = req.query;
 
 		try{
 			const result = await prisma.rap_phim.delete({
@@ -239,7 +239,7 @@ export const theaterService = {
 		return result;
 	},
 	patchRoom: async function(req){
-		const {ma_phong} = req.query;
+		const { ma_phong } = req.query;
 		const {
 			new_ma_phong,
 			new_ma_rap,
@@ -384,7 +384,7 @@ export const theaterService = {
 		return result;
 	},
 	patchSeat: async function(req){
-		const { ma_rap}  = req.query;
+		const { ma_rap }  = req.query;
 		const {
 			new_ma_rap,
 			new_ma_phong,
