@@ -27,6 +27,6 @@ export default async function theaterController(req, res){
 		res.status(200).send(result)
 	}
 	catch(error){
-		handleError(error, req, res, next)
+		handleError(error, req, res)
 	}
 }

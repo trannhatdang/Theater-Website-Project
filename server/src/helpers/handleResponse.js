@@ -11,11 +11,11 @@ export const handleSuccessResponse = (
 };
 
 export const handleErrorResponse = (
-  code = 500,
-  stack = null,
+	code = 500,
+	stack = null,
 ) => {
-  return {
-    code,
-    stack,
-  };
+	return {
+		code,
+		stack,
+	};
 };
