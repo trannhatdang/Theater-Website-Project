@@ -80,67 +80,28 @@ export const theaterService = {
 		return {data};
 	},
 	patchTheater: async function(req){
-		const {ma_rap, ten, dia_chi, sdt, min_so_phong, max_so_phong, isStrict} = req.query;
+		const {ma_rap} = req.query;
 		const {new_ma_rap, new_ten, new_dia_chi, new_sdt, new_so_phong} = req.body;
 
-		const find_theater = await prisma.rap_phim.findMany({
+		const data = await prisma.rap_phim.upsert({
 			where:{
 				ma_rap: ma_rap,
+				dia_chi: dia_chi,
+				sdt: sdt,
+				so_phong:{
+					gte: min_so_phong,
+					lte: max_so_phong,
+				},
 			},
+			data:{
+				ma_rap: new_ma_rap,
+				ten: new_ten,
+				dia_chi: new_dia_chi,
+				sdt: new_sdt,
+				so_phong: new_so_phong,
+			}
 		})
-
-		if(find_theater.length > 1 && new_ma_rap !== undefined){
-			throw new UnprocessableContentError("Multiple theaters can't have the same ID!");
-		}
-
-		if(isStrict){
-			const data = await prisma.rap_phim.upsert({
-				where:{
-					ma_rap: ma_rap,
-					dia_chi: dia_chi,
-					sdt: sdt,
-					so_phong:{
-						gte: min_so_phong,
-						lte: max_so_phong,
-					},
-				},
-				data:{
-					ma_rap: new_ma_rap,
-					ten: new_ten,
-					dia_chi: new_dia_chi,
-					sdt: new_sdt,
-					so_phong: new_so_phong,
-				}
-			})
-			return {data}
-		}
-		else{
-			const data = await prisma.rap_phim.upsert({
-				where:{
-					ma_rap: {
-						contains: ma_rap,
-					},
-					dia_chi: {
-						contains: dia_chi,
-					},
-					sdt: {
-						contains: sdt,
-					},
-					so_phong: {
-						gte: min_so_phong,
-						lte: max_so_phong,
-					},
-				},
-				data:{
-					ma_rap: new_ma_rap,
-					ten: new_ten,
-					dia_chi: new_dia_chi,
-					sdt: new_sdt,
-					so_phong: new_so_phong,
-				}
-			})
-			return {data};
-		}
+		return {data};
 	},
 	deleteTheater: async function(req){
 		const {ma_rap, ten, dia_chi, sdt, min_so_phong, max_so_phong, isStrict} = req.query;
@@ -240,56 +201,24 @@ export const theaterService = {
 		return {data};
 	},
 	patchRoom: async function(req){
-		const {ma_phong, ma_rap, min_so_ghe, max_so_ghe, isStrict} = req.query;
+		const {ma_phong} = req.query;
 		const {new_ma_phong, new_ma_rap, new_so_ghe} = req.body;
 
-		const find_room = await getRoom(req)
-
-		if(find_room.length > 1 && (ma_phong !== undefined || body_ma_rap !== undefined))
-		{
-			console.warn("Unsafe patch query reagarding IDs!")
-		}
-
-		if(isStrict){
-			const data = await prisma.phong_chieu_phim.upsert({
-				where:{
-					ma_rap: ma_rap,
-					ma_phong: ma_phong,
-					so_ghe:{
-						gte: min_so_ghe,
-						lte: max_so_ghe,
-					},
+		const data = await prisma.phong_chieu_phim.upsert({
+			where:{
+				ma_rap: ma_rap,
+				ma_phong: ma_phong,
+				so_ghe:{
+					gte: min_so_ghe,
+					lte: max_so_ghe,
 				},
-				data:{
-					ma_phong: ma_phong,
-					ma_rap: ma_rap,
-					so_ghe: so_ghe,
-				}
-			})
-			return {data};
-		}
-		else{
-			const data = await prisma.phong_chieu_phim.upsert({
-				where:{
-					ma_phong: {
-						contains: ma_phong,
-					},
-					ma_rap: {
-						contains: ma_rap,
-					},
-					so_ghe: {
-						gte: min_so_ghe,
-						lte: max_so_ghe,
-					},
-				},
-				data:{
-					ma_phong: ma_phong,
-					ma_rap: ma_rap,
-					so_ghe: so_ghe,
-				}
-			})
-			return {data};
-		}
+			},
+			data:{
+				ma_phong: ma_phong,
+				ma_rap: ma_rap,
+				so_ghe: so_ghe,
+			}
+		})
 		return {data};
 	},
 	deleteRoom: async function(req){
@@ -393,50 +322,27 @@ export const theaterService = {
 		return data;
 	},
 	patchSeat: async function(req){
-		const {ma_rap, ma_phong, ma_ghe, loai_ghe} = req.query;
+		const {ma_rap} = req.query;
 		const {new_ma_rap, new_ma_phong, new_ma_ghe, new_loai_ghe} = req.body;
 
-		const find_seat = await prisma.ghe.findMany({
+		const data = await prisma.ghe.upsert({
 			where:{
-
-			}
-		}) //TODO: finish this
-
-		if(find_seat.length > 1 && (ma_rap !== undefined || body_ma_phong !== undefined || body_ma_ghe !== undefined)){
-			console.warn("Unsafe patch query reagarding IDs!")
-		}
-
-		const seat = await prisma.ghe.upsert({
-			where:{
-				ma_rap:{
-					contains: ma_rap,
-				},
-				ma_phong:{
-					contains: ma_phong,
-				},
-				ma_ghe:{
-					contains: ma_rap,
-				},
-				loai_ghe:{
-					contains: loai_ghe,
-				},
-			},
-			data:{
 				ma_rap: ma_rap,
 				ma_phong: ma_phong,
-				ma_ghe: ma_ghe,
-				loai_ghe: loai_ghe
-			}
+				ma_ghe: ma_rap,
+				loai_ghe: loai_ghe,
+			},
+			data:{
+				ma_rap: new_ma_rap,
+				ma_phong: new_ma_phong,
+				ma_ghe: new_ma_ghe,
+				loai_ghe: new_loai_ghe
+			},
 		})
-
-		return seat;
+		return {data}
 	},
 	deleteSeat: async function(req){
-		const query = req.query;
-		const ma_rap = query?.ma_rap;
-		const ma_phong = query?.ma_phong;
-		const ma_ghe = query?.ma_ghe;
-		const loai_ghe = query?.loai_ghe;
+		const {ma_rap, ma_phong, ma_ghe, loai_ghe} = req.query;
 
 		try{
 			const seat = await prisma.ghe.delete({
