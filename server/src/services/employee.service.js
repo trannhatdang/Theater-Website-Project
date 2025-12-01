@@ -102,7 +102,7 @@ export const employeeService = {
 			ma_rap_phim,
 			gioi_tinh,
 			sdt
-		} = req.body
+		} = req.body;
 
 		try{
 			//missing id
@@ -113,8 +113,8 @@ export const employeeService = {
 			//employee already exists
 			const find_employee = await prisma.nhan_vien.findUnique({
 				where:{
-					ma_nv: ma_nv
-				}
+					ma_nv: ma_nv,
+				},
 			});
 
 			if(find_employee !== null){
@@ -143,8 +143,8 @@ export const employeeService = {
 				ma_nv_quan_ly: ma_nv_quan_ly,
 				ma_rap_phim: ma_rap_phim,
 				gioi_tinh: gioi_tinh,
-				sdt: sdt
-			}
+				sdt: sdt,
+			},
 		});
 
 		return result;
@@ -175,8 +175,8 @@ export const employeeService = {
 			//update creates conflicting data
 			const find_employee = await prisma.nhan_vien.findUnique({
 				where:{
-					ma_nv: new_ma_nv
-				}
+					ma_nv: new_ma_nv,
+				},
 			});
 
 			if(new_ma_nv && find_employee){
@@ -186,7 +186,7 @@ export const employeeService = {
 			//constraint: salry must be non-negative
 			if(new_luong && parseInt(new_luong)){
 				throw Error("Salary must be non-negative!");
-			};
+			}
 
 			const result = await prisma.nhan_vien.update({
 				where: {
@@ -203,14 +203,14 @@ export const employeeService = {
 					ma_nv_quan_ly: new_ma_nv_quan_ly,
 					ma_rap_phim: new_ma_rap_phim,
 					gioi_tinh: new_gioi_tinh,
-					sdt: new_sdt
-				}
+					sdt: new_sdt,
+				},
 			});
 
 			return result;
 		}
 		catch(e){
-			throw new UnprocessableContentError(e.message)
+			throw new UnprocessableContentError(e.message);
 		}
 	},
 
@@ -223,8 +223,8 @@ export const employeeService = {
 			const result = await prisma.employee.delete({
 				where:{
 					ma_nv: ma_nv,
-				}
-			})
+				},
+			});
 			return result;
 		}
 		catch (e){
@@ -241,13 +241,15 @@ export const employeeService = {
 			where:{
 				ma_nv: ma_nv,
 			},
-		})
+		});
 
 		return result;
 	},
 
 	postManager: async function(req){
-		const { ma_nv } = req.body;
+		const {
+			ma_nv 
+		} = req.body;
 
 		try{
 			if(ma_nv === undefined){
@@ -288,13 +290,18 @@ export const employeeService = {
 	},
 
 	patchManager: async function(req){
-		const { ma_nv } = req.query;
-		const { new_ma_nv } = req.body;
+		const {
+			ma_nv 
+		} = req.query;
+
+		const {
+			new_ma_nv 
+		} = req.body;
 
 		const find_employee = await prisma.nhan_vien.findUnique({
 			where:{
-				ma_nv: new_ma_nv
-			}
+				ma_nv: new_ma_nv,
+			},
 		});
 
 		if(find_employee === null){
@@ -310,11 +317,13 @@ export const employeeService = {
 			}
 		});
 
-		return { data };
+		return result;
 	},
 
 	deleteManager: async function(req){
-		const {ma_nv} = req.query;
+		const {
+			ma_nv
+		} = req.query;
 
 		try{
 			const result = await prisma.quan_tri_vien.delete({
@@ -323,7 +332,7 @@ export const employeeService = {
 				}
 			});
 
-			return { data };
+			return result;
 		}
 		catch(e){
 			throw new UnprocessableContentError(e.message);
@@ -395,33 +404,45 @@ export const employeeService = {
 	},
 
 	patchSalesperson: async function(req){
-		const { ma_nv } = req.query;
-		const { new_ma_nv } = req.body;
+		const {
+			ma_nv 
+		} = req.query;
 
-		const find_employee = await prisma.nhan_vien.findUnique({
-			where:{
-				ma_nv: new_ma_nv
+		const {
+			new_ma_nv 
+		} = req.body;
+
+		try{
+			const find_employee = await prisma.nhan_vien.findUnique({
+				where:{
+					ma_nv: new_ma_nv
+				}
+			});
+
+			if(find_employee === null){
+				throw Error("Create corresponding employee first!");
 			}
-		});
 
-		if(find_employee === null){
-			throw new UnprocessableContentError("Create corresponding employee first!");
+			const result = await prisma.nhan_vien_ban_hang.update({
+				where:{
+					ma_nv: ma_nv
+				},
+				data:{
+					ma_nv: new_ma_nv
+				}
+			});
+
+			return result;
 		}
-
-		const result = await prisma.nhan_vien_ban_hang.update({
-			where:{
-				ma_nv: ma_nv
-			},
-			data:{
-				ma_nv: new_ma_nv
-			}
-		});
-
-		return result;
+		catch(e){
+			throw new UnprocessableContentError(e.message);
+		}
 	},
 
 	deleteSalesperson: async function(req){
-		const { ma_nv } = req.query;
+		const {
+			ma_nv 
+		} = req.query;
 
 		try{
 			const result = await prisma.nhan_vien_ban_hang.delete({
@@ -542,16 +563,68 @@ export const employeeService = {
 	patchWorkShift: async function(req){
 		const { 
 			ma_nv,
+			ca_lam_viec,
+			ngay_lam,
 		} = req.query;
 
 		const {
 			new_ma_nv,
-			ca_lam_viec,
-			ngay_lam,
-			thoi_gian_lam
-		} = req.body
+			new_ca_lam_viec,
+			new_ngay_lam,
+			new_thoi_gian_lam
+		} = req.body;
+
+		try{
+			const find_workshift = await prisma.ca_lam_viec.findUnique({
+				where:{
+					ma_nv: ma_nv,
+					ca_lam_viec: ca_lam_viec,
+					ngay_lam: ngay_lam,
+				},
+			});
+
+			if(find_employee){
+				throw Error("Update creates conflicting data!");
+			}
+
+			const result = await prisma.ca_lam_viec.update({
+				where:{
+					ma_nv: ma_nv,
+				},
+				data:{
+					ma_nv: new_ma_nv,
+					ca_lam_viec: new_ca_lam_viec,
+					ngay_lam: new_ngay_lam,
+					thoi_gian_lam: new_thoi_gian_lam
+				},
+			});
+
+			return result;
+		}
+		catch(e){
+			throw UnprocessableContentError(e.message)
+		}
 	},
 	deleteWorkShift: async function(req){
+		const { 
+			ma_nv,
+			ca_lam_viec,
+			ngay_lam,
+		} = req.query;
 
+		try{
+			const result = await prisma.nhan_vien_ban_hang.delete({
+				where:{
+					ma_nv: ma_nv,
+					ca_lam_viec: ca_lam_viec,
+					ngay_lam: ngay_lam,
+				},
+			});
+
+			return result;
+		}
+		catch(e){
+			throw new UnprocessableContentError(e.message);
+		}
 	},
 }
