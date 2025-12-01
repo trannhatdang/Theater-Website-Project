@@ -25,7 +25,6 @@ export const employeeService = {
 
 		const isStrict = query?.isStrict;
 
-
 		if(isStrict){
 			const employee = await prisma.nhan_vien.findMany({
 				where: {
@@ -101,17 +100,31 @@ export const employeeService = {
 		const body_gioi_tinh = body?.gioi_tinh;
 		const body_sdt = body?.sdt;
 
-		if(find_employee !== null){
-			throw new UnprocessableContentError("Employee Already Exists!")
+
+		try{
+			if(body_ma_nv === undefined){
+				throw Error("Employee must have an ID!");
+			}
+
+			const find_employee = await prisma.nhan_vien.findUnique({
+				where:{
+					ma_nv: body_ma_nv
+				}
+			})
+
+			if(find_employee !== null){
+				throw Error("Employee Already Exists!")
+			}
+
+			if(body_luong !== undefined && parseInt(body_luong) <= 0){
+				throw Error("Salary must not be lower than 0!");
+			}
+		}
+		catch(e){
+			throw new UnprocessableContentError(e.message);
+
 		}
 
-		if(body_luong !== undefined && parseInt(body_luong) <= 0){
-			throw new UnprocessableContentError("Salary must not be lower than 0!");
-		}
-
-		if(body_ma_nv === undefined){
-			throw new UnprocessableContentError("Employee must have an ID!");
-		}
 
 		const employee = await prisma.nhan_vien.create({
 			data:{

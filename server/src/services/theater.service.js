@@ -8,53 +8,54 @@ import {
 
 export const theaterService = {
 	getTheater: async function(req) {
-		const query = req?.query;
-		const query_ma_rap = query?.ma_rap;
-		const query_ten = query?.ten;
-		const query_dia_chi = query?.dia_chi;
-		const query_sdt = query?.sdt;
-		const query_min_so_phong = query?.min_so_phong ? parseInt(query.min_so_phong) : undefined;
-		const query_max_so_phong = query?.max_so_phong ? parseInt(query.max_so_phong) : undefined;
+		const {ma_rap, ten, dia_chi, sdt, min_so_phong, max_so_phong, isStrict} = req.query;
 
-		const theater = await prisma.rap_phim.findMany({
-			where:{
-				ma_rap: {
-					contains: query_ma_rap,
-				},
-				ten:{
-					contains: query_ten,
-				},
-				dia_chi:{
-					contains: query_dia_chi,
-				},
-				sdt:{
-					contains: query_sdt,
-				},
-				so_phong: {
-					gte: query_min_so_phong,
-					lte: query_max_so_phong,
+		if(isStrict){
+			const data = await prisma.rap_phim.findMany({
+				where:{
+					ma_rap: ma_rap,
+					ten: ten,
+					dia_chi: dia_chi,
+					sdt: sdt,
 				}
-			}
-		})
-
-		return theater;
+			})
+			return {data}
+		}
+		else{
+			const data = await prisma.rap_phim.findMany({
+				where:{
+					ma_rap: {
+						contains: ma_rap,
+					},
+					ten:{
+						contains: ten,
+					},
+					dia_chi:{
+						contains: dia_chi,
+					},
+					sdt:{
+						contains: sdt,
+					},
+					so_phong: {
+						gte: min_so_phong ? parseInt(min_so_phong) : undefined,
+						lte: max_so_phong ? parseInt(max_so_phong) : undefined,
+					}
+				}
+			})
+			return {data}
+		}
 	},
 	postTheater: async function(req){
-		const body = req?.body;
-		const body_ma_rap = body?.ma_rap;
-		const body_ten = body?.ten;
-		const body_dia_chi = body?.dia_chi;
-		const body_sdt = body?.sdt;
-		const body_so_phong = body?.so_phong ? parseInt(body_so_phong) : undefined;
+		const {ma_rap, ten, dia_chi, sdt, so_phong} = req.body;
 
 		try{
-			if(body_ma_rap === undefined){
+			if(ma_rap === undefined){
 				throw Error("Theater must have an ID!");
 			}
 
 			const find_theater = await prisma.rap_phim.findUnique({
 				where:{
-					ma_rap: body_ma_rap
+					ma_rap: ma_rap
 				}
 			})
 
@@ -66,84 +67,95 @@ export const theaterService = {
 			throw new UnprocessableContentError(e.message)
 		}
 
-		const theater = await prisma.rap_phim.create({
+		const data = await prisma.rap_phim.create({
 			data:{
-				ma_rap: body_ma_rap,
-				ten: body_ten,
-				dia_chi: body_dia_chi,
-				sdt: body_sdt,
-				so_phong: body_so_phong
+				ma_rap: ma_rap,
+				ten: ten,
+				dia_chi: dia_chi,
+				sdt: sdt,
+				so_phong: so_phong ? parseInt(so_phong) : undefined
 			}
 		})
 
-		return theater;
+		return {data};
 	},
 	patchTheater: async function(req){
-		const query = req.query;
-		const query_ma_rap = query?.ma_rap;
-		const query_dia_chi = query?.dia_chi;
-		const query_sdt = query?.sdt;
-		const query_min_so_phong = query?.min_so_phong ? parseInt(query.min_so_phong) : undefined;
-		const query_max_so_phong = query?.max_so_phong ? parseInt(query.max_so_phong) : undefined;
+		const {ma_rap, ten, dia_chi, sdt, min_so_phong, max_so_phong, isStrict} = req.query;
+		const {new_ma_rap, new_ten, new_dia_chi, new_sdt, new_so_phong} = req.body;
 
-		const body = req.body;
-		const body_ten = body?.ten;
-		const body_dia_chi = body?.dia_chi;
-		const body_sdt = body?.sdt;
-		const body_so_phong = body?.so_phong ? parseInt(query.so_phong) : undefined;
+		const find_theater = await prisma.rap_phim.findMany({
+			where:{
+				ma_rap: ma_rap,
+			},
+		})
 
-		const find_theater = await getTheater(req)
-
-		if(find_theater.length > 1 && body_ma_rap !== undefined){
+		if(find_theater.length > 1 && new_ma_rap !== undefined){
 			throw new UnprocessableContentError("Multiple theaters can't have the same ID!");
 		}
 
-		const theater = await prisma.rap_phim.upsert({
-			where:{
-				ma_rap: {
-					contains: query_ma_rap,
+		if(isStrict){
+			const data = await prisma.rap_phim.upsert({
+				where:{
+					ma_rap: ma_rap,
+					dia_chi: dia_chi,
+					sdt: sdt,
+					so_phong:{
+						gte: min_so_phong,
+						lte: max_so_phong,
+					},
 				},
-				dia_chi: {
-					contains: query_dia_chi,
+				data:{
+					ma_rap: new_ma_rap,
+					ten: new_ten,
+					dia_chi: new_dia_chi,
+					sdt: new_sdt,
+					so_phong: new_so_phong,
+				}
+			})
+			return {data}
+		}
+		else{
+			const data = await prisma.rap_phim.upsert({
+				where:{
+					ma_rap: {
+						contains: ma_rap,
+					},
+					dia_chi: {
+						contains: dia_chi,
+					},
+					sdt: {
+						contains: sdt,
+					},
+					so_phong: {
+						gte: min_so_phong,
+						lte: max_so_phong,
+					},
 				},
-				sdt: {
-					contains: query_sdt,
-				},
-				so_phong: {
-					gte: query_min_so_phong,
-					lte: query_max_so_phong,
-				},
-			},
-			data:{
-				ma_rap: body_ma_rap,
-				ten: body_ten,
-				dia_chi: body_dia_chi,
-				sdt: body_dt,
-				so_phong: body_so_phong
-			}
-		})
-
-		return theater;
+				data:{
+					ma_rap: new_ma_rap,
+					ten: new_ten,
+					dia_chi: new_dia_chi,
+					sdt: new_sdt,
+					so_phong: new_so_phong,
+				}
+			})
+			return {data};
+		}
 	},
 	deleteTheater: async function(req){
-		const query = req.query;
-		const query_ma_rap = query?.ma_rap;
-		const query_ten = query?.ten;
-		const query_dia_chi = query?.dia_chi;
-		const query_sdt = query?.sdt;
-		const query_so_phong = query?.so_phong ? parseInt(query.so_phong) : undefined;
+		const {ma_rap, ten, dia_chi, sdt, min_so_phong, max_so_phong, isStrict} = req.query;
 
 		try{
-			const theater = await prisma.rap_phim.delete({
+			const data = await prisma.rap_phim.delete({
 				where:{
-					ma_rap: query_ma_rap,
-					ten: query_ten,
-					dia_chi: query_dia_chi,
-					sdt: query_sdt,
-					so_phong: query_so_phong,
+					ma_rap: ma_rap,
+					ten: ten,
+					dia_chi: dia_chi,
+					sdt: sdt,
+					so_phong: so_phong,
 				},
 			})
-			return theater;
+			return {data};
 		}
 		catch (e)
 		{
@@ -151,44 +163,51 @@ export const theaterService = {
 		}
 	},
 	getRoom: async function(req) {
-		const query = req.query;
-		const query_ma_rap = query?.ma_rap;
-		const query_ma_phong = query?.ma_phong;
-		const query_min_so_ghe = query?.min_so_ghe ? parseInt(query.min_so_ghe) : undefined;
-		const query_max_so_ghe = query?.max_so_ghe ? parseInt(query.max_so_ghe) : undefined;
+		const {ma_rap, ma_phong, min_so_ghe, max_so_ghe, isStrict} = req.query;
 
-		const room = await prisma.phong_chieu_phim.findMany({
-			where:{
-				ma_rap: {
-					contains: query_ma_rap,
+		if(isStrict){
+			const data = await prisma.phong_chieu_phim.findMany({
+				where:{
+					ma_rap: ma_rap,
+					ma_phong: ma_phong,
+					so_ghe:{
+						gte: min_so_ghe,
+						lte: max_so_ghe,
+					},
 				},
-				ma_phong: {
-					contains: query_ma_phong,
+			})
+			return {data};
+		}
+		else{
+			const data = await prisma.phong_chieu_phim.findMany({
+				where:{
+					ma_rap: {
+						contains: ma_rap,
+					},
+					ma_phong: {
+						contains: ma_phong,
+					},
+					so_ghe: {
+						gte: min_so_ghe,
+						lte: max_so_ghe,
+					},
 				},
-				so_ghe: {
-					gte: query_min_so_ghe,
-					lte: query_max_so_ghe,
-				},
-			},
-		})
-
-		return room;
+			})
+			return {data};
+		}
 	},
 	postRoom: async function(req){
-		const body = req.body;
-		const body_ma_rap = body?.ma_rap;
-		const body_ma_phong = body?.ma_phong;
-		const body_so_ghe = body?.so_ghe ? parseInt(body.so_ghe) : undefined;
+		const {ma_rap, ma_phong, so_ghe} = req.body;
 
 		try{
-			if(body_ma_rap === undefined || body_ma_phong === undefined){
+			if(ma_rap === undefined || ma_phong === undefined){
 				throw Error("Room must have all required ID fields!")
 			}
 
 			const find_room = await prisma.phong_chieu_phim.findUnique({
 				where:{
-					ma_rap: body_ma_rap,
-					ma_phong: body_ma_phong
+					ma_rap: ma_rap,
+					ma_phong: ma_phong
 				}
 			})
 
@@ -196,204 +215,217 @@ export const theaterService = {
 				throw Error("Multiple rooms can't have the same ID!")
 			}
 
-			const find_theater = await prisma.rap_phim.findUniqueOrThrow({
+			const find_theater = await prisma.rap_phim.findUnique({
 				where:{
-					ma_rap: body_ma_rap
+					ma_rap: ma_rap
 				}
 			})
+
+			if(find_theater === null){
+				throw Error("Requested theater doesn't exist!")
+			}
 		}
 		catch(e){
 			throw new UnprocessableContentError(e.message);
 		}
 
-		const room = await prisma.phong_chieu_phim.create({
+		const data = await prisma.phong_chieu_phim.create({
 			data:{
-				ma_rap: body_ma_rap,
-				ma_phong: body_ma_phong,
-				so_ghe: body_so_ghe,
+				ma_rap: ma_rap,
+				ma_phong: ma_phong,
+				so_ghe: so_ghe,
 			}
 		})
 
-		return room;
+		return {data};
 	},
 	patchRoom: async function(req){
-		const query = req.query;
-		const query_ma_phong = query?.ma_phong;
-		const query_ma_rap = query?.ma_rap;
-		const query_min_so_ghe = query?.min_so_ghe ? parseInt(query.min_so_ghe) : undefined;
-		const query_max_so_ghe = query?.max_so_ghe ? parseInt(query.max_so_ghe) : undefined;
-
-		const body = req.body;
-		const body_ma_phong = body?.ma_phong;
-		const body_ma_rap = body?.ma_rap;
-		const body_so_ghe = body?.so_ghe ? parseInt(body.so_ghe) : undefined;
+		const {ma_phong, ma_rap, min_so_ghe, max_so_ghe, isStrict} = req.query;
+		const {new_ma_phong, new_ma_rap, new_so_ghe} = req.body;
 
 		const find_room = await getRoom(req)
 
-		if(find_room.length > 1 && (body_ma_phong !== undefined || body_ma_rap !== undefined))
+		if(find_room.length > 1 && (ma_phong !== undefined || body_ma_rap !== undefined))
 		{
 			console.warn("Unsafe patch query reagarding IDs!")
 		}
 
-		const room = await prisma.phong_chieu_phim.upsert({
-			where:{
-				ma_phong: {
-					contains: query_ma_phong,
+		if(isStrict){
+			const data = await prisma.phong_chieu_phim.upsert({
+				where:{
+					ma_rap: ma_rap,
+					ma_phong: ma_phong,
+					so_ghe:{
+						gte: min_so_ghe,
+						lte: max_so_ghe,
+					},
 				},
-				ma_rap: {
-					contains: query_ma_rap,
+				data:{
+					ma_phong: ma_phong,
+					ma_rap: ma_rap,
+					so_ghe: so_ghe,
+				}
+			})
+			return {data};
+		}
+		else{
+			const data = await prisma.phong_chieu_phim.upsert({
+				where:{
+					ma_phong: {
+						contains: ma_phong,
+					},
+					ma_rap: {
+						contains: ma_rap,
+					},
+					so_ghe: {
+						gte: min_so_ghe,
+						lte: max_so_ghe,
+					},
 				},
-				so_ghe: {
-					gte: query_min_so_ghe,
-					lte: query_max_so_ghe,
-				},
-			},
-			data:{
-				ma_phong: body_ma_phong,
-				ma_rap: body_ma_rap,
-				so_ghe: body_so_ghe,
-			}
-		})
-
-		return room;
+				data:{
+					ma_phong: ma_phong,
+					ma_rap: ma_rap,
+					so_ghe: so_ghe,
+				}
+			})
+			return {data};
+		}
+		return {data};
 	},
 	deleteRoom: async function(req){
-		const query = req.query;
-		const query_ma_phong = query?.ma_phong;
-		const query_ma_rap = query?.ma_rap;
-		const query_so_ghe = query?.so_ghe ? parseInt(query.so_ghe) : undefined;
+		const {ma_phong, ma_rap, so_ghe} = req.query;
 
 		try{
-			const room = await prisma.phong_chieu_phim.delete({
+			const data = await prisma.phong_chieu_phim.delete({
 				where:{
-					ma_phong: query_ma_phong,
-					ma_rap: query_ma_rap,
-					so_ghe: query_so_ghe,
+					ma_phong: ma_phong,
+					ma_rap: ma_rap,
+					so_ghe: so_ghe ? parseInt(so_ghe) : undefined,
 				},
 			})
-			return room;
+			return {data}
 		}
 		catch (e){
 			throw UnprocessableContentError(e.message)
 		}
 	},
 	getSeat: async function(req) {
-		const query = req.query;
-		if(query === undefined){
-			throw BadRequestError("Server expected a query");
+		const {ma_rap, ma_phong, ma_ghe, loai_ghe} = req.query;
+		if(isStrict){
+			const data = await prisma.ghe.findMany({
+				where:{
+					ma_rap: ma_rap,
+					ma_phong: ma_phong,
+					ma_ghe: ma_ghe,
+					loai_ghe: loai_ghe
+				},
+			})
+			return {data};
 		}
-		const query_ma_rap = query?.ma_rap;
-		const query_ma_phong = query?.ma_phong;
-		const query_ma_ghe = query?.ma_ghe;
-		const query_loai_ghe = query?.loai_ghe;
-
-		const seat = await prisma.ghe.findMany({
-			where:{
-				ma_rap: {
-					contains: query_ma_rap,
+		else{
+			const seat = await prisma.ghe.findMany({
+				where:{
+					ma_rap: {
+						contains: ma_rap,
+					},
+					ma_phong: {
+						contains: ma_phong,
+					},
+					ma_ghe: {
+						contains: ma_ghe,
+					},
+					loai_ghe: {
+						contains: loai_ghe
+					},
 				},
-				ma_phong: {
-					contains: query_ma_phong,
-				},
-				ma_ghe: {
-					contains: query_ma_ghe,
-				},
-				loai_ghe: {
-					contains: query_loai_ghe
-				},
-			},
-		})
-
-		return seat;
+			})
+			return {data};
+		}
 	},
 	postSeat: async function(req){
-		const body = req.body;
-		const body_ma_rap = body?.ma_rap;
-		const body_ma_phong = body?.ma_phong;
-		const body_ma_ghe = body?.ma_ghe;
-		const body_loai_ghe = body?.loai_ghe;
+		const {ma_rap, ma_phong, ma_ghe, loai_ghe} = req.body;
 
 		try{
-			if(body_ma_rap === undefined || body_ma_phong === undefined || body_ma_ghe === undefined){
+			if(ma_rap === undefined || body_ma_phong === undefined || body_ma_ghe === undefined){
 				throw Error("Seat must have all required ID fields!")
 			}
 
-			if(body_loai_ghe === undefined){
+			if(loai_ghe === undefined){
 				throw Error("Seat must have a type!")
 			}
 
 			const find_seat = await prisma.ghe.findMany({
 				where:{
-					ma_rap: body_ma_rap,
-					ma_phong: body_ma_phong,
-					ma_ghe: body_ma_ghe
+					ma_rap: ma_rap,
+					ma_phong: ma_phong,
+					ma_ghe: ma_ghe
 				}
 			})
 
 			if(find_seat !== null){
 				throw Error("Multiple seats can't have the same ID!")
 			}
-			const find_room = await prisma.phong_chieu_phim.findManyOrThrow({
+
+			const find_room = await prisma.phong_chieu_phim.findUnique({
 				where:{
-					ma_rap: body_ma_rap,
-					ma_phong: body_ma_phong
+					ma_rap: ma_rap,
+					ma_phong: ma_phong
 				}
 			})
+
+			if(find_room === null){
+				throw Error("Requested room doesn't exist!");
+			}
 		}
 		catch(e){
 			throw UnprocessableContentError(e.message);
 		}
 
-		const seat = await prisma.ghe.create({
+		const data = await prisma.ghe.create({
 			data:{
-				ma_rap: body_ma_rap,
-				ma_phong: body_ma_phong,
-				ma_ghe: body_ma_ghe,
-				loai_ghe: body_loai_ghe,
+				ma_rap: ma_rap,
+				ma_phong: ma_phong,
+				ma_ghe: ma_ghe,
+				loai_ghe: loai_ghe,
 			}
 		})
 
-		return seat;
+		return data;
 	},
 	patchSeat: async function(req){
-		const query = req.query;
-		const query_ma_rap = query?.ma_rap;
-		const query_ma_phong = query?.ma_phong;
-		const query_ma_ghe = query?.ma_ghe;
-		const query_loai_ghe = query?.loai_ghe;
+		const {ma_rap, ma_phong, ma_ghe, loai_ghe} = req.query;
+		const {new_ma_rap, new_ma_phong, new_ma_ghe, new_loai_ghe} = req.body;
 
-		const body = req.body;
-		const body_ma_rap = body?.ma_rap;
-		const body_ma_phong = body?.ma_phong;
-		const body_ma_ghe = body?.ma_ghe;
-		const body_loai_ghe = body?.loai_ghe;
+		const find_seat = await prisma.ghe.findMany({
+			where:{
 
-		const find_seat = await getSeat(req)
+			}
+		}) //TODO: finish this
 
-		if(find_seat.length > 1 && (body_ma_rap !== undefined || body_ma_phong !== undefined || body_ma_ghe !== undefined)){
+		if(find_seat.length > 1 && (ma_rap !== undefined || body_ma_phong !== undefined || body_ma_ghe !== undefined)){
 			console.warn("Unsafe patch query reagarding IDs!")
 		}
 
 		const seat = await prisma.ghe.upsert({
 			where:{
 				ma_rap:{
-					contains: query_ma_rap,
+					contains: ma_rap,
 				},
 				ma_phong:{
-					contains: query_ma_phong,
+					contains: ma_phong,
 				},
 				ma_ghe:{
-					contains: query_ma_rap,
+					contains: ma_rap,
 				},
 				loai_ghe:{
-					contains: query_loai_ghe,
+					contains: loai_ghe,
 				},
 			},
 			data:{
-				ma_rap: body_ma_rap,
-				ma_phong: body_ma_phong,
-				ma_ghe: body_ma_ghe,
-				loai_ghe: body_loai_ghe
+				ma_rap: ma_rap,
+				ma_phong: ma_phong,
+				ma_ghe: ma_ghe,
+				loai_ghe: loai_ghe
 			}
 		})
 
@@ -401,18 +433,18 @@ export const theaterService = {
 	},
 	deleteSeat: async function(req){
 		const query = req.query;
-		const query_ma_rap = query?.ma_rap;
-		const query_ma_phong = query?.ma_phong;
-		const query_ma_ghe = query?.ma_ghe;
-		const query_loai_ghe = query?.loai_ghe;
+		const ma_rap = query?.ma_rap;
+		const ma_phong = query?.ma_phong;
+		const ma_ghe = query?.ma_ghe;
+		const loai_ghe = query?.loai_ghe;
 
 		try{
 			const seat = await prisma.ghe.delete({
 				where:{
-					ma_rap: query_ma_rap,
-					ma_phong: query_ma_phong,
-					ma_ghe: query_ma_ghe,
-					loai_ghe: query_loai_ghe,
+					ma_rap: ma_rap,
+					ma_phong: ma_phong,
+					ma_ghe: ma_ghe,
+					loai_ghe: loai_ghe,
 				},
 			})
 			return seat;
@@ -421,6 +453,5 @@ export const theaterService = {
 		{
 			throw UnprocessableContentError(e.message);
 		}
-
 	},
 }

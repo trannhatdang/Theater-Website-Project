@@ -6,12 +6,12 @@ import {handleError} from '../helpers/handleError.js'
 export const theaterController = {
 	getTheater: async function(req, res, next) {
 		try{
-			const result = await theaterService.getTheater(req)
+			const {data, metaData} = await theaterService.getTheater(req)
 			const response = handleSuccessResponse(
 				"Get Theater Success",
 				200,
 				undefined,
-				result
+				data
 			)
 			res.send(response)
 		}
