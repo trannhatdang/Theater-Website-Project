@@ -9,6 +9,7 @@ import {
 export const theaterService = {
 	getTheater: async function(req) {
 		const {ma_rap, ten, dia_chi, sdt, min_so_phong, max_so_phong, isStrict} = req.query;
+		console.log(req.params)
 
 		if(isStrict){
 			const data = await prisma.rap_phim.findMany({
@@ -125,6 +126,7 @@ export const theaterService = {
 	},
 	getRoom: async function(req) {
 		const {ma_rap, ma_phong, min_so_ghe, max_so_ghe, isStrict} = req.query;
+		console.log(req.params);
 
 		if(isStrict){
 			const data = await prisma.phong_chieu_phim.findMany({

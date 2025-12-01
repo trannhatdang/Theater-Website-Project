@@ -61,9 +61,8 @@ export const employeeController = {
 			res.send(response)
 		}
 		catch(err){
-			handle
+			handleError(error, req, res, next);
 		}
 
 	}
-
 }

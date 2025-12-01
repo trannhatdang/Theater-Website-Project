@@ -4,7 +4,7 @@ import express from "express";
 const theaterRouter = express.Router();
 
 theaterRouter.get(
-	'/',
+	'/*splat',
 	theaterController.getTheater
 )
 theaterRouter.post(
@@ -20,7 +20,7 @@ theaterRouter.delete(
 	theaterController.deleteTheater
 )
 
-theaterRouter.get(
+/*theaterRouter.get(
 	'/room',
 	theaterController.getRoom
 )
@@ -35,7 +35,7 @@ theaterRouter.patch(
 theaterRouter.delete(
 	'/room',
 	theaterController.deleteRoom
-)
+)*/
 
 theaterRouter.get(
 	'/seat',
