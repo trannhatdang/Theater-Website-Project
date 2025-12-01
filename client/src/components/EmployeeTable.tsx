@@ -27,12 +27,12 @@ const Employee = ({
 }: EmployeeProps) => {
 	return (
 		<div className='text-white'>
-			{ma_nv} {cccd} {ten} {luong} {new Intl.DateTimeFormat("en-GB").format(new Date(ngay_sinh))}
+			{ma_nv} {cccd} {ten} {luong} {new Intl.DateTimeFormat("en-GB").format(new Date(ngay_sinh))} {chuc_vu} {dia_chi} {sdt} {gioi_tinh} {ma_nv_quan_ly} {ma_rap_phim}
 		</div>
 	)
 }
 
-export default function EmployeeTable({employees}){
+export default function EmployeeTable(employees : EmployeeProps[]){
 	return (
 		<>
 			{employees.map(employee => ( 

@@ -4,11 +4,13 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import Slider from '@mui/material/Slider';
-import Box from '@mui/material/Box';
+//import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import RangeSlider from '../utils/RangeSlider.tsx'
+//import RangeSlider from './RangeSlider.tsx'
 import IconButton from '@mui/material/IconButton'
-import Typography from '@mui/material/Typography'
+//import Typography from '@mui/material/Typography'
+
+import type { Employee } from './EmployeeView.tsx'
 
 interface SalaryRangeProps{
 	salaryRange: number[]
@@ -40,10 +42,8 @@ function EmployeeSalaryRangeSlider({salaryRange, onChange}: SalaryRangeProps){
 	)
 }
 
-
-function EmployeeSearch(onChange){
+function EmployeeSearch(onChange: Function){
 	const handleChange = (event: Event, newValue: string) => {
-		console.log('employeesearchchange: ' + newValue);
 		onChange(e, newValue);
 	}
 	return(
@@ -77,7 +77,6 @@ function EmployeeFilterMenu(props: FilterProps) {
 	const onSalarySliderChange = (e: Event, newValue: number[]) => {
 		setSalaryRange(newValue)
 	};
-
 
 	return (
 		<div>
