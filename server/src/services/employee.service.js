@@ -157,7 +157,6 @@ export const employeeService = {
 			ma_rap_phim,
 			gioi_tinh,
 			sdt,
-			isStrict
 		} = req.query
 
 		const {
@@ -176,172 +175,40 @@ export const employeeService = {
 			new_sdt,
 		} = req.body
 
-		if(new_ma_nv !== undefined){
-			const existing_employee = await prisma.nhan_vien.findUnique({
-				where:{
-					ma_nv: new_ma_nv
-				}
-			})
-
-			if(existing_employee !== null){
-				throw UnprocessableContentError("Multiple employees can't have the same ID!");
-			}
-
-			if(isStrict){
-				const find_employee = await prisma.nhan_vien.findMany({
-					where: {
-						ma_nv: ma_nv,
-						ten: ten,
-						cccd: cccd,
-						ngay_sinh: {
-							gte: min_ngay_sinh,
-							lte: max_ngay_sinh,
-						},
-						luong: {
-							gte: min_luong ? parseInt(min_luong) : undefined,
-							lte: max_luong ? parseInt(max_luong) : undefined,
-						},
-						chuc_vu: chuc_vu,
-						dia_chi: dia_chi,
-						ma_nv_quan_ly: ma_nv_quan_ly,
-						ma_rap_phim: ma_rap_phim,
-						gioi_tinh: gioi_tinh
-					},
-				})
-
-				if(find_employee.length > 1 && new_ma_nv !== undefined){
-					throw new UnprocessableContentError("Multiple employees can't have the same ID!")
-				}
-			}
-			else{
-				const find_employee = await prisma.nhan_vien.findMany({
-					where: {
-						ma_nv: {
-							contains: ma_nv,
-						},
-						ten: {
-							contains: ten,
-						},
-						cccd: {
-							contains: cccd,
-						},
-						ngay_sinh: {
-							gte: min_ngay_sinh,
-							lte: max_ngay_sinh,
-						},
-						luong: {
-							gte: min_luong ? parseInt(min_luong) : undefined,
-							lte: max_luong ? parseInt(max_luong) : undefined,
-						},
-						chuc_vu: {
-							contains: chuc_vu,
-						},
-						dia_chi: {
-							contains: dia_chi,
-						},
-						ma_nv_quan_ly: {
-							contains: ma_nv_quan_ly,
-						},
-						ma_rap_phim: {
-							contains: ma_rap_phim,
-						},
-						gioi_tinh: gioi_tinh
-					},
-				})
-
-				if(find_employee.length > 1 && new_ma_nv !== undefined){
-					throw new UnprocessableContentError("Multiple employees can't have the same ID!")
-				}
-			}
-
-		}
-
-		if(isStrict){
-			const data = await prisma.nhan_vien.upsert({
-				where: {
-					ma_nv: ma_nv,
-					ten: ten,
-					cccd: cccd,
-					ngay_sinh: {
-						gte: min_ngay_sinh,
-						lte: max_ngay_sinh,
-					},
-					luong: {
-						gte: min_luong ? parseInt(min_luong) : undefined,
-						lte: max_luong ? parseInt(max_luong) : undefined,
-					},
-					chuc_vu: chuc_vu,
-					dia_chi: dia_chi,
-					ma_nv_quan_ly: ma_nv_quan_ly,
-					ma_rap_phim: ma_rap_phim,
-					gioi_tinh: gioi_tinh
+		const data = await prisma.nhan_vien.upsert({
+			where: {
+				ma_nv: ma_nv,
+				ten: ten,
+				cccd: cccd,
+				ngay_sinh: {
+					gte: min_ngay_sinh,
+					lte: max_ngay_sinh,
 				},
-				data:{
-					ma_nv: new_ma_nv,
-					ten: new_ten,
-					cccd: new_cccd,
-					ngay_sinh: new_ngay_sinh,
-					luong: new_luong ? parseInt(new_luong) : undefined,
-					chuc_vu: new_chuc_vu,
-					dia_chi: new_dia_chi,
-					ma_nv_quan_ly: new_ma_nv_quan_ly,
-					ma_rap_phim: new_ma_rap_phim,
-					gioi_tinh: new_gioi_tinh,
-					sdt: new_sdt
-				}
-			})
-			return {data}
-		}
-		else{
-			const data = await prisma.nhan_vien.upsert({
-				where: {
-					ma_nv: {
-						contains: ma_nv,
-					},
-					ten: {
-						contains: ten,
-					},
-					cccd: {
-						contains: cccd,
-					},
-					ngay_sinh: {
-						gte: min_ngay_sinh,
-						lte: max_ngay_sinh,
-					},
-					luong: {
-						gte: min_luong ? parseInt(min_luong) : undefined,
-						lte: max_luong ? parseInt(max_luong) : undefined,
-					},
-					chuc_vu: {
-						contains: chuc_vu,
-					},
-					dia_chi: {
-						contains: dia_chi,
-					},
-					ma_nv_quan_ly: {
-						contains: ma_nv_quan_ly,
-					},
-					ma_rap_phim: {
-						contains: ma_rap_phim,
-					},
-					gioi_tinh: gioi_tinh
+				luong: {
+					gte: min_luong ? parseInt(min_luong) : undefined,
+					lte: max_luong ? parseInt(max_luong) : undefined,
 				},
-				data:{
-					ma_nv: new_ma_nv,
-					ten: new_ten,
-					cccd: new_cccd,
-					ngay_sinh: new_ngay_sinh,
-					luong: new_luong ? parseInt(new_luong) : undefined,
-					chuc_vu: new_chuc_vu,
-					dia_chi: new_dia_chi,
-					ma_nv_quan_ly: new_ma_nv_quan_ly,
-					ma_rap_phim: new_ma_rap_phim,
-					gioi_tinh: new_gioi_tinh,
-					sdt: new_sdt
-				}
-			})
-			return {data};
-		}
+				chuc_vu: chuc_vu,
+				dia_chi: dia_chi,
+				ma_nv_quan_ly: ma_nv_quan_ly,
+				ma_rap_phim: ma_rap_phim,
+				gioi_tinh: gioi_tinh
+			},
+			data:{
+				ma_nv: new_ma_nv,
+				ten: new_ten,
+				cccd: new_cccd,
+				ngay_sinh: new_ngay_sinh,
+				luong: new_luong ? parseInt(new_luong) : undefined,
+				chuc_vu: new_chuc_vu,
+				dia_chi: new_dia_chi,
+				ma_nv_quan_ly: new_ma_nv_quan_ly,
+				ma_rap_phim: new_ma_rap_phim,
+				gioi_tinh: new_gioi_tinh,
+				sdt: new_sdt
+			}
+		})
+		return {data}
 	},
 	deleteEmployee: async function(req){
 		const {
@@ -412,16 +279,6 @@ export const employeeService = {
 				throw Error("Manager must have an ID!");
 			}
 
-			const find_manager = await prisma.quan_tri_vien.findUnique({
-				where:{
-					ma_nv: ma_nv
-				}
-			});
-
-			if(find_manager.length >= 1){
-				throw Error("Multiple managers can't have the same ID!");
-			}
-
 			const find_employee = await prisma.nhan_vien.findUnique({
 				where:{
 					ma_nv: ma_nv
@@ -430,6 +287,16 @@ export const employeeService = {
 
 			if(find_employee === null){
 				throw Error("Create corresponding employee first!")
+			}
+
+			const find_manager = await prisma.quan_tri_vien.findUnique({
+				where:{
+					ma_nv: ma_nv
+				}
+			});
+
+			if(find_manager !== null){
+				throw Error("Multiple managers can't have the same ID!");
 			}
 		}
 		catch(e){
@@ -447,18 +314,13 @@ export const employeeService = {
 		const { ma_nv } = req.query;
 		const { new_ma_nv } = req.body;
 
-		try{
-			const find_employee = await prisma.nhan_vien.findUnique({
-				where:{
-					ma_nv: ma_nv
-				}
-			})
-			if(find_employee === null){
-				throw Error("Create corresponding employee first!")
+		const find_employee = await prisma.nhan_vien.findUnique({
+			where:{
+				ma_nv: new_ma_nv
 			}
-
-		}catch(e){
-			throw new UnprocessableContentError(e.message);
+		})
+		if(find_employee === null){
+			throw new UnprocessableContentError("Create corresponding employee first!")
 		}
 
 		const data = await prisma.quan_tri_vien.upsert({
@@ -469,7 +331,7 @@ export const employeeService = {
 				ma_nv: new_ma_nv
 			}
 		})
-		return {data}
+		return { data }
 	},
 	deleteManager: async function(req){
 		const {ma_nv} = req.query;
@@ -481,7 +343,7 @@ export const employeeService = {
 				}
 			})
 
-			return {data}
+			return { data }
 		}
 		catch(e){
 			throw new UnprocessableContentError(e.message);
@@ -506,7 +368,7 @@ export const employeeService = {
 					},
 				},
 			})
-			return {data};
+			return { data };
 		}
 	},
 	postSalesperson: async function(req){
@@ -517,16 +379,6 @@ export const employeeService = {
 				throw Error("Salesperson must have an ID!");
 			}
 
-			const find_salesperson = await prisma.nhan_vien_ban_hang.findUnique({
-				where:{
-					ma_nv: ma_nv
-				}
-			});
-
-			if(find_salesperson.length >= 1){
-				throw Error("Multiple salespeople can't have the same ID!");
-			}
-
 			const find_employee = await prisma.nhan_vien.findUnique({
 				where:{
 					ma_nv: ma_nv
@@ -535,6 +387,16 @@ export const employeeService = {
 
 			if(find_employee === null){
 				throw Error("Create corresponding employee first!")
+			}
+
+			const find_salesperson = await prisma.nhan_vien_ban_hang.findUnique({
+				where:{
+					ma_nv: ma_nv
+				}
+			});
+
+			if(find_salesperson.length !== null){
+				throw Error("Multiple salespeople can't have the same ID!");
 			}
 		}
 		catch(e){
@@ -546,32 +408,20 @@ export const employeeService = {
 				ma_nv: ma_nv,
 			},
 		})
-		return {data}
+		return { data }
 	},
 	patchSalesperson: async function(req){
 		const { ma_nv, isStrict } = req.query;
 		const { new_ma_nv } = req.body;
 
-		try{
-			if(isStrict)
-			const find_salesperson = await prisma.nhan_vien_ban_hang.findMany({
-				where:{
-
-				}
-			})
-
-			const find_employee = await prisma.nhan_vien.findUnique({
-				where:{
-					ma_nv: new_ma_nv
-				}
-			})
-
-			if(find_employee === null){
-				throw Error("Create corresponding employee first!")
+		const find_employee = await prisma.nhan_vien.findUnique({
+			where:{
+				ma_nv: new_ma_nv
 			}
+		})
 
-		}catch(e){
-			throw new UnprocessableContentError(e.message);
+		if(find_employee === null){
+			throw new UnprocessableContentError("Create corresponding employee first!")
 		}
 
 		const data = await prisma.nhan_vien_ban_hang.upsert({
@@ -582,10 +432,10 @@ export const employeeService = {
 				ma_nv: new_ma_nv
 			}
 		})
-		return {data}
+		return { data }
 	},
 	deleteSalesperson: async function(req){
-		const {ma_nv} = req.query;
+		const { ma_nv } = req.query;
 
 		try{
 			const data = await prisma.nhan_vien_ban_hang.delete({
@@ -611,14 +461,103 @@ export const employeeService = {
 			isStrict
 		} = req.query;
 
-
-		
+		if(isStrict){
+			const data = prisma.ca_lam_viec.findMany({
+				where:{
+					ma_nv: ma_nv,
+					ca_lam_viec: ca_lam_viec,
+					ngay_lam: {
+						gte: min_ngay_lam ? parseInt(min_ngay_lam) : undefined,
+						lte: max_ngay_lam ? parseInt(max_ngay_lam) : undefined,
+					},
+					thoi_gian_lam:{
+						gte: min_thoi_gian_lam ? parseInt(min_thoi_gian_lam) : undefined,
+						lte: max_thoi_gian_lam ? parseInt(max_thoi_gian_lam) : undefined,
+					},
+				}
+			})
+			return {data}
+		}
+		else{
+			const data = prisma.ca_lam_viec.findMany({
+				where:{
+					ma_nv: {
+						contains: ma_nv,
+					},
+					ca_lam_viec: {
+						contains:ca_lam_viec,
+					},
+					ngay_lam: {
+						gte: min_ngay_lam ? parseInt(min_ngay_lam) : undefined,
+						lte: max_ngay_lam ? parseInt(max_ngay_lam) : undefined,
+					},
+					thoi_gian_lam:{
+						gte: min_thoi_gian_lam ? parseInt(min_thoi_gian_lam) : undefined,
+						lte: max_thoi_gian_lam ? parseInt(max_thoi_gian_lam) : undefined,
+					},
+				}
+			})
+			return {data}
+		}
 	},
 	postWorkShift: async function(req){
+		const { 
+			ma_nv,
+			ca_lam_viec,
+			ngay_lam,
+			thoi_gian_lam
+		} = req.body;
 
+		try{
+			if(ma_nv === undefined || ca_lam_viec === undefined || ngay_lam === undefined){
+				throw Error("Missing required field!");
+			}
+
+			const find_workshift = prisma.ca_lam_viec.findUnique({
+				where:{
+					ma_nv: ma_nv,
+					ca_lam_viec: ca_lam_viec,
+					ngay_lam: ngay_lam
+				}
+			})
+
+			if(find_workshift !== null){
+				throw Error("Shift already exists!");
+			}
+
+			const find_employee = prisma.employee.findUnique({
+				where:{
+					ma_nv: ma_nv
+				}
+			})
+			
+			if(find_employee === null){
+				throw Error("Create employee first!");
+			}
+		}
+		catch(e){
+			throw new UnprocessableContentError(e.message);
+		}
+
+		const data = prisma.ca_lam_viec.create({
+			data:{
+				ma_nv: ma_nv,
+				ca_lam_viec: ca_lam_viec,
+				ngay_lam: ngay_lam,
+				thoi_gian: thoi_gian
+			}
+		})
+		
+		return {data}
 	},
 	patchWorkShift: async function(req){
-
+		const { 
+			ma_nv,
+			ca_lam_viec,
+			ngay_lam,
+			thoi_gian_lam
+		} = req.body;
+		//TODO: finish ts
 	},
 	deleteWorkShift: async function(req){
 
