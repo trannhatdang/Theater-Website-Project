@@ -9,10 +9,6 @@ import {
 export const theaterService = {
 	getTheater: async function(req) {
 		const query = req?.query;
-		if(query === undefined){
-			throw new BadRequestError("Server expected a query");
-		}
-
 		const query_ma_rap = query?.ma_rap;
 		const query_ten = query?.ten;
 		const query_dia_chi = query?.dia_chi;
@@ -45,10 +41,6 @@ export const theaterService = {
 	},
 	postTheater: async function(req){
 		const body = req?.body;
-		if(body === undefined){
-			throw new BadRequestError("Server expected a body");
-		}
-
 		const body_ma_rap = body?.ma_rap;
 		const body_ten = body?.ten;
 		const body_dia_chi = body?.dia_chi;
@@ -88,9 +80,6 @@ export const theaterService = {
 	},
 	patchTheater: async function(req){
 		const query = req.query;
-		if(query === undefined){
-			throw new BadRequestError("Server expected a query");
-		}
 		const query_ma_rap = query?.ma_rap;
 		const query_dia_chi = query?.dia_chi;
 		const query_sdt = query?.sdt;
@@ -98,9 +87,6 @@ export const theaterService = {
 		const query_max_so_phong = query?.max_so_phong ? parseInt(query.max_so_phong) : undefined;
 
 		const body = req.body;
-		if(body === undefined){
-			throw new BadRequestError("Server expected a body");
-		}
 		const body_ten = body?.ten;
 		const body_dia_chi = body?.dia_chi;
 		const body_sdt = body?.sdt;
@@ -108,7 +94,7 @@ export const theaterService = {
 
 		const find_theater = await getTheater(req)
 
-		if(find_theater.length > 1 && body_ten !== undefined){
+		if(find_theater.length > 1 && body_ma_rap !== undefined){
 			throw new UnprocessableContentError("Multiple theaters can't have the same ID!");
 		}
 
@@ -141,9 +127,6 @@ export const theaterService = {
 	},
 	deleteTheater: async function(req){
 		const query = req.query;
-		if(query === undefined){
-			throw new BadRequestError("Server expected a query");
-		}
 		const query_ma_rap = query?.ma_rap;
 		const query_ten = query?.ten;
 		const query_dia_chi = query?.dia_chi;
@@ -169,9 +152,6 @@ export const theaterService = {
 	},
 	getRoom: async function(req) {
 		const query = req.query;
-		if(query === undefined){
-			throw new BadRequestError("Server expected a query");
-		}
 		const query_ma_rap = query?.ma_rap;
 		const query_ma_phong = query?.ma_phong;
 		const query_min_so_ghe = query?.min_so_ghe ? parseInt(query.min_so_ghe) : undefined;
@@ -196,9 +176,6 @@ export const theaterService = {
 	},
 	postRoom: async function(req){
 		const body = req.body;
-		if(body === undefined){
-			throw new BadRequestError("Server expected a body");
-		}
 		const body_ma_rap = body?.ma_rap;
 		const body_ma_phong = body?.ma_phong;
 		const body_so_ghe = body?.so_ghe ? parseInt(body.so_ghe) : undefined;
@@ -241,40 +218,21 @@ export const theaterService = {
 	},
 	patchRoom: async function(req){
 		const query = req.query;
-		if(query === undefined){
-			throw new BadRequestError("Server expected a query");
-		}
 		const query_ma_phong = query?.ma_phong;
 		const query_ma_rap = query?.ma_rap;
 		const query_min_so_ghe = query?.min_so_ghe ? parseInt(query.min_so_ghe) : undefined;
 		const query_max_so_ghe = query?.max_so_ghe ? parseInt(query.max_so_ghe) : undefined;
 
 		const body = req.body;
-		if(body === undefined){
-			throw new BadRequestError("Server expected a body");
-		}
 		const body_ma_phong = body?.ma_phong;
 		const body_ma_rap = body?.ma_rap;
 		const body_so_ghe = body?.so_ghe ? parseInt(body.so_ghe) : undefined;
 
-		const find_room = await prisma_phong_chieu_phim.findMany({
-			where:{
-				ma_phong: {
-					contains: query_ma_phong,
-				},
-				ma_rap: {
-					contains: query_ma_rap,
-				},
-				so_ghe: {
-					gte: query_min_so_ghe,
-					lte: query_max_so_ghe,
-				},
-			}
-		})
+		const find_room = await getRoom(req)
 
-		if(find_room.length > 1 && body_ma_phong !== undefined && body_ma_rap !== undefined)
+		if(find_room.length > 1 && (body_ma_phong !== undefined || body_ma_rap !== undefined))
 		{
-			throw UnprocessableContentError("Multiple rooms can't have the same ID!");
+			console.warn("Unsafe patch query reagarding IDs!")
 		}
 
 		const room = await prisma.phong_chieu_phim.upsert({
@@ -301,9 +259,6 @@ export const theaterService = {
 	},
 	deleteRoom: async function(req){
 		const query = req.query;
-		if(query === undefined){
-			throw BadRequestError("Server expected a query");
-		}
 		const query_ma_phong = query?.ma_phong;
 		const query_ma_rap = query?.ma_rap;
 		const query_so_ghe = query?.so_ghe ? parseInt(query.so_ghe) : undefined;
@@ -353,9 +308,6 @@ export const theaterService = {
 	},
 	postSeat: async function(req){
 		const body = req.body;
-		if(body === undefined){
-			throw new BadRequestError("Server expected a body");
-		}
 		const body_ma_rap = body?.ma_rap;
 		const body_ma_phong = body?.ma_phong;
 		const body_ma_ghe = body?.ma_ghe;
@@ -405,18 +357,12 @@ export const theaterService = {
 	},
 	patchSeat: async function(req){
 		const query = req.query;
-		if(query === undefined){
-			throw BadRequestError("Server expected a query");
-		}
 		const query_ma_rap = query?.ma_rap;
 		const query_ma_phong = query?.ma_phong;
 		const query_ma_ghe = query?.ma_ghe;
 		const query_loai_ghe = query?.loai_ghe;
 
 		const body = req.body;
-		if(body === undefined){
-			throw new BadRequestError("Server expected a body");
-		}
 		const body_ma_rap = body?.ma_rap;
 		const body_ma_phong = body?.ma_phong;
 		const body_ma_ghe = body?.ma_ghe;
@@ -424,8 +370,8 @@ export const theaterService = {
 
 		const find_seat = await getSeat(req)
 
-		if(find_seat.length > 1 && body_ma_rap !== undefined && body_ma_phong !== undefined && body_ma_ghe !== undefined){
-			throw UnprocessableContentError("Multiple seats can't have the same ID!");
+		if(find_seat.length > 1 && (body_ma_rap !== undefined || body_ma_phong !== undefined || body_ma_ghe !== undefined)){
+			console.warn("Unsafe patch query reagarding IDs!")
 		}
 
 		const seat = await prisma.ghe.upsert({
@@ -455,9 +401,6 @@ export const theaterService = {
 	},
 	deleteSeat: async function(req){
 		const query = req.query;
-		if(query === undefined){
-			throw BadRequestError("Server expected a query");
-		}
 		const query_ma_rap = query?.ma_rap;
 		const query_ma_phong = query?.ma_phong;
 		const query_ma_ghe = query?.ma_ghe;

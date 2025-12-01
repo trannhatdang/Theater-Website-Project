@@ -9,9 +9,6 @@ import {
 export const employeeService = {
 	getEmployee: async function(req){
 		const query = req.query;
-		if(query === undefined){
-			throw new BadRequestError("Server expected a query");
-		}
 		const query_ma_nv = query?.ma_nv;
 		const query_ten = query?.ten;
 		const query_cccd = query?.cccd;
@@ -25,6 +22,33 @@ export const employeeService = {
 		const query_ma_rap_phim = query?.ma_rap_phim;
 		const query_gioi_tinh = query?.gioi_tinh;
 		const query_sdt = query?.sdt;
+
+		const isStrict = query?.isStrict;
+
+
+		if(isStrict){
+			const employee = await prisma.nhan_vien.findMany({
+				where: {
+					ma_nv: query_ma_nv,
+					ten: query_ten,
+					cccd: query_cccd,
+					ngay_sinh: {
+						gte: query_min_ngay_sinh,
+						lte: query_max_ngay_sinh,
+					},
+					luong: {
+						gte: query_min_luong,
+						lte: query_max_luong,
+					},
+					chuc_vu: query_chuc_vu,
+					dia_chi: query_dia_chi,
+					ma_nv_quan_ly: query_ma_nv_quan_ly,
+					ma_rap_phim: query_ma_rap_phim,
+					gioi_tinh: query_gioi_tinh
+				},
+			});
+			return employee;
+		}
 		
 		const employee = await prisma.nhan_vien.findMany({
 			where: {
@@ -65,9 +89,6 @@ export const employeeService = {
 	},
 	postEmployee: async function(req){
 		const body = req.body;
-		if(body === undefined){
-			throw new BadRequestError("Server expected a body");
-		}
 		const body_ma_nv = body?.ma_nv;
 		const body_ten = body?.ten;
 		const body_cccd = body?.cccd;
@@ -80,12 +101,16 @@ export const employeeService = {
 		const body_gioi_tinh = body?.gioi_tinh;
 		const body_sdt = body?.sdt;
 
+		if(find_employee !== null){
+			throw new UnprocessableContentError("Employee Already Exists!")
+		}
+
 		if(body_luong !== undefined && parseInt(body_luong) <= 0){
-			throw UnprocessableContentError("Salary must not be lower than 0!");
+			throw new UnprocessableContentError("Salary must not be lower than 0!");
 		}
 
 		if(body_ma_nv === undefined){
-			throw UnprocessableContentError("Employee must have an ID!");
+			throw new UnprocessableContentError("Employee must have an ID!");
 		}
 
 		const employee = await prisma.nhan_vien.create({
@@ -106,9 +131,6 @@ export const employeeService = {
 	},
 	patchEmployee: async function(req){
 		const query = req.query;
-		if(query === undefined){
-			throw new BadRequestError("Server expected a query");
-		}
 		const query_ma_nv = query?.ma_nv;
 		const query_ten = query?.ten;
 		const query_cccd = query?.cccd;
@@ -124,9 +146,6 @@ export const employeeService = {
 		const query_sdt = query?.sdt;
 
 		const body = req.body;
-		if(body === undefined){
-			throw new BadRequestError("Server expected a body");
-		}
 		const body_ma_nv = body?.ma_nv;
 		const body_ten = body?.ten;
 		const body_cccd = body?.cccd;
@@ -140,7 +159,7 @@ export const employeeService = {
 		const body_sdt = body?.sdt;
 
 		const find_employee = await getEmployee(req)
-		if(find_employee.length > 0 && body_ma_nv !== undefined){
+		if(find_employee.length !== null && body_ma_nv !== undefined){
 			throw UnprocessableContentError("Multiple employees can't have the same ID!");
 		}
 
@@ -191,6 +210,107 @@ export const employeeService = {
 				sdt: body_sdt
 			}
 		})
-	}
+	},
+	deleteEmployee: async function(req){
+		const query = req.query;
+		const query_ma_nv = query?.ma_nv;
+		const query_ten = query?.ten;
+		const query_cccd = query?.cccd;
+		const query_min_ngay_sinh = query?.min_ngay_sinh;
+		const query_max_ngay_sinh = query?.max_ngay_sinh;
+		const query_luong = query?.luong ? parseInt(query.luong) : undefined;
+		const query_chuc_vu = query?.chuc_vu;
+		const query_dia_chi = query?.dia_chi;
+		const query_ma_nv_quan_ly = query?.ma_nv_quan_ly;
+		const query_ma_rap_phim = query?.ma_rap_phim;
+		const query_gioi_tinh = query?.gioi_tinh;
+		const query_sdt = query?.sdt;
 
+		try{
+			const employee = await prisma.employee.delete({
+				where:{
+					ma_nv: query_ma_nv,
+					ten: query_ten,
+					cccd: query_cccd,
+					ngay_sinh: query_ngay_sinh,
+					luong: query_luong,
+					chuc_vu: query_chuc_vu,
+					dia_chi: query_dia_chi,
+					ma_nv_quan_ly: query_ma_nv_quan_ly,
+					ma_rap_phim: query_ma_rap_phim,
+					gioi_tinh: query_gioi_tinh,
+					sdt: query_sdt
+				}
+			})
+			return employee;
+		}
+		catch (e){
+			throw UnprocessableContentError(e.message);
+		}
+	},
+	getManager: async function(req){
+		const query = req.query;
+		const query_ma_nv = query?.ma_nv;
+
+		try{
+			const manager = await prisma.quan_tri_vien.findUniqueOrThrow({
+				where:{
+					ma_nv: query_ma_nv,
+				},
+			})
+			return manager;
+		}
+		catch(e){
+			throw UnprocessableContentError(e.message);
+		}
+	},
+	postManager: async function(req){
+		const body = req.body;
+		const body_ma_nv = body?.ma_nv;
+
+		const find_manager = getManager(req);
+		if(find_manager.length >= 1){
+			throw UnprocessableContentError("Multiple managers can't have the same ID!");
+		}
+
+		if(body_ma_nv === undefined){
+			throw UnprocessableContentError("Manager must have an ID!");
+		}
+
+		const manager = await prisma.quan_tri_vien.create({
+			data:{
+				ma_nv: body_ma_nv,
+			},
+		})
+	},
+	patchManager: async function(req){
+
+	},
+	deleteManager: async function(req){
+
+	},
+	getSalesperson: async function(req){
+
+	},
+	postSalesperson: async function(req){
+
+	},
+	patchSalesperson: async function(req){
+
+	},
+	deleteSalesperson: async function(req){
+
+	},
+	getWorkShift: async function(req){
+
+	},
+	postWorkShift: async function(req){
+
+	},
+	patchWorkShift: async function(req){
+
+	},
+	deleteWorkShift: async function(req){
+
+	},
 }

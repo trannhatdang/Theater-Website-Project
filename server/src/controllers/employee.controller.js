@@ -4,9 +4,9 @@ import {handleError} from '../helpers/handleError.js'
 
 
 export const employeeController = {
-	get: async function(req, res, next) {
+	getEmployee: async function(req, res, next) {
 		try{
-			const result = await employeeService.get(req)
+			const result = await employeeService.getEmployee(req)
 			const response = handleSuccessResponse(
 				message="Get Employee Success",
 				code=200,
@@ -19,7 +19,19 @@ export const employeeController = {
 			handleError(error, req, res, next);
 		}
 	},
-	create: async function() {
-
+	postEmployee: async function(req, res, next) {
+		try{
+			const result = await employeeService.postEmployee(req)
+			const response = handleSuccessResponse(
+				"Post Employee Success",
+				200,
+				undefined,
+				result
+			)
+			res.send(response)
+		}
+		catch (error){
+			handleError(error, req, res, next);
+		}
 	}
 }

@@ -5,12 +5,12 @@ const employeeRouter = express.Router();
 
 employeeRouter.get(
 	'/',
-	employeeController.get
+	employeeController.getEmployee
 )
 
 employeeRouter.post(
 	"/",
-	employeeController.create
+	employeeController.postEmployee
 )
 
 export default employeeRouter;
