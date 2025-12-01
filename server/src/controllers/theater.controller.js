@@ -6,10 +6,12 @@ const theaterControllerMap = {
 	postTheater: theaterService.postTheater,
 	patchTheater: theaterService.patchTheater,
 	deleteTheater: theaterService.deleteTheater,
+
 	getRoom: theaterService.getRoom,
 	postRoom: theaterService.postRoom,
 	patchRoom: theaterService.patchRoom,
 	deleteRoom: theaterService.deleteRoom,
+
 	getSeat: theaterService.getSeat,
 	postSeat: theaterService.postSeat,
 	patchSeat: theaterService.patchSeat,
