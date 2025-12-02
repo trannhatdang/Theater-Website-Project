@@ -43,8 +43,8 @@ function EmployeeSalaryRangeSlider({salaryRange, onChange}: SalaryRangeProps){
 }
 
 function EmployeeSearch(onChange: Function){
-	const handleChange = (event: Event, newValue: string) => {
-		onChange(e, newValue);
+	const handleChange = (event: Event) => {
+		onChange(event);
 	}
 	return(
 		<TextField 
