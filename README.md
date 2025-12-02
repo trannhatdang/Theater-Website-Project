@@ -7,12 +7,18 @@ Setup
 https://drive.google.com/file/d/16s50Ol68H0ZGo4MISfP5Iznws7NdlquA/view?usp=sharing
 ```
 
+Sau đó clone repo về và chạy lệnh:
+
+```
+npm i
+```
+
 Chạy dự án
 ---
 Chạy dự án bằng cách gõ lệnh 
 
 ```
-npm run dev. 
+npm run dev
 ```
 
 Hiện tại server chỉ mới hiện thực API nhân viên và rạp phim, tui sẽ làm tiếp những cái sau.
