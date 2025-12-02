@@ -130,6 +130,10 @@ export const theaterService = {
 				}
 			})
 		}
+		catch(e){
+			throw UnprocessableContentError(e.message);
+		}
+
 		return result;
 	},
 	deleteTheater: async function(req){

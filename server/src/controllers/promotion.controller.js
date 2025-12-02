@@ -4,3 +4,5 @@ import { handleSuccessResponse } from "../helpers/handleResponse.js";
 
 export const promotionController = {
 }
+
+export default promotionController;

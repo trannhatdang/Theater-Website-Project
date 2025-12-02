@@ -17,3 +17,5 @@ export const filmController = {
 		}
 	}
 }
+
+export default filmController;

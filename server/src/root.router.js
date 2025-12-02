@@ -7,11 +7,11 @@ import theaterController from "./controllers/theater.controller.js"
 
 const rootRouter = express.Router();
 
-rootRouter.use('/auth{/*type}', authController);
-rootRouter.use('/film{/*type}', filmController);
+/*rootRouter.use('/auth{/*type}', authController);
+rootRouter.use('/film{/*type}', filmController);*/
 rootRouter.use('/employee{/*type}', employeeController);
-rootRouter.use('/event{/*type}', eventController);
-rootRouter.use('/promotion{/*type}', promotionController);
+//rootRouter.use('/event{/*type}', eventController);
+//rootRouter.use('/promotion{/*type}', promotionController);
 rootRouter.use('/theater{/*type}', theaterController);
 
 export default rootRouter;

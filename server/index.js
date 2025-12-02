@@ -1,7 +1,7 @@
 import express from "express";
 import "dotenv/config";
 import cors from "cors";
-import rootRouter from "./src/routers/root.router.js";
+import rootRouter from "./src/root.router.js";
 import { PORT } from "./src/common/constant/config.constant.js";
 import { handleError } from "./src/helpers/handleError.js"
 
