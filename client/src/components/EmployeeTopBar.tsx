@@ -14,20 +14,17 @@ import type { EmployeeFilters } from './EmployeeView.tsx'
 
 interface SalaryRangeProps{
 	salaryRange: number[]
-	onChange(e: Event, newValue: number[]): void
+	onChange(newValue: number[]): void
 }
 
-interface FilterProps{
-	salaryRange: number[],
-	gender: string,
-	position: string,
+interface EmployeeFilterMenuProps{
+	filters: EmployeeFilters,
 	onApply(filters: EmployeeFilters): void
 }
 
 function EmployeeSalaryRangeSlider({salaryRange, onChange}: SalaryRangeProps){
 	const [val, setValue] = React.useState<number[]>(salaryRange);
-	const handleChange = (e: Event) => {
-		const newValue : number[] = e.target?.value;
+	const handleChange = (newValue: number[]) => {
 		setValue(newValue);
 		onChange(newValue);
 	};
@@ -36,16 +33,16 @@ function EmployeeSalaryRangeSlider({salaryRange, onChange}: SalaryRangeProps){
 		<div className='w-md pt-1'>
 			<Slider 
 				value = {val}
-				onChange = {handleChange}
+				onChange = {(_, newValue) => handleChange(newValue)}
 				className='w-md'
 			/>
 		</div>
 	)
 }
 
-function EmployeeFilterMenu({salaryRange, gender, position, onApply}: FilterProps) {
+function EmployeeFilterMenu({filters, onApply}: EmployeeFilterMenuProps) {
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-	const [filters, setFilters] = React.useState<FilterProps>({salaryRange, gender, position, onApply});
+	const [menuFilters, setMenuFilters] = React.useState<EmployeeFilters>(filters);
 	const open = Boolean(anchorEl);
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		setAnchorEl(event.currentTarget);
@@ -60,9 +57,10 @@ function EmployeeFilterMenu({salaryRange, gender, position, onApply}: FilterProp
 	};
 
 	const handleSalarySliderChange = (newValue: number[]) => {
-		let outputFilters = filters;
-		outputFilters.salaryRange = newValue;
-		setFilters(outputFilters);
+		let outputFilters = menuFilters;
+		outputFilters.min_luong = newValue[0];
+		outputFilters.max_luong = newValue[1];
+		setMenuFilters(outputFilters);
 	}
 
 	return (
@@ -96,7 +94,7 @@ function EmployeeFilterMenu({salaryRange, gender, position, onApply}: FilterProp
 			>
 				<MenuItem disableRipple disableTouchRipple className = 'flex flex-col'>
 					<div className='flex flex-row items-center gap-10'>
-						<p className='text-cyan-500' style={{color: '#1976d2'}}>SALARY</p> <EmployeeSalaryRangeSlider salaryRange={[salaryRange[0], salaryRange[1]]} onChange={handleSalarySliderChange}/>
+						<p className='text-cyan-500' style={{color: '#1976d2'}}>SALARY</p> <EmployeeSalaryRangeSlider salaryRange={[menuFilters.min_luong, menuFilters.max_luong]} onChange={handleSalarySliderChange}/>
 					</div>
 
 					<div className='flex flex-row items-center'>
@@ -111,26 +109,26 @@ function EmployeeFilterMenu({salaryRange, gender, position, onApply}: FilterProp
 }
 
 function EmployeeSearch({onChange, key} : {onChange: Function, key: string}){
-	const handleChange = (event: Event) => {
-		onChange(event, key, event?.target.value);
+	const handleChange = (newValue: string) => {
+		onChange(key, newValue);
 	}
 	return(
 		<TextField 
 			label='Search' 
 			variant='outlined' 
 			className='w-full'
-			onChange={handleChange}
+			onChange={(e: Event & {target: HTMLInputElement}) => handleChange(e.target.value)}
 		/>
 	)
 }
 
-interface SearchBarID{
+interface SearchBarKey{
 	key: string,
 	val: string
 }
 
 export default function EmployeeTopBar({filters, onChange}: {filters: EmployeeFilters, onChange: Function}){
-	const [searchBars, setSearchBars] = React.useState<SearchBarID[]>()
+	const [searchBars, setSearchBars] = React.useState<SearchBarKey[]>()
 	const [filters, setFilters] = React.useState<EmployeeFilters>()
 	const handleApply = (filters: EmployeeFilters) => {
 		setFilters(filters)
