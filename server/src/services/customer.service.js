@@ -20,6 +20,17 @@ export const customerService = {
 		if(isStrict){
 			const result = await prisma.khach_hang.findMany({
 				where:{
+					ma_khach_hang: ma_khach_hang,
+					ten: ten,
+					sdt: sdt,
+					gioi_tinh: gioi_tinh,
+					email: email,
+				},
+			});
+		}
+		else{
+			const result = await prisma.khach_hang.findMany({
+				where:{
 					ma_khach_hang: {
 						contains: ma_khach_hang,
 					},
@@ -38,17 +49,6 @@ export const customerService = {
 				},
 			});
 		}
-		else{
-			const result = await prisma.khach_hang.findMany({
-				where:{
-					ma_khach_hang: ma_khach_hang,
-					ten: ten,
-					sdt: sdt,
-					gioi_tinh: gioi_tinh,
-					email: email,
-				},
-			});
-		}
 
 		return result;
 	},
@@ -63,17 +63,17 @@ export const customerService = {
 		} = req.body;
 
 		try{
-			if(ma_khach_hang === undefined){
+			if(!ma_khach_hang){
 				throw Error("Customer must have an ID!");
 			}
 
 			const find_customer = await prisma.khach_hang.findUnique({
 				where:{
-					ma_khach_hang: ma_khach_hang
+					ma_khach_hang: ma_khach_hang,
 				}
 			});
 
-			if(find_customer !== null){
+			if(!find_customer){
 				throw Error("Multiple customers can't have the same ID!");
 			};
 		}
@@ -107,15 +107,24 @@ export const customerService = {
 			new_email
 		} = req.body;
 
-		const find_customer = await prisma.khach_hang.findUnique({
-			where:{
-				ma_khach_hang: new_ma_khach_hang,
-			},
-		});
+		try{
+			if(!ma_khach_hang){
+				throw Error("Customer needs an ID!");
+			}
 
-		if(find_customer !== null){
-			throw new UnprocessableContentError("Update creates conflicting information!");
-		};
+			const find_customer = await prisma.khach_hang.findUnique({
+				where:{
+					ma_khach_hang: new_ma_khach_hang,
+				},
+			});
+
+			if(new_ma_khach_hang && find_customer){
+				throw Error("Update creates conflicting information!");
+			};
+		}
+		catch(e){
+			throw UnprocessableContentError(e.message);
+		}
 
 		const result = await prisma.khach_hang.update({
 			where:{
@@ -168,18 +177,10 @@ export const customerService = {
 		if(isStrict){
 			const result = await prisma.khach_hang.findMany({
 				where:{
-					ten_tai_khoan: {
-						contains: ten_tai_khoan,
-					},
-					ma_khach_hang: {
-						contains: ma_khach_hang,
-					},
-					mat_khau: {
-						contains: mat_khau,
-					},
-					cap: {
-						contains: cap,
-					},
+					ten_tai_khoan: ten_tai_khoan,
+					ma_khach_hang: ma_khach_hang,
+					mat_khau: mat_khau,
+					cap: cap,
 					so_diem_tich_duoc: {
 						gte: min_so_diem_tich_duoc,
 						lte: max_so_diem_tich_duoc,
@@ -196,10 +197,18 @@ export const customerService = {
 		else{
 			const result = await prisma.khach_hang.findMany({
 				where:{
-					ten_tai_khoan: ten_tai_khoan,
-					ma_khach_hang: ma_khach_hang,
-					mat_khau: mat_khau,
-					cap: cap,
+					ten_tai_khoan: {
+						contains: ten_tai_khoan,
+					},
+					ma_khach_hang: {
+						contains: ma_khach_hang,
+					},
+					mat_khau: {
+						contains: mat_khau,
+					},
+					cap: {
+						contains: cap,
+					},
 					so_diem_tich_duoc: {
 						gte: min_so_diem_tich_duoc,
 						lte: max_so_diem_tich_duoc,
@@ -285,13 +294,17 @@ export const customerService = {
 		} = req.body;
 
 		try{
+			if(!ma_khach_hang || !ten_tai_khoan){
+				throw Error("Customer needs all required IDs!");
+			}
+
 			const find_customer = await prisma.khach_hang.findUnique({
 				where:{
 					ma_khach_hang: new_ma_khach_hang
 				},
 			});
 
-			if(find_customer === null){
+			if(!find_customer){
 				throw Error("Create corresponding customer first!")
 			};
 
@@ -302,7 +315,7 @@ export const customerService = {
 				},
 			});
 
-			if(find_customer_account !== null){
+			if(!find_customer_account){
 				throw Error("Update creates conflicting information!")
 			}
 		}
@@ -369,11 +382,10 @@ export const customerService = {
 						gte: min_so_diem_can,
 						lte: max_so_diem_can,
 					},
-					ten_cap_do: {
-						contains: ten_cap_do,
-					},
+					ten_cap_do: ten_cap_do,
 				},
 			});
+
 			return result;
 		}
 		else{
@@ -387,9 +399,12 @@ export const customerService = {
 						gte: min_so_diem_can,
 						lte: max_so_diem_can,
 					},
-					ten_cap_do: ten_cap_do,
+					ten_cap_do: {
+						contains: ten_cap_do,
+					},
 				},
 			});
+
 			return result;
 		}
 

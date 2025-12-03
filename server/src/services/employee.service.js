@@ -237,13 +237,26 @@ export const employeeService = {
 			ma_nv,
 		} = req.query;
 
-		const result = await prisma.quan_tri_vien.findMany({
-			where:{
-				ma_nv: ma_nv,
-			},
-		});
+		if(isStrict){
+			const result = await prisma.quan_tri_vien.findMany({
+				where:{
+					ma_nv: ma_nv,
+				},
+			});
 
-		return result;
+			return result;
+		}
+		else{
+			const result = await prisma.quan_tri_vien.findMany({
+				where:{
+					ma_nv:{
+						contains: ma_nv,
+					},
+				},
+			});
+
+			return result;
+		}
 	},
 
 	postManager: async function(req){
