@@ -141,40 +141,36 @@ export const filmService = {
 		} = req.body;
 
 		try{
-			if(ma_phim === undefined){
-				throw Error("Film must have an ID!");
-			}
-
 			const find_film = await prisma.phim.findUnique({
 				where:{
 					ma_phim: new_ma_phim,
 				},
 			});
 
-			if(find_film !== null){
+			if(!find_film){
 				throw Error("Update creates conflicting information!");
 			};
+
+			const result = await prisma.phim.update({
+				where:{
+					ma_phim: ma_phim,
+				},
+				data:{
+					ma_phim: new_ma_phim,
+					ten_phim: new_ten_phim,
+					thoi_luong: new_thoi_luong,
+					do_tuoi_yeu_cau: new_do_tuoi_yeu_cau,
+					thoi_gian_cong_chieu: new_thoi_gian_cong_chieu,
+					tom_tat_noi_dung: new_tom_tat_noi_dung,
+					dao_dien: new_dao_dien,
+				}
+			});
+
+			return result;
 		}
 		catch(e){
 			throw new UnprocessableContentError(e.message);
 		}
-
-		const result = await prisma.phim.update({
-			where:{
-				ma_phim: ma_phim,
-			},
-			data:{
-				ma_phim: new_ma_phim,
-				ten_phim: new_ten_phim,
-				thoi_luong: new_thoi_luong,
-				do_tuoi_yeu_cau: new_do_tuoi_yeu_cau,
-				thoi_gian_cong_chieu: new_thoi_gian_cong_chieu,
-				tom_tat_noi_dung: new_tom_tat_noi_dung,
-				dao_dien: new_dao_dien,
-			}
-		});
-
-		return result;
 	},
 
 	deleteFilm: async function(req){
@@ -246,7 +242,7 @@ export const filmService = {
 				}
 			});
 
-			if(find_film === null){
+			if(!find_film){
 				throw Error("Create corresponding film first!");
 			};
 
@@ -287,10 +283,6 @@ export const filmService = {
 		} = req.body;
 
 		try{
-			if(the_loai === undefined || ma_phim === undefined){
-				throw Error("Fill all required fields!");
-			}
-
 			const find_film = await prisma.filmd.findUnique({
 				where:{
 					ma_phim: new_ma_phim,
@@ -311,23 +303,24 @@ export const filmService = {
 			if(find_genre !== null){
 				throw Error("Update creates conflicting information!");
 			};
+
+			const result = await prisma.the_loai.update({
+				where:{
+					ma_phim: ma_phim,
+					the_loai: the_loai
+				},
+				data:{
+					ma_phim: new_ma_phim,
+					the_loai: new_the_loai,
+				}
+			});
+
+			return result;
 		}
 		catch(e){
 			throw new UnprocessableContentError(e.message);
 		}
 
-		const result = await prisma.the_loai.update({
-			where:{
-				ma_phim: ma_phim,
-				the_loai: the_loai
-			},
-			data:{
-				ma_phim: new_ma_phim,
-				the_loai: new_the_loai,
-			}
-		});
-
-		return result;
 	},
 
 	deleteGenre: async function(req){
@@ -390,7 +383,7 @@ export const filmService = {
 		} = req.body;
 
 		try{
-			if(dien_vien === undefined || ma_phim === undefined){
+			if(!dien_vien || !ma_phim){
 				throw Error("Fill all required fields!");
 			}
 
@@ -400,7 +393,7 @@ export const filmService = {
 				}
 			});
 
-			if(find_film === null){
+			if(!find_film){
 				throw Error("Create corresponding film first!");
 			};
 
@@ -411,9 +404,10 @@ export const filmService = {
 				}
 			});
 
-			if(find_actor !== null){
+			if(find_actor){
 				throw Error("Multiple Actors can't have the same ID!");
 			};
+
 		}
 		catch(e){
 			throw UnprocessableContentError(e.message);
@@ -441,17 +435,13 @@ export const filmService = {
 		} = req.body;
 
 		try{
-			if(dien_vien === undefined || ma_phim === undefined){
-				throw Error("Fill all required fields!");
-			}
-
 			const find_film = await prisma.film.findUnique({
 				where:{
 					ma_phim: new_ma_phim,
 				},
 			})
 
-			if(find_film === null){
+			if(new_ma_phim && !find_film){
 				throw Error("Create corresponding film first!")
 			}
 
@@ -462,26 +452,27 @@ export const filmService = {
 				},
 			});
 
-			if(find_actor !== null){
+			if(new_dien_vien && new_ma_phim && !find_actor){
 				throw Error("Update creates conflicting information!");
 			};
+
+			const result = await prisma.dien_vien.update({
+				where:{
+					ma_phim: ma_phim,
+					dien_vien: dien_vien
+				},
+				data:{
+					ma_phim: new_ma_phim,
+					dien_vien: new_dien_vien,
+				}
+			});
+
+			return result;
 		}
 		catch(e){
 			throw new UnprocessableContentError(e.message);
 		}
 
-		const result = await prisma.dien_vien.update({
-			where:{
-				ma_phim: ma_phim,
-				dien_vien: dien_vien
-			},
-			data:{
-				ma_phim: new_ma_phim,
-				dien_vien: new_dien_vien,
-			}
-		});
-
-		return result;
 	},
 
 	deleteActor: async function(req){

@@ -27,7 +27,7 @@ export const theaterService = {
 					sdt: sdt,
 				}
 			})
-			return result
+			return result;
 		}
 		else{
 			const result = await prisma.rap_phim.findMany({
@@ -50,7 +50,8 @@ export const theaterService = {
 					}
 				}
 			})
-			return result
+
+			return result;
 		}
 	},
 	postTheater: async function(req){
@@ -96,7 +97,10 @@ export const theaterService = {
 		return result;
 	},
 	patchTheater: async function(req){
-		const { ma_rap } = req.query;
+		const { 
+			ma_rap
+		} = req.query;
+
 		const {
 			new_ma_rap,
 			new_ten,
@@ -113,7 +117,7 @@ export const theaterService = {
 				}
 			})
 
-			if(find_theater){
+			if(new_ma_rap && find_theater){
 				throw Error("Update creates conflicting information!")
 			}
 
@@ -205,6 +209,17 @@ export const theaterService = {
 				throw Error("Room must have all required ID fields!")
 			}
 
+			//theater that has the room doesn't exist
+			const find_theater = await prisma.rap_phim.findUnique({
+				where:{
+					ma_rap: ma_rap
+				}
+			})
+
+			if(find_theater){
+				throw Error("Requested theater doesn't exist!")
+			}
+
 			//room with that id already exists
 			const find_room = await prisma.phong_chieu_phim.findUnique({
 				where:{
@@ -215,17 +230,6 @@ export const theaterService = {
 
 			if(find_room){
 				throw Error("Multiple rooms can't have the same ID!")
-			}
-
-			//theater that has the room doesn't exist
-			const find_theater = await prisma.rap_phim.findUnique({
-				where:{
-					ma_rap: ma_rap
-				}
-			})
-
-			if(find_theater){
-				throw Error("Requested theater doesn't exist!")
 			}
 		}
 		catch(e){
@@ -243,29 +247,45 @@ export const theaterService = {
 		return result;
 	},
 	patchRoom: async function(req){
-		const { ma_phong } = req.query;
+		const { 
+			ma_phong,
+			ma_rap,
+		} = req.query;
+
 		const {
 			new_ma_phong,
 			new_ma_rap,
 			new_so_ghe
 		} = req.body;
 
-		const result = await prisma.phong_chieu_phim.update({
-			where:{
-				ma_rap: ma_rap,
-				ma_phong: ma_phong,
-				so_ghe:{
-					gte: min_so_ghe,
-					lte: max_so_ghe,
+		try{
+			const find_theater = await prisma.rap_phim.findUnique({
+				where:{
+					ma_rap: new_ma_rap
 				},
-			},
-			data:{
-				ma_phong: new_ma_phong,
-				ma_rap: new_ma_rap,
-				so_ghe: new_so_ghe,
+			});
+
+			if(new_ma_rap && !find_theater){
+				throw Error("Create theater first!");
 			}
-		})
-		return result;
+
+			const result = await prisma.phong_chieu_phim.update({
+				where:{
+					ma_rap: ma_rap,
+					ma_phong: ma_phong,
+				},
+				data:{
+					ma_phong: new_ma_phong,
+					ma_rap: new_ma_rap,
+					so_ghe: new_so_ghe,
+				},
+			});
+
+			return result;
+		}
+		catch(e){
+			throw new UnprocessableContentError(e.message);
+		}
 	},
 	deleteRoom: async function(req){
 		const {
@@ -281,8 +301,9 @@ export const theaterService = {
 					ma_rap: ma_rap,
 					so_ghe: so_ghe ? parseInt(so_ghe) : undefined,
 				},
-			})
-			return result
+			});
+
+			return result;
 		}
 		catch (e){
 			throw UnprocessableContentError(e.message)
@@ -305,7 +326,8 @@ export const theaterService = {
 					ma_ghe: ma_ghe,
 					loai_ghe: loai_ghe
 				},
-			})
+			});
+
 			return result;
 		}
 		else{
@@ -324,7 +346,8 @@ export const theaterService = {
 						contains: loai_ghe
 					},
 				},
-			})
+			});
+
 			return result;
 		}
 	},
@@ -338,26 +361,8 @@ export const theaterService = {
 
 		try{
 			//all ids are needed
-			if(!ma_rap || !body_ma_phong || !body_ma_ghe){
-				throw Error("Seat must have all required ID fields!")
-			}
-
-			//seat type is required
-			if(!loai_ghe){
-				throw Error("Seat must have a type!")
-			}
-
-			//there is a seat that has the same id
-			const find_seat = await prisma.ghe.findMany({
-				where:{
-					ma_rap: ma_rap,
-					ma_phong: ma_phong,
-					ma_ghe: ma_ghe
-				}
-			})
-
-			if(find_seat){
-				throw Error("Multiple seats can't have the same ID!")
+			if(!ma_rap || !body_ma_phong || !body_ma_ghe || !loai_ghe){
+				throw Error("Seat must have all required fields!")
 			}
 
 			//the room that the seat belongs to doesn't exist
@@ -370,6 +375,19 @@ export const theaterService = {
 
 			if(!find_room){
 				throw Error("Requested room doesn't exist!");
+			}
+
+			//there is a seat that has the same id
+			const find_seat = await prisma.ghe.findUnique({
+				where:{
+					ma_rap: ma_rap,
+					ma_phong: ma_phong,
+					ma_ghe: ma_ghe
+				}
+			})
+
+			if(find_seat){
+				throw Error("Multiple seats can't have the same ID!")
 			}
 		}
 		catch(e){
@@ -388,7 +406,12 @@ export const theaterService = {
 		return result;
 	},
 	patchSeat: async function(req){
-		const { ma_rap }  = req.query;
+		const { 
+			ma_rap,
+			ma_phong,
+			ma_ghe,
+		}  = req.query;
+
 		const {
 			new_ma_rap,
 			new_ma_phong,
@@ -397,6 +420,18 @@ export const theaterService = {
 		} = req.body;
 
 		try{
+			//the room that the seat belongs to doesn't exist
+			const find_room = await prisma.phong_chieu_phim.findUnique({
+				where:{
+					ma_rap: new_ma_rap,
+					ma_phong: new_ma_phong
+				}
+			})
+
+			if(!find_room){
+				throw Error("Requested room doesn't exist!");
+			}
+
 			const find_seat = await prisma.get.findUnique({
 				where:{
 					ma_rap: new_ma_rap,
@@ -406,8 +441,8 @@ export const theaterService = {
 			})
 
 			//patch creates conflicting data
-			if(find_seat){
-				throw Error("New information conflicts with existing data!")
+			if(new_ma_rap && new_ma_phong && new_ma_ghe && find_seat){
+				throw Error("Update creates conflicting data!")
 			}
 
 			const result = await prisma.ghe.update({
@@ -420,20 +455,19 @@ export const theaterService = {
 					ma_ghe: new_ma_ghe,
 					loai_ghe: new_loai_ghe
 				},
-			})
+			});
 		}
 		catch(e){
-			throw new UnprocessableContentError(e.message)
+			throw new UnprocessableContentError(e.message);
 		}
 
-		return result
+		return result;
 	},
 	deleteSeat: async function(req){
 		const {
 			ma_rap,
 			ma_phong,
 			ma_ghe,
-			loai_ghe
 		} = req.query;
 
 		try{
@@ -441,10 +475,10 @@ export const theaterService = {
 				where:{
 					ma_rap: ma_rap,
 					ma_phong: ma_phong,
-					ma_ghe: ma_ghe,
-					loai_ghe: loai_ghe,
+					ma_ghe: ma_ghe
 				},
 			})
+
 			return result;
 		}
 		catch (e)
