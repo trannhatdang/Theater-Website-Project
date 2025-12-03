@@ -1,5 +1,6 @@
 import { promotionService } from "../services/promotion.service.js"
 import { handleSuccessResponse } from "../helpers/handleResponse.js";
+import { handleError } from "../helpers/handleError.js";
 
 export const promotionControllerMap = {
 	getPromotion: promotionService.getPromotion,
@@ -28,7 +29,7 @@ export const promotionControllerMap = {
 	deleteRelationExchangePromotion: promotionService.deleteRelationExchangePromotion,
 }
 
-export default async function promotionController(req, res) = {
+export default async function promotionController(req, res){
 	try{
 		const word = req.params?.type ? req.params.type[0] : "promotion";
 		const type = word[0].toUpperCase() + word.slice(1)

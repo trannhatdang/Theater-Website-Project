@@ -1,5 +1,6 @@
 import { filmService } from "../services/film.service.js"
 import { handleSuccessResponse } from "../helpers/handleResponse.js";
+import { handleError } from "../helpers/handleError.js";
 
 const filmControllerMap = {
 	getFilm: filmService.getFilm,

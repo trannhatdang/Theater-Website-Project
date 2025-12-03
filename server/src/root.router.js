@@ -5,6 +5,7 @@ import employeeController from './controllers/employee.controller.js'
 import eventController from './controllers/event.controller.js'
 import theaterController from './controllers/theater.controller.js'
 import customerController from './controllers/customer.controller.js'
+import promotionController from './controllers/promotion.controller.js'
 
 const rootRouter = express.Router();
 
