@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { motion } from 'motion/react'
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box'
-import Toolbar from '@mui/material/Toolbar'
+//import Container from '@mui/material/Container';
+//import Box from '@mui/material/Box'
+//import Toolbar from '@mui/material/Toolbar'
 import Button from '@mui/material/Button'
 import Stack from '@mui/material/Stack';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -12,14 +12,10 @@ import TheatersIcon from '@mui/icons-material/Theaters';
 import LoyaltyIcon from '@mui/icons-material/Loyalty';
 import CelebrationIcon from '@mui/icons-material/Celebration';
 export default function Sidebar(){
-	const [open, setOpen] = React.useState<bool>(false);
+	const [open, setOpen] = React.useState<Boolean>(false);
 
 	function handleClickOpen(){
 		setOpen(!open);
-	}
-
-	function handleClick(){
-
 	}
 
 	return (

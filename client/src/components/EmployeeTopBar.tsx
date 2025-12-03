@@ -10,7 +10,7 @@ import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton'
 //import Typography from '@mui/material/Typography'
 
-import type { Employee } from './EmployeeView.tsx'
+import type { EmployeeFilters } from './EmployeeView.tsx'
 
 interface SalaryRangeProps{
 	salaryRange: number[]
@@ -21,14 +21,15 @@ interface FilterProps{
 	salaryRange: number[],
 	gender: string,
 	position: string,
-	onApply(e: Event, salaryRange: number[], gender: string, position: string): void
+	onApply(filters: EmployeeFilters): void
 }
 
 function EmployeeSalaryRangeSlider({salaryRange, onChange}: SalaryRangeProps){
 	const [val, setValue] = React.useState<number[]>(salaryRange);
-	const handleChange = (event: Event, newValue: number[]) => {
+	const handleChange = (e: Event, newValue: number[]) => {
+		console.log(e)
 		setValue(newValue);
-		onChange(event, newValue)
+		onChange(newValue);
 	};
 
 	return (
@@ -42,25 +43,9 @@ function EmployeeSalaryRangeSlider({salaryRange, onChange}: SalaryRangeProps){
 	)
 }
 
-function EmployeeSearch(onChange: Function){
-	const handleChange = (event: Event) => {
-		onChange(event);
-	}
-	return(
-		<TextField 
-			label="Search" 
-			variant="outlined" 
-			className='w-full'
-			onChange={handleChange}
-		/>
-	)
-}
-
-function EmployeeFilterMenu(props: FilterProps) {
+function EmployeeFilterMenu({salaryRange, gender, position, onApply}: FilterProps) {
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-	const [salaryRange, setSalaryRange] = React.useState<Number[]>(props.salaryRange);
-	const [gender, setGender] = React.useState<Number[]>(props.gender);
-	const [position, setPosition] = React.useState<Number[]>(props.position);
+	const [filters, setFilters] = React.useState<FilterProps>({salaryRange, gender, position, onApply});
 	const open = Boolean(anchorEl);
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		setAnchorEl(event.currentTarget);
@@ -70,27 +55,29 @@ function EmployeeFilterMenu(props: FilterProps) {
 		setAnchorEl(null);
 	};
 
-	const handleApply = (e: Event) =>{
-		props.onApply(e, salaryRange, gender, position);
+	const handleApply = () => {
+		onApply(filters);
 	};
 
-	const onSalarySliderChange = (e: Event, newValue: number[]) => {
-		setSalaryRange(newValue)
-	};
+	const handleSalarySliderChange = (newValue: number[]) => {
+		let outputFilters = filters;
+		outputFilters.salaryRange = newValue;
+		setFilters(outputFilters);
+	}
 
 	return (
 		<div>
 			<IconButton
-				id="basic-button"
+				id='basic-button'
 				aria-controls={open ? 'basic-menu' : undefined}
-				aria-haspopup="true"
+				aria-haspopup='true'
 				aria-expanded={open ? 'true' : undefined}
 				onClick={handleClick}
 			>
 				<FilterAltIcon className='text-cyan-500'/>
 			</IconButton>
 			<Menu
-				id="employee-filter-menu"
+				id='employee-filter-menu'
 				anchorEl={anchorEl}
 				open={open}
 				onClose={handleClose}
@@ -101,7 +88,7 @@ function EmployeeFilterMenu(props: FilterProps) {
 				}}
 				sx={{
 					'& .MuiMenu-paper': {
-						backgroundColor: "#334155"
+						backgroundColor: '#334155'
 					}
 				}}
 				transformOrigin={{ horizontal: 'right', vertical: 'top' }}
@@ -109,7 +96,7 @@ function EmployeeFilterMenu(props: FilterProps) {
 			>
 				<MenuItem disableRipple disableTouchRipple className = 'flex flex-col'>
 					<div className='flex flex-row items-center gap-10'>
-						<p className='text-cyan-500' sx={{color: '#1976d2'}}>SALARY</p> <EmployeeSalaryRangeSlider min={0} max={100} onChange={onSalarySliderChange}/>
+						<p className='text-cyan-500' style={{color: '#1976d2'}}>SALARY</p> <EmployeeSalaryRangeSlider salaryRange={[salaryRange[0], salaryRange[1]]} onChange={handleSalarySliderChange}/>
 					</div>
 
 					<div className='flex flex-row items-center'>
@@ -123,15 +110,47 @@ function EmployeeFilterMenu(props: FilterProps) {
 	);
 }
 
-export default function EmployeeTopBar(props){
-	const handleChange = (e: Event, salaryRange: number[], gender: string, position: string) => {
-		props.onChange(e, salaryRange, gender, position);
+function EmployeeSearch({onChange, key} : {onChange: Function, key: string}){
+	const handleChange = (event: Event) => {
+		onChange(event, key, event?.target.value);
+	}
+	return(
+		<TextField 
+			label='Search' 
+			variant='outlined' 
+			className='w-full'
+			onChange={handleChange}
+		/>
+	)
+}
+
+interface SearchBarID{
+	key: string,
+	val: string
+}
+
+export default function EmployeeTopBar({filters, onChange}: {filters: EmployeeFilters, onChange: Function}){
+	const [searchBars, setSearchBars] = React.useState<SearchBarID[]>()
+	const [filters, setFilters] = React.useState<EmployeeFilters>()
+	const handleApply = (filters: EmployeeFilters) => {
+		setFilters(filters)
+		props.onChange(e, outputFilters);
+	};
+
+	const handleSearchChange = (key: string, newValue: string) => {
+		let outputFilters = filters;
+		outputFilters[key] = newValue;
+
+		props.onChange(outputFilters);
 	};
 
 	return (
 		<div className='shadow-md flex flex-row bg-slate-700 items-center p-2'>
-			<EmployeeSearch className='flex-1 w-full'/>
-			<EmployeeFilterMenu onApply={handleChange}/>
+			{searchBars.map((searchBar) => (
+				<EmployeeSearch className='flex-1 w-full' key={searchBar.key} onChange={handleSearchChange}/>
+			))}
+
+			<EmployeeFilterMenu onApply={handleApply} salaryRange={[filters.min_luong, filters.max_luong]} gender={filters.gioi_tinh} position={filters.chuc_vu}/>
 		</div>
 	)
 

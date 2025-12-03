@@ -1,16 +1,15 @@
 import * as React from 'react';
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box'
-import Breadcrumbs, { breadcrumbsClasses } from '@mui/material/Breadcrumbs'
+//import Container from '@mui/material/Container';
+//import Box from '@mui/material/Box'
+//import Breadcrumbs, { breadcrumbsClasses } from '@mui/material/Breadcrumbs'
 import Stack from '@mui/material/Stack'
-import RangeSlider from './RangeSlider.tsx';
-import Sidebar from './Sidebar.tsx'
+//import Sidebar from './Sidebar.tsx'
 import EmployeeTopBar from './EmployeeTopBar.tsx'
 import EmployeeTable from './EmployeeTable.tsx'
 import { useQuery } from "@tanstack/react-query";
 import { fetchEmployeeData } from '../utils/Query.tsx'
 
-export interface Employee {
+export interface EmployeeFilters {
 	ma_nv: string,
 	cccd: string,
 	ten: string,
@@ -27,13 +26,14 @@ export interface Employee {
 }
 
 export default function EmployeeView(){
-	const [Filters, setFilters] = React.useState<Employee>()
+	const [Filters, setFilters] = React.useState<EmployeeFilters>()
 	const { isPending, isError, data, error } = useQuery({ queryKey: [Filters], queryFn: fetchEmployeeData});
 	const handleChange = (
 		e: Event,
-		newFilters: Employee
+		newFilters: EmployeeFilters
 	) => {
-		setFilters(newFilters);
+		console.log(newFilters);
+		//setFilters(newFilters);
 	}
 
 	if (isPending) {
@@ -44,10 +44,12 @@ export default function EmployeeView(){
 		return <span className="text-white"> Error: {error.message} </span>;
 	}
 
+	const employees = Object.assign(new EmployeeFilters(), data)
+
 	return (
 		<div className='flex flex-col m-10 gap-2 w-full'>
 			<EmployeeTopBar onChange={handleChange}/>
-			<EmployeeTable employees={data}/>
+			<EmployeeTable employees={employees}/>
 		</div>
 	)
 }
