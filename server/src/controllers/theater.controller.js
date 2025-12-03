@@ -1,7 +1,7 @@
 import { theaterService } from "../services/theater.service.js"
 import { handleError } from '../helpers/handleError.js'
 
-const theaterControllerMap = {
+export const theaterControllerMap = {
 	getTheater: theaterService.getTheater,
 	postTheater: theaterService.postTheater,
 	patchTheater: theaterService.patchTheater,
