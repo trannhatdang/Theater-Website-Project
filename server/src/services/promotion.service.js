@@ -645,9 +645,11 @@ export const promotionService = {
 			const result = await prisma.quy_doi_khuyen_mai.update({
 				where:{
 					ma_km: ma_km,
+					ma_rap_phim: ma_rap_phim,
 				},
 				data:{
 					ma_km: new_ma_km,
+					ma_rap_phim: new_ma_rap_phim,
 				},
 			});
 
@@ -656,18 +658,19 @@ export const promotionService = {
 		catch(e){
 			throw UnprocessableContentError(e.message);
 		}
-
 	},
 
 	deleteRelationTheaterPromotion: async function(req){
 		const {
 			ma_km,
+			ma_rap_phim,
 		} = req.query;
 
 		try{
 			const result = await prisma.quy_doi_khuyen_mai.delete({
 				where:{
 					ma_km: ma_km,
+					ma_rap_phim: ma_rap_phim,
 				},
 			});
 
