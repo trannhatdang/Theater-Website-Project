@@ -147,7 +147,7 @@ export const filmService = {
 				},
 			});
 
-			if(!find_film){
+			if(new_ma_phim && !find_film){
 				throw Error("Update creates conflicting information!");
 			};
 
@@ -232,14 +232,14 @@ export const filmService = {
 		} = req.body;
 
 		try{
-			if(the_loai === undefined || ma_phim === undefined){
+			if(!the_loai || !ma_phim){
 				throw Error("Fill all required fields!");
 			}
 
 			const find_film = await prisma.phim.findUnique({
 				where:{
-					ma_phim: ma_phim
-				}
+					ma_phim: ma_phim,
+				},
 			});
 
 			if(!find_film){
@@ -249,11 +249,11 @@ export const filmService = {
 			const find_genre = await prisma.the_loai.findUnique({
 				where:{
 					ma_phim: ma_phim,
-					the_loai: the_loai
-				}
+					the_loai: the_loai,
+				},
 			});
 
-			if(find_genre !== null){
+			if(find_genre){
 				throw Error("Multiple genres can't have the same ID!");
 			};
 		}
@@ -283,7 +283,7 @@ export const filmService = {
 		} = req.body;
 
 		try{
-			const find_film = await prisma.filmd.findUnique({
+			const find_film = await prisma.phim.findUnique({
 				where:{
 					ma_phim: new_ma_phim,
 				},
@@ -312,7 +312,7 @@ export const filmService = {
 				data:{
 					ma_phim: new_ma_phim,
 					the_loai: new_the_loai,
-				}
+				},
 			});
 
 			return result;
@@ -589,7 +589,7 @@ export const filmService = {
 		} = req.body;
 
 		try{
-			if(ma_luot_chieu === undefined){
+			if(!ma_luot_chieu){
 				throw Error("Screening must have an ID!");
 			}
 
@@ -599,7 +599,7 @@ export const filmService = {
 				}
 			});
 
-			if(find_film === null){
+			if(!find_film){
 				throw Error("Create corresponding film first!");
 			};
 
@@ -675,17 +675,13 @@ export const filmService = {
 		} = req.body;
 
 		try{
-			if(ma_luot_chieu === undefined){
-				throw Error("Screening must have an ID!");
-			}
-
 			const find_film = await prisma.phim.findUnique({
 				where:{
 					ma_phim: ma_phim
 				}
 			});
 
-			if(find_film === null){
+			if(!find_film){
 				throw Error("Create corresponding film first!");
 			};
 
@@ -696,7 +692,7 @@ export const filmService = {
 				},
 			});
 
-			if(find_room === null){
+			if(!find_room){
 				throw Error("Create correspoding room first!");
 			}
 
@@ -716,7 +712,7 @@ export const filmService = {
 				}
 			});
 
-			if(find_screening !== null){
+			if(!find_screening){
 				throw Error("Multiple Screenings can't have the same ID!");
 			};
 		}
@@ -753,8 +749,8 @@ export const filmService = {
 		try{
 			const result = await prisma.suat_chieu.delete({
 				where:{
-					ma_suat_chieu: ma_suat_chieu
-				}
+					ma_suat_chieu: ma_suat_chieu,
+				},
 			});
 
 			return result;

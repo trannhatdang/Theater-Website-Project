@@ -36,7 +36,7 @@ export const promotionService = {
 						gte: min_thoi_gian_ket_thuc,
 						lte: max_thoi_gian_ket_thuc,
 					},
-					gia_tri: {
+					gia_tri:{
 						gte: min_gia_tri,
 						lte: max_gia_tri,
 					},
@@ -251,7 +251,7 @@ export const promotionService = {
 				throw Error("TheaterPromotion must have an ID!");
 			}
 
-			const find_promotion = await prisma.promotion.findUnique({
+			const find_promotion = await prisma.khuyen_mai.findUnique({
 				where:{
 					ma_km: ma_km
 				}
@@ -286,64 +286,61 @@ export const promotionService = {
 
 	patchTheaterPromotion: async function(req){
 		const {
-			ma_km 
+			ma_km,
 		} = req.query;
 
 		const {
-			new_ma_km 
+			new_ma_km,
 		} = req.body;
 
 		try{
-			if(!ma_km){
-				throw Error("TheaterPromotion must have an ID!");
-			}
-
-			const find_promotion = await prisma.promotion.findUnique({
+			const find_promotion = await prisma.khuyen_mai.findUnique({
 				where:{
 					ma_km: new_ma_km,
 				},
 			});
 
 			if(!find_promotion){
-				throw Error("Create corresponding promotion first!")
+				throw Error("Create corresponding promotion first!");
 			};
 
-			const find_promotion = await prisma.promotion.findUnique({
+			const find_theater_promotion = await prisma.khuyen_mai_toan_rap.findUnique({
 				where:{
 					ma_km: new_ma_km,
 				},
 			});
 
-			if(find_promotion){
-				throw Error("Update creates conflicting information!")
+			if(find_theater_promotion){
+				throw Error("Update creates conflicting information!");
 			};
+
+			const result = await prisma.khuyen_mai_toan_rap.update({
+				where:{
+					ma_km: ma_km,
+				},
+				data:{
+					ma_km: new_ma_km,
+				},
+			});
+
+			return result;
 		}
 		catch(e){
 			throw UnprocessableContentError(e.message);
 		}
 
-		const result = await prisma.khuyen_mai_toan_rap.update({
-			where:{
-				ma_km: ma_km
-			},
-			data:{
-				ma_km: new_ma_km
-			}
-		});
-
-		return result;
 	},
 
 	deleteTheaterPromotion: async function(req){
 		const {
-			ma_km
+			ma_km,
 		} = req.query;
 
 		try{
 			const result = await prisma.khuyen_mai_toan_rap.delete({
 				where:{
-					ma_km: ma_km
-				}
+					ma_km: ma_km,
+				},
 			});
 
 			return result;

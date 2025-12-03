@@ -106,7 +106,7 @@ export const employeeService = {
 
 		try{
 			//missing id
-			if(ma_nv === undefined){
+			if(!ma_nv){
 				throw Error("Employee must have an ID!");
 			}
 
@@ -117,12 +117,12 @@ export const employeeService = {
 				},
 			});
 
-			if(find_employee !== null){
+			if(find_employee){
 				throw Error("Employee Already Exists!");
 			}
 
 			//constraint: salary must be higher than 0
-			if(luong !== undefined && parseInt(luong) <= 0){
+			if(luong && parseInt(luong) < 0){
 				throw Error("Salary must not be lower than 0!");
 			}
 		}
@@ -184,7 +184,7 @@ export const employeeService = {
 			};
 
 			//constraint: salry must be non-negative
-			if(new_luong && parseInt(new_luong)){
+			if(new_luong && parseInt(new_luong) < 0){
 				throw Error("Salary must be non-negative!");
 			}
 
@@ -265,7 +265,7 @@ export const employeeService = {
 		} = req.body;
 
 		try{
-			if(ma_nv === undefined){
+			if(!ma_nv){
 				throw Error("Manager must have an ID!");
 			}
 
@@ -275,7 +275,7 @@ export const employeeService = {
 				}
 			});
 
-			if(find_employee === null){
+			if(!find_employee){
 				throw Error("Create corresponding employee first!")
 			};
 
@@ -285,7 +285,7 @@ export const employeeService = {
 				}
 			});
 
-			if(find_manager !== null){
+			if(find_manager){
 				throw Error("Multiple managers can't have the same ID!");
 			};
 		}
@@ -304,33 +304,48 @@ export const employeeService = {
 
 	patchManager: async function(req){
 		const {
-			ma_nv 
+			ma_nv,
 		} = req.query;
 
 		const {
-			new_ma_nv 
+			new_ma_nv,
 		} = req.body;
 
-		const find_employee = await prisma.nhan_vien.findUnique({
-			where:{
-				ma_nv: new_ma_nv,
-			},
-		});
+		try{
+			const find_employee = await prisma.nhan_vien.findUnique({
+				where:{
+					ma_nv: new_ma_nv,
+				},
+			});
 
-		if(find_employee === null){
-			throw new UnprocessableContentError("Create corresponding employee first!")
-		};
+			if(!find_employee){
+				throw Error("Create corresponding employee first!")
+			};
 
-		const result = await prisma.quan_tri_vien.update({
-			where:{
-				ma_nv: ma_nv
-			},
-			data:{
-				ma_nv: new_ma_nv
+			const find_manager = await prisma.nhan_vien_quan_ly.findUnique({
+				where:{
+					ma_nv: new_ma_nv,
+				}
+			})
+
+			if(find_manager){
+				throw Error("Update creates conflicting data!")
 			}
-		});
 
-		return result;
+			const result = await prisma.quan_tri_vien.update({
+				where:{
+					ma_nv: ma_nv
+				},
+				data:{
+					ma_nv: new_ma_nv
+				}
+			});
+
+			return result;
+		}
+		catch(e){
+			throw new UnprocessableContentError(e.message);
+		}
 	},
 
 	deleteManager: async function(req){
@@ -353,7 +368,9 @@ export const employeeService = {
 	},
 
 	getSalesperson: async function(req){
-		const { ma_nv } = req.query;
+		const {
+			ma_nv
+		} = req.query;
 
 		if(isStrict){
 			const result = await prisma.nhan_vien_ban_hang.findMany({
@@ -376,10 +393,12 @@ export const employeeService = {
 	},
 
 	postSalesperson: async function(req){
-		const { ma_nv } = req.body;
+		const {
+			ma_nv
+		} = req.body;
 
 		try{
-			if(ma_nv === undefined){
+			if(!ma_nv){
 				throw Error("Salesperson must have an ID!");
 			}
 
@@ -389,7 +408,7 @@ export const employeeService = {
 				}
 			});
 
-			if(find_employee === null){
+			if(find_employee){
 				throw Error("Create corresponding employee first!");
 			}
 
@@ -399,7 +418,7 @@ export const employeeService = {
 				}
 			});
 
-			if(find_salesperson.length !== null){
+			if(find_salesperson){
 				throw Error("Multiple salespeople can't have the same ID!");
 			}
 		}
@@ -418,11 +437,11 @@ export const employeeService = {
 
 	patchSalesperson: async function(req){
 		const {
-			ma_nv 
+			ma_nv
 		} = req.query;
 
 		const {
-			new_ma_nv 
+			new_ma_nv
 		} = req.body;
 
 		try{
@@ -432,8 +451,18 @@ export const employeeService = {
 				}
 			});
 
-			if(find_employee === null){
+			if(find_employee){
 				throw Error("Create corresponding employee first!");
+			}
+
+			const find_salesperson = await prisma.nhan_vien_ban_hang.findUnique({
+				where:{
+					ma_nv: new_ma_nv
+				},
+			});
+
+			if(find_salesperson){
+				throw Error("Update creates conflicting information!");
 			}
 
 			const result = await prisma.nhan_vien_ban_hang.update({
@@ -460,8 +489,8 @@ export const employeeService = {
 		try{
 			const result = await prisma.nhan_vien_ban_hang.delete({
 				where:{
-					ma_nv: ma_nv
-				}
+					ma_nv: ma_nv,
+				},
 			});
 
 			return result;
@@ -507,7 +536,7 @@ export const employeeService = {
 						contains: ma_nv,
 					},
 					ca_lam_viec: {
-						contains:ca_lam_viec,
+						contains: ca_lam_viec,
 					},
 					ngay_lam: {
 						gte: min_ngay_lam ? parseInt(min_ngay_lam) : undefined,
@@ -519,6 +548,7 @@ export const employeeService = {
 					},
 				}
 			});
+			
 			return result;
 		}
 	},
@@ -532,20 +562,8 @@ export const employeeService = {
 		} = req.body;
 
 		try{
-			if(ma_nv === undefined || ca_lam_viec === undefined || ngay_lam === undefined){
+			if(!ma_nv || !ca_lam_viec || !ngay_lam){
 				throw Error("Missing required field!");
-			}
-
-			const find_workshift = prisma.ca_lam_viec.findUnique({
-				where:{
-					ma_nv: ma_nv,
-					ca_lam_viec: ca_lam_viec,
-					ngay_lam: ngay_lam
-				}
-			});
-
-			if(find_workshift !== null){
-				throw Error("Shift already exists!");
 			}
 
 			const find_employee = prisma.employee.findUnique({
@@ -556,6 +574,18 @@ export const employeeService = {
 			
 			if(find_employee === null){
 				throw Error("Create employee first!");
+			}
+
+			const find_workshift = prisma.ca_lam_viec.findUnique({
+				where:{
+					ma_nv: ma_nv,
+					ca_lam_viec: ca_lam_viec,
+					ngay_lam: ngay_lam,
+				},
+			});
+
+			if(find_workshift){
+				throw Error("Shift already exists!");
 			}
 		}
 		catch(e){
@@ -588,6 +618,16 @@ export const employeeService = {
 		} = req.body;
 
 		try{
+			const find_employee = prisma.employee.findUnique({
+				where:{
+					ma_nv: ma_nv
+				}
+			});
+			
+			if(find_employee === null){
+				throw Error("Create employee first!");
+			}
+
 			const find_workshift = await prisma.ca_lam_viec.findUnique({
 				where:{
 					ma_nv: ma_nv,
