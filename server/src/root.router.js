@@ -12,7 +12,7 @@ const rootRouter = express.Router();
 rootRouter.use('/film{/*type}', filmController);
 rootRouter.use('/employee{/*type}', employeeController);
 //rootRouter.use('/event{/*type}', eventController);
-//rootRouter.use('/promotion{/*type}', promotionController);
+rootRouter.use('/promotion{/*type}', promotionController);
 rootRouter.use('/theater{/*type}', theaterController);
 rootRouter.use('/customer{/*type}', customerController);
 
