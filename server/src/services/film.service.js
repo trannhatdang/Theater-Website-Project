@@ -6,4 +6,5 @@ import {
 } from "../helpers/handleError.js";
 
 export const filmService = {
+	getFilm: async function()
 }
