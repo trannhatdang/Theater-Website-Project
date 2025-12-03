@@ -11,8 +11,9 @@ export const handleError = (err, req, res) => {
 		err.code = 403;
 	}
 
+	console.log(err)
 	res.status(err.code).json({
-		code: err.code, 
+		code: err.code,
 		stack: err.stack
 	});
 };

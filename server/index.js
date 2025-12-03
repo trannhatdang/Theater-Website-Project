@@ -4,6 +4,7 @@ import cors from "cors";
 import rootRouter from "./src/root.router.js";
 import { PORT } from "./src/common/constant/config.constant.js";
 import { handleError } from "./src/helpers/handleError.js"
+import { parseInput } from "./src/common/middleware/parseInput.js"
 
 const app = express();
 const port = PORT ?? 3000;
@@ -17,6 +18,7 @@ app.use(
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use(parseInput);
 app.use(rootRouter);
 
 app.listen(PORT, () => {
