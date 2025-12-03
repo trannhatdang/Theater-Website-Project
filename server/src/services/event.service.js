@@ -6,7 +6,7 @@ import {
 } from "../helpers/handleError.js";
 
 export const eventService = {
-	get: async function(req){
+	getEvent: async function(req){
 		const body = req.body;
 		const in_ma_sk = body?.ma_sk;
 		const in_ten_sk = body?.ten_sk;

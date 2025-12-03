@@ -151,10 +151,6 @@ export const promotionService = {
 		} = req.body;
 
 		try{
-			if(!ma_km){
-				throw Error("Promotion needs an ID!");
-			}
-
 			const find_employee = await prisma.nhan_vien.findUnique({
 				where:{
 					ma_km: new_ma_nv_quan_ly,
@@ -174,27 +170,27 @@ export const promotionService = {
 			if(find_promotion !== null){
 				throw Error("Update creates conflicting information");
 			};
+
+			const result = await prisma.khuyen_mai.update({
+				where:{
+					ma_km: ma_nv
+				},
+				data:{
+					ma_km: new_ma_km,
+					ten_km: new_ten_km,
+					loai_km: new_loai_km,
+					thoi_gian_bat_dau: new_thoi_gian_bat_dau,
+					thoi_gian_ket_thuc: new_thoi_gian_ket_thuc,
+					gia_tri: new_gia_tri,
+					ma_nv_quan_ly: new_ma_nv_quan_ly,
+				},
+			});
+
+			return result;
 		}
 		catch(e){
 			throw new UnprocessableContentError(e.message);
 		}
-
-		const result = await prisma.khuyen_mai.update({
-			where:{
-				ma_km: ma_nv
-			},
-			data:{
-				ma_km: new_ma_km,
-				ten_km: new_ten_km,
-				loai_km: new_loai_km,
-				thoi_gian_bat_dau: new_thoi_gian_bat_dau,
-				thoi_gian_ket_thuc: new_thoi_gian_ket_thuc,
-				gia_tri: new_gia_tri,
-				ma_nv_quan_ly: new_ma_nv_quan_ly,
-			},
-		});
-
-		return result;
 	},
 
 	deletePromotion: async function(req){
@@ -247,7 +243,7 @@ export const promotionService = {
 		} = req.body;
 
 		try{
-			if(ma_km === undefined){
+			if(!ma_km){
 				throw Error("TheaterPromotion must have an ID!");
 			}
 
@@ -330,7 +326,6 @@ export const promotionService = {
 		}
 
 	},
-
 	deleteTheaterPromotion: async function(req){
 		const {
 			ma_km,
@@ -338,6 +333,339 @@ export const promotionService = {
 
 		try{
 			const result = await prisma.khuyen_mai_toan_rap.delete({
+				where:{
+					ma_km: ma_km,
+				},
+			});
+
+			return result;
+		}
+		catch(e){
+			throw new UnprocessableContentError(e.message);
+		}
+	},
+
+	getRelationExchangePromotion: async function(req){
+		const { 
+			ma_km,
+			ma_khach_hang,
+			ten_tai_khoan,
+		} = req.query;
+
+		if(isStrict){
+			const result = await prisma.quy_doi_khuyen_mai.findMany({
+				where:{
+					ma_km: ma_km,
+					ma_khach_hang: ma_khach_hang,
+					ten_tai_khoan: ten_tai_khoan,
+				},
+			});
+			return result;
+		}
+		else{
+			const result = await prisma.quy_doi_khuyen_mai.findMany({
+				where:{
+					ma_km:{
+						contains: ma_km,
+					},
+					ma_khach_hang:{
+						contains: ma_khach_hang,
+					},
+					ten_tai_khoan:{
+						contains: ten_tai_khoan,
+					},
+				},
+			});
+			return result;
+		}
+	},
+
+	postRelationExchangePromotion: async function(req){
+		const {
+			ma_km,
+			ma_khach_hang,
+			ten_tai_khoan,
+		} = req.body;
+
+		try{
+			if(!ma_km){
+				throw Error("RelationExchangePromotion must have an ID!");
+			}
+
+			const find_promotion = await prisma.khuyen_mai_quy_doi.findUnique({
+				where:{
+					ma_km: ma_km
+				}
+			});
+
+			if(!find_promotion){
+				throw Error("Create corresponding ExchangePromotion first!")
+			};
+
+			const find_customer = await prisma.khuyen_mai_quy_doi.findUnique({
+				where:{
+					ma_khach_hang: ma_khach_hang,
+					ten_tai_khoan: ten_tai_khoan,
+				}
+			});
+
+			if(!find_customer){
+				throw Error("Create corresponding customer first!")
+			};
+
+			const find_relaction_exchange_promotion = await prisma.quy_doi_khuyen_mai.findUnique({
+				where:{
+					ma_km: ma_km,
+					ma_khach_hang: ma_khach_hang,
+					ten_tai_khoan: ten_tai_khoan,
+				},
+			});
+
+			if(find_relaction_exchange_promotion){
+				throw Error("Multiple exchange promotions can't have the same ID!");
+			};
+
+		}
+		catch(e){
+			throw UnprocessableContentError(e.message);
+		}
+
+		const result = await prisma.quy_doi_khuyen_mai.create({
+			data:{
+				ma_km: ma_km,
+				ma_khach_hang: ma_khach_hang,
+				ten_tai_khoan: ten_tai_khoan,
+			},
+		});
+
+		return result;
+	},
+
+	patchRelationExchangePromotion: async function(req){
+		const {
+			ma_km,
+			ma_khach_hang,
+			ten_tai_khoan,
+		} = req.query;
+
+		const {
+			new_ma_km,
+			new_ma_khach_hang,
+			new_ten_tai_khoan,
+		} = req.body;
+
+		try{
+			if(!ma_km || !ma_khach_hang || !ten_tai_khoan){
+				throw Error("Please fill all required fields!");
+			}
+
+			const find_new_exchange_promotion = await prisma.quy_doi_khuyen_mai.findUnique({
+				where:{
+					ma_km: new_ma_km ? new_ma_km : ma_km,
+					ma_khach_hang: new_ma_khach_hang ? new_ma_khach_hang : ma_khach_hang,
+					ten_tai_khoan: new_ten_tai_khoan ? new_ten_tai_khoan : ten_tai_khoan,
+				},
+			});
+
+			if(find_new_theater_promotion){
+				throw Error("Update creates conflicting information!");
+			};
+
+			const result = await prisma.quy_doi_khuyen_mai.update({
+				where:{
+					ma_km: ma_km,
+					ma_khach_hang: ma_khach_hang,
+					ten_tai_khoan: ten_tai_khoan,
+				},
+				data:{
+					ma_km: new_ma_km,
+					ma_khach_hang: new_ma_khach_hang,
+					ten_tai_khoan: new_ten_tai_khoan,
+				},
+			});
+
+			return result;
+		}
+		catch(e){
+			throw UnprocessableContentError(e.message);
+		}
+	},
+
+	deleteRelationExchangePromotion: async function(req){
+		const {
+			ma_km,
+			ma_khach_hang,
+			ten_tai_khoan,
+		} = req.query;
+
+		try{
+			const result = await prisma.quy_doi_khuyen_mai.delete({
+				where:{
+					ma_km: ma_km,
+				},
+			});
+
+			return result;
+		}
+		catch(e){
+			throw new UnprocessableContentError(e.message);
+		}
+	},
+
+	getRelationTheaterPromotion: async function(req){
+		const {
+			ma_km,
+			ma_rap,
+		} = req.query;
+
+		if(isStrict){
+			const result = await prisma.quy_doi_khuyen_mai.findMany({
+				where:{
+					ma_km: ma_km,
+					ma_rap: ma_rap,
+				},
+			});
+			return result;
+		}
+		else{
+			const result = await prisma.quy_doi_khuyen_mai.findMany({
+				where:{
+					ma_km:{
+						contains: ma_km,
+					},
+					ma_rap:{
+						contains: ma_rap,
+					},
+				},
+			});
+			return result;
+		}
+	},
+
+	postRelationTheaterPromotion: async function(req){
+		const {
+			ma_km,
+			ma_rap_phim,
+		} = req.body;
+
+		try{
+			if(!ma_km || !ma_rap_phim){
+				throw Error("Fill all required fields!");
+			}
+
+			const find_promotion = await prisma.khuyen_mai.findUnique({
+				where:{
+					ma_km: ma_km
+				}
+			});
+
+			if(!find_promotion){
+				throw Error("Create corresponding promotion first!");
+			}
+
+			const find_theater = await prisma.rap_phim.findUnique({
+				where:{
+					ma_rap_phim: ma_rap_phim,
+				},
+			});
+
+			if(!find_theater){
+				throw Error("Create corresponding theater first!");
+			}
+
+			const find_relation_theater_promotion = await prisma.rap_phim_ap_dung_khuyen_mai.findUnique({
+				where:{
+					ma_km: ma_km,
+					ma_rap_phim,
+				},
+			});
+
+			if(find_relation_theater_promotion){
+				throw Error("Multiple exchange promotions can't have the same ID!");
+			};
+
+		}
+		catch(e){
+			throw UnprocessableContentError(e.message);
+		}
+
+		const result = await prisma.rap_phim_ap_dung_khuyen_mai.create({
+			data:{
+				ma_km: ma_km,
+				ma_rap_phim: ma_rap_phim,
+			},
+		});
+
+		return result;
+	},
+
+	patchRelationTheaterPromotion: async function(req){
+		const {
+			ma_km,
+			ma_rap_phim,
+		} = req.query;
+
+		const {
+			new_ma_km,
+			new_ma_rap_phim,
+		} = req.body;
+
+		try{
+			if(!ma_km || !ma_rap_phim){
+				throw Error("Please fill all required fields!");
+			}
+
+			const find_promotion = await prisma.khuyen_mai.findUnique({
+				where:{
+					ma_km: new_ma_km
+				}
+			})
+
+			if(!find_promotion){
+				throw Error("Create corresponding promotion first!");
+			};
+
+			const find_theater = await prisma.rap_phim.findUnique({
+				where:{
+					ma_rap_phim: ma_rap_phim,
+				},
+			});
+
+			const find_theater_promotion = await prisma.rap_phim_ap_dung_khuyen_mai.findUnique({
+				where:{
+					ma_km: new_ma_km ? new_ma_km : ma_km,
+					ma_rap_phim: new_ma_rap_phim ? new_ma_rap_phim : ma_km,
+				},
+			});
+
+			if(find_theater_promotion){
+				throw Error("Update creates conflicting information!");
+			};
+
+			const result = await prisma.quy_doi_khuyen_mai.update({
+				where:{
+					ma_km: ma_km,
+				},
+				data:{
+					ma_km: new_ma_km,
+				},
+			});
+
+			return result;
+		}
+		catch(e){
+			throw UnprocessableContentError(e.message);
+		}
+
+	},
+
+	deleteRelationTheaterPromotion: async function(req){
+		const {
+			ma_km,
+		} = req.query;
+
+		try{
+			const result = await prisma.quy_doi_khuyen_mai.delete({
 				where:{
 					ma_km: ma_km,
 				},
