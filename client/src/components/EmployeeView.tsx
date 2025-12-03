@@ -27,7 +27,7 @@ export interface EmployeeFilters {
 
 export default function EmployeeView(){
 	const [Filters, setFilters] = React.useState<EmployeeFilters>()
-	const { isPending, isError, data, error } = useQuery({ queryKey: [Filters], queryFn: fetchEmployeeData});
+	const { isPending, isError, data, error } = useQuery({ queryKey: [Filters], queryFn: () => fetchEmployeeData(Filters)});
 	const handleChange = (
 		e: Event,
 		newFilters: EmployeeFilters

@@ -26,8 +26,8 @@ interface FilterProps{
 
 function EmployeeSalaryRangeSlider({salaryRange, onChange}: SalaryRangeProps){
 	const [val, setValue] = React.useState<number[]>(salaryRange);
-	const handleChange = (e: Event, newValue: number[]) => {
-		console.log(e)
+	const handleChange = (e: Event) => {
+		const newValue : number[] = e.target?.value;
 		setValue(newValue);
 		onChange(newValue);
 	};
