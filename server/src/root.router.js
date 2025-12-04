@@ -10,7 +10,7 @@ import promotionController from './controllers/promotion.controller.js'
 
 const rootRouter = express.Router();
 
-//rootRouter.use('/auth{/*type}', authController); 
+rootRouter.use('/auth{/*type}', authController); 
 rootRouter.use('/film{/*type}', filmController);
 rootRouter.use('/employee{/*type}', employeeController);
 rootRouter.use('/event{/*type}', eventController);

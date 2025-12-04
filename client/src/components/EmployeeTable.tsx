@@ -9,7 +9,7 @@ interface EmployeeProps{
 	sdt: string,
 	gioi_tinh: string,
 	ma_nv_quan_ly: string,
-	ma_rap_phim: string
+	ma_rap_phim: string,
 }
 
 const Employee = ({
@@ -23,7 +23,7 @@ const Employee = ({
 	sdt,
 	gioi_tinh,
 	ma_nv_quan_ly,
-	ma_rap_phim	
+	ma_rap_phim,
 }: EmployeeProps) => {
 	return (
 		<div className='text-white'>
@@ -35,8 +35,8 @@ const Employee = ({
 export default function EmployeeTable(employees : EmployeeProps[]){
 	return (
 		<>
-			{employees.map(employee => ( 
-				<Employee key={employee.ma_nv} ma_nv={employee.ma_nv} cccd={employee.cccd} ten={employee.ten} luong={employee.luong} ngay_sinh={employee.ngay_sinh} chuc_vu={employee.chuc_vu} dia_chi={employee.dia_chi} sdt={employee.sdt} gioi_tinh={employee.gioi_tinh} ma_nv_quan_ly={employee.ma_nv_quan_ly} ma_rap_phim={employee.ma_rap_phim}/>)
+			{employees.map(employee => 
+				<Employee key={employee.ma_nv} ma_nv={employee.ma_nv} cccd={employee.cccd} ten={employee.ten} luong={employee.luong} ngay_sinh={employee.ngay_sinh} chuc_vu={employee.chuc_vu} dia_chi={employee.dia_chi} sdt={employee.sdt} gioi_tinh={employee.gioi_tinh} ma_nv_quan_ly={employee.ma_nv_quan_ly} ma_rap_phim={employee.ma_rap_phim}/>
 			)}
 		</>
 	)

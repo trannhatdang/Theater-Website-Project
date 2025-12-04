@@ -1,7 +1,10 @@
 import type { EmployeeFilters } from '../components/EmployeeView.tsx'
-const url = 'http://localhost:3000'
+const url = 'http://localhost:3000';
 
-export const fetchEmployeeData = async (filters : EmployeeFilters) => {
+export const fetchEmployeeData = async (filters : EmployeeFilters | undefined) => {
+	if(!filters){
+		return {}
+	}
 	const queryParams = new URLSearchParams(JSON.stringify(filters)).toString();
 
 	const employees = await fetch(url + '/employee?' + queryParams, {
