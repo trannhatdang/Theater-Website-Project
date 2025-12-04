@@ -17,40 +17,45 @@ export const customerService = {
 			isStrict
 		} = req.query;
 
-		if(isStrict){
-			const result = await prisma.khach_hang.findMany({
-				where:{
-					ma_khach_hang: ma_khach_hang,
-					ten: ten,
-					sdt: sdt,
-					gioi_tinh: gioi_tinh,
-					email: email,
-				},
-			});
-		}
-		else{
-			const result = await prisma.khach_hang.findMany({
-				where:{
-					ma_khach_hang: {
-						contains: ma_khach_hang,
+		try{
+			if(isStrict){
+				const result = await prisma.khach_hang.findMany({
+					where:{
+						ma_khach_hang: ma_khach_hang,
+						ten: ten,
+						sdt: sdt,
+						gioi_tinh: gioi_tinh,
+						email: email,
 					},
-					ten: {
-						contains: ten,
+				});
+			}
+			else{
+				const result = await prisma.khach_hang.findMany({
+					where:{
+						ma_khach_hang: {
+							contains: ma_khach_hang,
+						},
+						ten: {
+							contains: ten,
+						},
+						sdt: {
+							contains: sdt,
+						},
+						gioi_tinh: {
+							contains: gioi_tinh,
+						},
+						email: {
+							contains: email,
+						}
 					},
-					sdt: {
-						contains: sdt,
-					},
-					gioi_tinh: {
-						contains: gioi_tinh,
-					},
-					email: {
-						contains: email,
-					}
-				},
-			});
-		}
+				});
+			}
 
-		return result;
+			return result;
+		}
+		catch(e){
+			throw new UnprocessableContentError(e.message);
+		}
 	},
 
 	postCustomer: async function(req){
@@ -63,35 +68,22 @@ export const customerService = {
 		} = req.body;
 
 		try{
-			if(!ma_khach_hang){
-				throw Error("Customer must have an ID!");
-			}
-
-			const find_customer = await prisma.khach_hang.findUnique({
-				where:{
+			const result = await prisma.khach_hang.create({
+				data:{
 					ma_khach_hang: ma_khach_hang,
-				}
+					ten: ten,
+					sdt: sdt,
+					gioi_tinh: gioi_tinh,
+					email: email
+				},
 			});
 
-			if(!find_customer){
-				throw Error("Multiple customers can't have the same ID!");
-			};
+			return result;
 		}
 		catch(e){
 			throw UnprocessableContentError(e.message);
 		}
 
-		const result = await prisma.khach_hang.create({
-			data:{
-				ma_khach_hang: ma_khach_hang,
-				ten: ten,
-				sdt: sdt,
-				gioi_tinh: gioi_tinh,
-				email: email
-			},
-		});
-
-		return result;
 	},
 
 	patchCustomer: async function(req){
@@ -108,38 +100,25 @@ export const customerService = {
 		} = req.body;
 
 		try{
-			if(!ma_khach_hang){
-				throw Error("Customer needs an ID!");
-			}
-
-			const find_customer = await prisma.khach_hang.findUnique({
+			const result = await prisma.khach_hang.update({
 				where:{
-					ma_khach_hang: new_ma_khach_hang,
+					ma_khach_hang: ma_khach_hang
 				},
+				data:{
+					ma_khach_hang: new_ma_khach_hang,
+					ten: new_ten,
+					sdt: new_sdt,
+					gioi_tinh: new_gioi_tinh,
+					email: new_email
+				}
 			});
 
-			if(new_ma_khach_hang && find_customer){
-				throw Error("Update creates conflicting information!");
-			};
+			return result;
 		}
 		catch(e){
 			throw UnprocessableContentError(e.message);
 		}
 
-		const result = await prisma.khach_hang.update({
-			where:{
-				ma_khach_hang: ma_khach_hang
-			},
-			data:{
-				ma_khach_hang: new_ma_khach_hang,
-				ten: new_ten,
-				sdt: new_sdt,
-				gioi_tinh: new_gioi_tinh,
-				email: new_email
-			}
-		});
-
-		return result;
 	},
 
 	deleteCustomer: async function(req){
@@ -174,53 +153,58 @@ export const customerService = {
 			isStrict
 		} = req.query;
 
-		if(isStrict){
-			const result = await prisma.khach_hang.findMany({
-				where:{
-					ten_tai_khoan: ten_tai_khoan,
-					ma_khach_hang: ma_khach_hang,
-					mat_khau: mat_khau,
-					cap: cap,
-					so_diem_tich_duoc: {
-						gte: min_so_diem_tich_duoc,
-						lte: max_so_diem_tich_duoc,
+		try{
+			if(isStrict){
+				const result = await prisma.khach_hang.findMany({
+					where:{
+						ten_tai_khoan: ten_tai_khoan,
+						ma_khach_hang: ma_khach_hang,
+						mat_khau: mat_khau,
+						cap: cap,
+						so_diem_tich_duoc: {
+							gte: min_so_diem_tich_duoc,
+							lte: max_so_diem_tich_duoc,
+						},
+						so_diem_can_len_cap: {
+							gte: min_so_diem_can_len_cap,
+							lte: max_so_diem_can_len_cap,
+						},
 					},
-					so_diem_can_len_cap: {
-						gte: min_so_diem_can_len_cap,
-						lte: max_so_diem_can_len_cap,
-					},
-				},
-			});
+				});
 
-			return result;
+				return result;
+			}
+			else{
+				const result = await prisma.khach_hang.findMany({
+					where:{
+						ten_tai_khoan: {
+							contains: ten_tai_khoan,
+						},
+						ma_khach_hang: {
+							contains: ma_khach_hang,
+						},
+						mat_khau: {
+							contains: mat_khau,
+						},
+						cap: {
+							contains: cap,
+						},
+						so_diem_tich_duoc: {
+							gte: min_so_diem_tich_duoc,
+							lte: max_so_diem_tich_duoc,
+						},
+						so_diem_can_len_cap: {
+							gte: min_so_diem_can_len_cap,
+							lte: max_so_diem_can_len_cap,
+						},
+					},
+				});
+
+				return result;
+			}
 		}
-		else{
-			const result = await prisma.khach_hang.findMany({
-				where:{
-					ten_tai_khoan: {
-						contains: ten_tai_khoan,
-					},
-					ma_khach_hang: {
-						contains: ma_khach_hang,
-					},
-					mat_khau: {
-						contains: mat_khau,
-					},
-					cap: {
-						contains: cap,
-					},
-					so_diem_tich_duoc: {
-						gte: min_so_diem_tich_duoc,
-						lte: max_so_diem_tich_duoc,
-					},
-					so_diem_can_len_cap: {
-						gte: min_so_diem_can_len_cap,
-						lte: max_so_diem_can_len_cap,
-					},
-				},
-			});
-
-			return result;
+		catch(e){
+			throw new UnprocessableContentError(e.message);
 		}
 	},
 
@@ -235,47 +219,23 @@ export const customerService = {
 		} = req.body;
 
 		try{
-			if(ten_tai_khoan === undefined || ma_khach_hang === undefined){
-				throw Error("Missing required fields!");
-			}
-
-			const find_customer = await prisma.khach_hang.findUnique({
-				where:{
-					ma_khach_hang: ma_khach_hang,
-				},
-			});
-
-			if(find_customer === null){
-				throw Error("Create corresponding customer first!")
-			};
-
-			const find_customer_account = await prisma.tai_khoan_khach_hang.findUnique({
-				where:{
+			const result = await prisma.khach_hang.create({
+				data:{
 					ma_khach_hang: ma_khach_hang,
 					ten_tai_khoan: ten_tai_khoan,
+					mat_khau: mat_khau,
+					cap: cap,
+					so_diem_tich_duoc: so_diem_tich_duoc,
+					so_diem_can_len_cap: so_diem_can_len_cap,
 				},
 			});
 
-			if(find_customer_account !== null){
-				throw Error("Multiple accounts can't have the same ID!");
-			};
+			return result;
 		}
 		catch(e){
 			throw UnprocessableContentError(e.message);
 		}
 
-		const result = await prisma.khach_hang.create({
-			data:{
-				ma_khach_hang: ma_khach_hang,
-				ten_tai_khoan: ten_tai_khoan,
-				mat_khau: mat_khau,
-				cap: cap,
-				so_diem_tich_duoc: so_diem_tich_duoc,
-				so_diem_can_len_cap: so_diem_can_len_cap,
-			},
-		});
-
-		return result;
 	},
 
 	patchCustomerAccount: async function(req){
@@ -294,51 +254,27 @@ export const customerService = {
 		} = req.body;
 
 		try{
-			if(!ma_khach_hang || !ten_tai_khoan){
-				throw Error("Customer needs all required IDs!");
-			}
-
-			const find_customer = await prisma.khach_hang.findUnique({
+			const result = await prisma.khach_hang.update({
 				where:{
-					ma_khach_hang: new_ma_khach_hang
+					ma_khach_hang: ma_khach_hang,
+					ten_tai_khoan: ten_tai_khoan,
 				},
-			});
-
-			if(!find_customer){
-				throw Error("Create corresponding customer first!")
-			};
-
-			const find_customer_account = await prisma.tai_khoan_khach_hang.findUnique({
-				where:{
+				data:{
 					ma_khach_hang: new_ma_khach_hang,
 					ten_tai_khoan: new_ten_tai_khoan,
+					mat_khau: new_mat_khau,
+					cap: new_cap,
+					so_diem_tich_duoc: new_so_diem_tich_duoc,
+					so_diem_can_len_cap: new_so_diem_can_len_cap,
 				},
 			});
 
-			if(!find_customer_account){
-				throw Error("Update creates conflicting information!")
-			}
+			return result;
 		}
 		catch(e){
 			throw new UnprocessableContentError(e.message);
 		}
 
-		const result = await prisma.khach_hang.update({
-			where:{
-				ma_khach_hang: ma_khach_hang,
-				ten_tai_khoan: ten_tai_khoan,
-			},
-			data:{
-				ma_khach_hang: new_ma_khach_hang,
-				ten_tai_khoan: new_ten_tai_khoan,
-				mat_khau: new_mat_khau,
-				cap: new_cap,
-				so_diem_tich_duoc: new_so_diem_tich_duoc,
-				so_diem_can_len_cap: new_so_diem_can_len_cap,
-			},
-		});
-
-		return result;
 	},
 
 	deleteCustomerAccount: async function(req){
@@ -371,44 +307,50 @@ export const customerService = {
 			ten_cap_do,
 		} = req.query;
 
-		if(isStrict){
-			const result = await prisma.cap_do.findMany({
-				where:{
-					cap: {
-						gte: min_cap,
-						lte: max_cap,
+		try{
+			if(isStrict){
+				const result = await prisma.cap_do.findMany({
+					where:{
+						cap: {
+							gte: min_cap,
+							lte: max_cap,
+						},
+						so_diem_can: {
+							gte: min_so_diem_can,
+							lte: max_so_diem_can,
+						},
+						ten_cap_do: ten_cap_do,
 					},
-					so_diem_can: {
-						gte: min_so_diem_can,
-						lte: max_so_diem_can,
+				});
+
+				return result;
+			}
+			else{
+				const result = await prisma.cap_do.findMany({
+					where:{
+						cap: {
+							gte: min_cap,
+							lte: max_cap,
+						},
+						so_diem_can: {
+							gte: min_so_diem_can,
+							lte: max_so_diem_can,
+						},
+						ten_cap_do: {
+							contains: ten_cap_do,
+						},
 					},
-					ten_cap_do: ten_cap_do,
-				},
-			});
+				});
+
+				return result;
+			}
 
 			return result;
-		}
-		else{
-			const result = await prisma.cap_do.findMany({
-				where:{
-					cap: {
-						gte: min_cap,
-						lte: max_cap,
-					},
-					so_diem_can: {
-						gte: min_so_diem_can,
-						lte: max_so_diem_can,
-					},
-					ten_cap_do: {
-						contains: ten_cap_do,
-					},
-				},
-			});
 
-			return result;
 		}
-
-		return result;
+		catch(e){
+			throw new UnprocessableContentError(e.message);
+		}
 	},
 
 	postLevel: async function(req){
@@ -418,15 +360,21 @@ export const customerService = {
 			ten_cap_do,
 		} = req.body;
 
-		const result = await prisma.cap_do.create({
-			data:{
-				cap: cap,
-				so_diem_can: so_diem_can,
-				ten_cap_do: ten_cap_do,
-			},
-		});
+		try{
+			const result = await prisma.cap_do.create({
+				data:{
+					cap: cap,
+					so_diem_can: so_diem_can,
+					ten_cap_do: ten_cap_do,
+				},
+			});
 
-		return result;
+			return result;
+
+		}
+		catch(e){
+			throw new UnprocessableContentError(e.message);
+		}
 	},
 
 	patchLevel: async function(req){
@@ -442,20 +390,26 @@ export const customerService = {
 			new_ten_cap_do,
 		} = req.body;
 
-		const result = await prisma.khach_hang.update({
-			where:{
-				cap: cap,
-				so_diem_can: so_diem_can,
-				ten_cap_do: ten_cap_do,
-			},
-			data:{
-				cap: new_cap,
-				so_diem_can: new_so_diem_can,
-				ten_cap_do: new_ten_cap_do,
-			},
-		});
+		try{
+			const result = await prisma.khach_hang.update({
+				where:{
+					cap: cap,
+					so_diem_can: so_diem_can,
+					ten_cap_do: ten_cap_do,
+				},
+				data:{
+					cap: new_cap,
+					so_diem_can: new_so_diem_can,
+					ten_cap_do: new_ten_cap_do,
+				},
+			});
 
-		return result;
+			return result;
+
+		}
+		catch(e){
+			throw new UnprocessableContentError(e.message);
+		}
 	},
 
 	deleteLevel: async function(req){

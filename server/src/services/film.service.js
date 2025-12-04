@@ -22,61 +22,66 @@ export const filmService = {
 			isStrict
 		} = req.query;
 
-		if(isStrict){
-			const result = await prisma.phim.findMany({
-				where:{
-					ma_phim: ma_phim,
-					ten_phim: ten_phim,
-					thoi_luong: {
-						lte: min_thoi_luong,
-						gte: max_thoi_luong,
+		try{
+			if(isStrict){
+				const result = await prisma.phim.findMany({
+					where:{
+						ma_phim: ma_phim,
+						ten_phim: ten_phim,
+						thoi_luong: {
+							lte: min_thoi_luong ? new Date(min_thoi_luong) : undefined,
+							gte: max_thoi_luong ? new Date(max_thoi_luong) : undefined,
+						},
+						do_tuoi_yeu_cau: {
+							lte: min_do_tuoi_yeu_cau ? parseInt(min_do_tuoi_yeu_cau) : undefined,
+							gte: max_do_tuoi_yeu_cau ? parseInt(max_do_tuoi_yeu_cau) : undefined,
+						},
+						thoi_gian_cong_chieu: {
+							lte: min_thoi_gian_cong_chieu ? new Date(min_thoi_gian_cong_chieu) : undefined,
+							gte: max_thoi_gian_cong_chieu ? new Date(max_thoi_gian_cong_chieu) : undefined,
+						},
+						tom_tat_noi_dung: tom_tat_noi_dung,
+						dao_dien: dao_dien,
 					},
-					do_tuoi_yeu_cau: {
-						lte: min_do_tuoi_yeu_cau,
-						gte: max_do_tuoi_yeu_cau,
-					},
-					thoi_gian_cong_chieu: {
-						lte: min_thoi_gian_cong_chieu,
-						gte: max_thoi_gian_cong_chieu,
-					},
-					tom_tat_noi_dung: tom_tat_noi_dung,
-					dao_dien: dao_dien,
-				},
-			});
+				});
 
-			return result;
+				return result;
+			}
+			else{
+				const result = await prisma.phim.findMany({
+					where:{
+						ma_phim: {
+							contains: ma_phim,
+						},
+						ten_phim: {
+							contains: ten_phim,
+						},
+						thoi_luong: {
+							lte: min_thoi_luong ? new Date(min_thoi_luong) : undefined,
+							gte: max_thoi_luong ? new Date(max_thoi_luong) : undefined,
+						},
+						do_tuoi_yeu_cau: {
+							lte: min_do_tuoi_yeu_cau ? parseInt(min_do_tuoi_yeu_cau) : undefined,
+							gte: max_do_tuoi_yeu_cau ? parseInt(max_do_tuoi_yeu_cau) : undefined,
+						},
+						thoi_gian_cong_chieu: {
+							lte: min_thoi_gian_cong_chieu ? new Date(min_thoi_gian_cong_chieu) : undefined,
+							gte: max_thoi_gian_cong_chieu ? new Date(max_thoi_gian_cong_chieu) : undefined,
+						},
+						tom_tat_noi_dung: {
+							contains: tom_tat_noi_dung,
+						},
+						dao_dien: {
+							contains: dao_dien,
+						}
+					},
+				});
+
+				return result;
+			}
 		}
-		else{
-			const result = await prisma.phim.findMany({
-				where:{
-					ma_phim: {
-						contains: ma_phim,
-					},
-					ten_phim: {
-						contains: ten_phim,
-					},
-					thoi_luong: {
-						lte: min_thoi_luong,
-						gte: max_thoi_luong,
-					},
-					do_tuoi_yeu_cau: {
-						lte: min_do_tuoi_yeu_cau,
-						gte: max_do_tuoi_yeu_cau,
-					},
-					thoi_gian_cong_chieu: {
-						lte: min_thoi_gian_cong_chieu,
-						gte: max_thoi_gian_cong_chieu,
-					},
-					tom_tat_noi_dung: {
-						contains: tom_tat_noi_dung,
-					},
-					dao_dien: {
-						contains: dao_dien,
-					}
-				},
-			});
-
-			return result;
+		catch(e){
+			throw new UnprocessableContentError(e.message);
 		}
 	},
 
@@ -92,37 +97,24 @@ export const filmService = {
 		} = req.body;
 
 		try{
-			if(ma_phim === undefined){
-				throw Error("Film must have an ID!");
-			}
-
-			const find_film = await prisma.phim.findUnique({
-				where:{
+			const result = await prisma.phim.create({
+				data:{
 					ma_phim: ma_phim,
+					ten_phim: ten_phim,
+					thoi_luong: thoi_luong ? new Date(thoi_luong) : undefined,
+					do_tuoi_yeu_cau: do_tuoi_yeu_cau ? parseInt(do_tuoi_yeu_cau) : undefined,
+					thoi_gian_cong_chieu: thoi_gian_cong_chieu ? new Date(thoi_gian_cong_chieu) : undefined,
+					tom_tat_noi_dung: tom_tat_noi_dung,
+					dao_dien: dao_dien,
 				},
 			});
 
-			if(find_customer !== null){
-				throw Error("Multiple films can't have the same ID!");
-			};
+			return result;
 		}
 		catch(e){
 			throw UnprocessableContentError(e.message);
 		}
 
-		const result = await prisma.phim.create({
-			data:{
-				ma_phim: ma_phim,
-				ten_phim: ten_phim,
-				thoi_luong: thoi_luong,
-				do_tuoi_yeu_cau: do_tuoi_yeu_cau,
-				thoi_gian_cong_chieu: thoi_gian_cong_chieu,
-				tom_tat_noi_dung: tom_tat_noi_dung,
-				dao_dien: dao_dien,
-			},
-		});
-
-		return result;
 	},
 
 	patchFilm: async function(req){
@@ -141,16 +133,6 @@ export const filmService = {
 		} = req.body;
 
 		try{
-			const find_film = await prisma.phim.findUnique({
-				where:{
-					ma_phim: new_ma_phim,
-				},
-			});
-
-			if(new_ma_phim && !find_film){
-				throw Error("Update creates conflicting information!");
-			};
-
 			const result = await prisma.phim.update({
 				where:{
 					ma_phim: ma_phim,
@@ -158,9 +140,9 @@ export const filmService = {
 				data:{
 					ma_phim: new_ma_phim,
 					ten_phim: new_ten_phim,
-					thoi_luong: new_thoi_luong,
-					do_tuoi_yeu_cau: new_do_tuoi_yeu_cau,
-					thoi_gian_cong_chieu: new_thoi_gian_cong_chieu,
+					thoi_luong: new_thoi_luong ? new Date(new_thoi_luong) : undefined,
+					do_tuoi_yeu_cau: new_do_tuoi_yeu_cau ? parseInt(new_do_tuoi_yeu_cau) : undefined,
+					thoi_gian_cong_chieu: new_thoi_gian_cong_chieu ? new Date(new_thoi_gian_cong_chieu) : undefined,
 					tom_tat_noi_dung: new_tom_tat_noi_dung,
 					dao_dien: new_dao_dien,
 				}
@@ -199,29 +181,35 @@ export const filmService = {
 			isStrict,
 		} = req.query;
 
-		if(isStrict){
-			const result = await prisma.the_loai.findMany({
-				where:{
-					ma_phim: ma_phim,
-					the_loai: the_loai,
-				},
-			});
+		try{
+			if(isStrict){
+				const result = await prisma.the_loai.findMany({
+					where:{
+						ma_phim: ma_phim,
+						the_loai: the_loai,
+					},
+				});
 
-			return result;
+				return result;
+			}
+			else{
+				const result = await prisma.the_loai.findMany({
+					where:{
+						ma_phim: {
+							contains: ma_phim,
+						},
+						the_loai: {
+							contains: the_loai,
+						},
+					},
+				});
+
+				return result;
+			}
+
 		}
-		else{
-			const result = await prisma.the_loai.findMany({
-				where:{
-					ma_phim: {
-						contains: ma_phim,
-					},
-					the_loai: {
-						contains: the_loai,
-					},
-				},
-			});
-
-			return result;
+		catch(e){
+			throw new UnprocessableContentError(e.meesage);
 		}
 	},
 
@@ -232,43 +220,19 @@ export const filmService = {
 		} = req.body;
 
 		try{
-			if(!the_loai || !ma_phim){
-				throw Error("Fill all required fields!");
-			}
-
-			const find_film = await prisma.phim.findUnique({
-				where:{
-					ma_phim: ma_phim,
-				},
-			});
-
-			if(!find_film){
-				throw Error("Create corresponding film first!");
-			};
-
-			const find_genre = await prisma.the_loai.findUnique({
-				where:{
+			const result = await prisma.the_loai.create({
+				data:{
 					ma_phim: ma_phim,
 					the_loai: the_loai,
 				},
 			});
 
-			if(find_genre){
-				throw Error("Multiple genres can't have the same ID!");
-			};
+			return result;
 		}
 		catch(e){
 			throw UnprocessableContentError(e.message);
 		}
 
-		const result = await prisma.the_loai.create({
-			data:{
-				ma_phim: ma_phim,
-				the_loai: the_loai,
-			},
-		});
-
-		return result;
 	},
 
 	patchGenre: async function(req){
@@ -283,27 +247,6 @@ export const filmService = {
 		} = req.body;
 
 		try{
-			const find_film = await prisma.phim.findUnique({
-				where:{
-					ma_phim: new_ma_phim,
-				},
-			})
-
-			if(find_film === null){
-				throw Error("Create corresponding film first!")
-			}
-
-			const find_genre = await prisma.the_loai.findUnique({
-				where:{
-					the_loai: new_the_loai,
-					ma_phim: new_ma_phim,
-				},
-			});
-
-			if(find_genre !== null){
-				throw Error("Update creates conflicting information!");
-			};
-
 			const result = await prisma.the_loai.update({
 				where:{
 					ma_phim: ma_phim,
@@ -350,29 +293,35 @@ export const filmService = {
 			isStrict
 		} = req.query;
 
-		if(isStrict){
-			const result = await prisma.dien_vien.findMany({
-				where:{
-					ma_phim: ma_phim,
-					dien_vien: dien_vien,
-				},
-			});
+		try{
+			if(isStrict){
+				const result = await prisma.dien_vien.findMany({
+					where:{
+						ma_phim: ma_phim,
+						dien_vien: dien_vien,
+					},
+				});
 
-			return result;
+				return result;
+			}
+			else{
+				const result = await prisma.dien_vien.findMany({
+					where:{
+						ma_phim: {
+							contains: ma_phim,
+						},
+						dien_vien: {
+							contains: dien_vien,
+						},
+					},
+				});
+
+				return result;
+			}
+
 		}
-		else{
-			const result = await prisma.dien_vien.findMany({
-				where:{
-					ma_phim: {
-						contains: ma_phim,
-					},
-					dien_vien: {
-						contains: dien_vien,
-					},
-				},
-			});
-
-			return result;
+		catch(e){
+			throw new UnprocessableContentError(e.message);
 		}
 	},
 
@@ -383,44 +332,19 @@ export const filmService = {
 		} = req.body;
 
 		try{
-			if(!dien_vien || !ma_phim){
-				throw Error("Fill all required fields!");
-			}
-
-			const find_film = await prisma.phim.findUnique({
-				where:{
-					ma_phim: ma_phim
-				}
-			});
-
-			if(!find_film){
-				throw Error("Create corresponding film first!");
-			};
-
-			const find_actor = await prisma.dien_vien.findUnique({
-				where:{
+			const result = await prisma.dien_vien.create({
+				data:{
+					ma_phim: ma_phim,
 					dien_vien: dien_vien,
-					ma_phim: ma_phim
-				}
+				},
 			});
 
-			if(find_actor){
-				throw Error("Multiple Actors can't have the same ID!");
-			};
-
+			return result;
 		}
 		catch(e){
 			throw UnprocessableContentError(e.message);
 		}
 
-		const result = await prisma.dien_vien.create({
-			data:{
-				ma_phim: ma_phim,
-				dien_vien: dien_vien,
-			},
-		});
-
-		return result;
 	},
 
 	patchActor: async function(req){
@@ -435,27 +359,6 @@ export const filmService = {
 		} = req.body;
 
 		try{
-			const find_film = await prisma.film.findUnique({
-				where:{
-					ma_phim: new_ma_phim,
-				},
-			})
-
-			if(new_ma_phim && !find_film){
-				throw Error("Create corresponding film first!")
-			}
-
-			const find_actor = await prisma.dien_vien.findUnique({
-				where:{
-					dien_vien: new_dien_vien,
-					ma_phim: new_ma_phim,
-				},
-			});
-
-			if(new_dien_vien && new_ma_phim && !find_actor){
-				throw Error("Update creates conflicting information!");
-			};
-
 			const result = await prisma.dien_vien.update({
 				where:{
 					ma_phim: ma_phim,
@@ -512,65 +415,70 @@ export const filmService = {
 			ma_nhan_vien_quan_ly,
 		} = req.query;
 
-		if(isStrict){
-			const result = await prisma.suat_chieu.findMany({
-				where:{
-					ma_luot_chieu: ma_luot_chieu,
-					thoi_gian_bat_dau:{
-						gte: min_thoi_gian_bat_dau,
-						lte: max_thoi_gian_bat_dau,
+		try{
+			if(isStrict){
+				const result = await prisma.suat_chieu.findMany({
+					where:{
+						ma_luot_chieu: ma_luot_chieu,
+						thoi_gian_bat_dau:{
+							gte: min_thoi_gian_bat_dau ? new Date(min_thoi_gian_bat_dau) : undefined,
+							lte: max_thoi_gian_bat_dau ? new Date(max_thoi_gian_bat_dau) : undefined,
+						},
+						thoi_gian_ket_thuc:{
+							gte: min_thoi_gian_ket_thuc ? new Date(min_thoi_gian_ket_thuc) : undefined,
+							lte: max_thoi_gian_ket_thuc ? new Date(max_thoi_gian_ket_thuc) : undefined,
+						},
+						hinh_thuc_chieu: hinh_thuc_chieu,
+						ngon_ngu: {
+							contains: ngon_ngu,
+						},
+						phu_de_hoac_long_tieng: phu_de_hoac_long_tieng,
+						ma_rap: ma_rap,
+						ma_phong_chieu: ma_phong_chieu,
+						ma_nhan_vien_quan_ly: ma_nhan_vien_quan_ly
 					},
-					thoi_gian_ket_thuc:{
-						gte: min_thoi_gian_ket_thuc,
-						lte: max_thoi_gian_ket_thuc,
-					},
-					hinh_thuc_chieu: hinh_thuc_chieu,
-					ngon_ngu: {
-						contains: ngon_ngu,
-					},
-					phu_de_hoac_long_tieng: phu_de_hoac_long_tieng,
-					ma_rap: ma_rap,
-					ma_phong_chieu: ma_phong_chieu,
-					ma_nhan_vien_quan_ly: ma_nhan_vien_quan_ly
-				},
-			});
+				});
 
-			return result;
+				return result;
+			}
+			else{
+				const result = await prisma.suat_chieu.findMany({
+					where:{
+						ma_luot_chieu:{
+							contains: ma_luot_chieu,
+						},
+						thoi_gian_bat_dau:{
+							gte: min_thoi_gian_bat_dau ? new Date(min_thoi_gian_bat_dau) : undefined,
+							lte: max_thoi_gian_bat_dau ? new Date(max_thoi_gian_bat_dau) : undefined,
+						},
+						thoi_gian_ket_thuc:{
+							gte: min_thoi_gian_ket_thuc ? new Date(min_thoi_gian_ket_thuc) : undefined,
+							lte: max_thoi_gian_ket_thuc ? new Date(max_thoi_gian_ket_thuc) : undefined,
+						},
+						hinh_thuc_chieu:{
+							contains: hinh_thuc_chieu
+						},
+						ngon_ngu: {
+							contains: ngon_ngu,
+						},
+						phu_de_hoac_long_tieng: phu_de_hoac_long_tieng,
+						ma_rap: {
+							contains: ma_rap,
+						},
+						ma_phong_chieu: {
+							contains: ma_phong_chieu,
+						},
+						ma_nhan_vien_quan_ly: {
+							contains: ma_nhan_vien_quan_ly
+						},
+					},
+				});
+
+				return result;
+			}
 		}
-		else{
-			const result = await prisma.suat_chieu.findMany({
-				where:{
-					ma_luot_chieu:{
-						contains: ma_luot_chieu,
-					},
-					thoi_gian_bat_dau:{
-						gte: min_thoi_gian_bat_dau,
-						lte: max_thoi_gian_bat_dau,
-					},
-					thoi_gian_ket_thuc:{
-						gte: min_thoi_gian_ket_thuc,
-						lte: max_thoi_gian_ket_thuc,
-					},
-					hinh_thuc_chieu:{
-						contains: hinh_thuc_chieu
-					},
-					ngon_ngu: {
-						contains: ngon_ngu,
-					},
-					phu_de_hoac_long_tieng: phu_de_hoac_long_tieng,
-					ma_rap: {
-						contains: ma_rap,
-					},
-					ma_phong_chieu: {
-						contains: ma_phong_chieu,
-					},
-					ma_nhan_vien_quan_ly: {
-						contains: ma_nhan_vien_quan_ly
-					},
-				},
-			});
-
-			return result;
+		catch(e){
+			throw new UnprocessableContentError(e.message);
 		}
 	},
 
@@ -589,71 +497,27 @@ export const filmService = {
 		} = req.body;
 
 		try{
-			if(!ma_luot_chieu){
-				throw Error("Screening must have an ID!");
-			}
-
-			const find_film = await prisma.phim.findUnique({
-				where:{
-					ma_phim: ma_phim
-				}
-			});
-
-			if(!find_film){
-				throw Error("Create corresponding film first!");
-			};
-
-			const find_room = await prisma.room.findUnique({
-				where:{
-					ma_phong: ma_phong,
+			const result = await prisma.suat_chieu.create({
+				data:{
+					ma_suat_chieu: ma_suat_chieu,
+					thoi_gian_bat_dau: thoi_gian_bat_dau ? new Date(thoi_gian_bat_dau) : undefined,
+					thoi_gian_ket_thuc: thoi_gian_ket_thuc ? new Date(thoi_gian_ket_thuc) : undefined,
+					hinh_thuc_chieu: hinh_thuc_chieu,
+					ngon_ngu: ngon_ngu,
+					phu_de_hoac_long_tieng: phu_de_hoac_long_tieng,
+					ma_phim: ma_phim,
 					ma_rap: ma_rap,
+					ma_phong_chieu: ma_phong_chieu,
+					ma_nhan_vien_quan_ly: ma_nhan_vien_quan_ly,
 				},
 			});
 
-			if(find_room === null){
-				throw Error("Create correspoding room first!");
-			}
-
-			const find_manager = await prisma.nhan_vien_quan_ly.findUnique({
-				where:{
-					ma_nhan_vien: ma_nhan_vien_quan_ly
-				}
-			})
-
-			if(!find_manager){
-				throw Error("Create corresponding manager first!");
-			}
-
-			const find_screening = await prisma.suat_chieu.findUnique({
-				where:{
-					ma_suat_chieu: ma_suat_chieu,
-				}
-			});
-
-			if(find_screening !== null){
-				throw Error("Multiple Screenings can't have the same ID!");
-			};
+			return result;
 		}
 		catch(e){
 			throw UnprocessableContentError(e.message);
 		}
 
-		const result = await prisma.suat_chieu.create({
-			data:{
-				ma_suat_chieu: ma_suat_chieu,
-				thoi_gian_bat_dau: thoi_gian_bat_dau,
-				thoi_gian_ket_thuc: thoi_gian_ket_thuc,
-				hinh_thuc_chieu: hinh_thuc_chieu,
-				ngon_ngu: ngon_ngu,
-				phu_de_hoac_long_tieng: phu_de_hoac_long_tieng,
-				ma_phim: ma_phim,
-				ma_rap: ma_rap,
-				ma_phong_chieu: ma_phong_chieu,
-				ma_nhan_vien_quan_ly: ma_nhan_vien_quan_ly,
-			},
-		});
-
-		return result;
 	},
 
 	patchScreening: async function(req){
@@ -675,70 +539,30 @@ export const filmService = {
 		} = req.body;
 
 		try{
-			const find_film = await prisma.phim.findUnique({
+			const result = await prisma.suat_chieu.update({
 				where:{
-					ma_phim: ma_phim
-				}
-			});
-
-			if(!find_film){
-				throw Error("Create corresponding film first!");
-			};
-
-			const find_room = await prisma.room.findUnique({
-				where:{
-					ma_phong: ma_phong,
-					ma_rap: ma_rap,
+					ma_suat_chieu: ma_suat_chieu
 				},
-			});
-
-			if(!find_room){
-				throw Error("Create correspoding room first!");
-			}
-
-			const find_manager = await prisma.nhan_vien_quan_ly.findUnique({
-				where:{
-					ma_nhan_vien: ma_nhan_vien_quan_ly
-				}
-			})
-
-			if(!find_manager){
-				throw Error("Create corresponding manager first!");
-			}
-
-			const find_screening = await prisma.suat_chieu.findUnique({
-				where:{
-					ma_suat_chieu: new_ma_suat_chieu,
+				data:{
+					ma_suat_chieu: new_suat_chieu,
+					thoi_gian_bat_dau: new_thoi_gian_bat_dau ? new Date(new_thoi_gian_bat_dau) : undefined,
+					thoi_gian_ket_thuc: new_thoi_gian_ket_thuc ? new Date(new_thoi_gian_ket_thuc) : undefined,
+					hinh_thuc_chieu: new_hinh_thuc_chieu,
+					ngon_ngu: new_ngon_ngu,
+					phu_de_hoac_long_tieng: new_phu_de_hoac_long_tieng,
+					ma_phim: new_ma_phim,
+					ma_rap: new_ma_rap,
+					ma_phong_chieu: new_ma_phong_chieu,
+					ma_nhan_vien_quan_ly: new_ma_nhan_vien_quan_ly,
 				}
 			});
 
-			if(!find_screening){
-				throw Error("Multiple Screenings can't have the same ID!");
-			};
+			return result;
 		}
 		catch(e){
 			throw new UnprocessableContentError(e.message);
 		}
 
-		const result = await prisma.suat_chieu.update({
-			where:{
-				ma_suat_chieu: ma_suat_chieu
-			},
-			data:{
-				ma_suat_chieu: new_suat_chieu,
-				thoi_gian_bat_dau: new_thoi_gian_bat_dau,
-				thoi_gian_ket_thuc: new_thoi_gian_ket_thuc,
-				hinh_thuc_chieu: new_hinh_thuc_chieu,
-				ngon_ngu: new_ngon_ngu,
-				phu_de_hoac_long_tieng: new_phu_de_hoac_long_tieng,
-				ma_phim: new_ma_phim,
-				ma_rap: new_ma_rap,
-				ma_phong_chieu: new_ma_phong_chieu,
-				ma_nhan_vien_quan_ly: new_ma_nhan_vien_quan_ly,
-			}
-		});
-
-		return result;
 	},
 
 	deleteScreening: async function(req){
