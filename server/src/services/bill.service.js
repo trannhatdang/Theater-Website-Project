@@ -394,10 +394,6 @@ export const billService = {
 		} = req.body;
 
 		try{
-			if(so_luong && so_luong <= 0){
-				throw Error("Amount must be non-negative");
-			}
-
 			const result = await prisma.hoa_don_bao_gom_do_an_thuc_uong.create({
 				data:{
 					ma_hoa_don: ma_hoa_don,
@@ -442,7 +438,6 @@ export const billService = {
 		catch(e){
 			throw UnprocessableContentError(e.message);
 		}
-
 	},
 	deleteRelationBillFood: async function(req){
 		const {
@@ -455,6 +450,186 @@ export const billService = {
 				where:{
 					ma_hoa_don: ma_hoa_don,
 					ma_do_an_thuc_uong: ma_do_an_thuc_uong,
+				},
+			});
+			
+			return result;
+		}
+		catch(e){
+			throw UnprocessableContentError(e.message);
+		}
+	},
+
+	getTicket: async function(req){
+		const {
+			ma_ve,
+			gia_ve,
+			ma_rap,
+			ma_phong,
+			ma_ghe,
+			ma_luot_chieu,
+			ma_hoa_don,
+			ma_nhan_vien_ban_ve,
+			min_thoi_gian_thanh_toan,
+			max_thoi_gian_thanh_toan,
+			ma_khach_hang,
+			isStrict,
+		} = req.query;
+
+		try{
+			if(isStrict){
+				const result = await prisma.ve.findMany({
+					where:{
+						ma_ve: ma_ve,
+						gia_ve: gia_ve,
+						ma_rap: ma_rap,
+						ma_phong: ma_phong,
+						ma_ghe: ma_ghe,
+						ma_luot_chieu: ma_luot_chieu,
+						ma_hoa_don: ma_hoa_don,
+						ma_nhan_vien_ban_ve: ma_nhan_vien_ban_ve,
+						thoi_gian_thanh_toan:{
+							gte: min_thoi_gian_thanh_toan,
+							lte: max_thoi_gian_thanh_toan,
+						}
+						ma_khach_hang: ma_khach_hang,
+					},
+				});
+
+				return result;
+			}
+			else{
+				const result = await prisma.ve.findMany({
+					where:{
+						ma_ve:{
+							contains: ma_ve,
+						},
+						gia_ve:{
+							contains: gia_ve,
+						},
+						ma_rap:{
+							contains: ma_rap,
+						},
+						ma_phong:{
+							contains: ma_phong,
+						},
+						ma_ghe:{
+							contains: ma_ghe,
+						},
+						ma_luot_chieu:{
+							contains: ma_luot_chieu,
+						},
+						ma_hoa_don:{
+							contains: ma_hoa_don,
+						},
+						ma_nhan_vien_ban_ve:{
+							contains: ma_nhan_vien_ban_ve,
+						},
+						thoi_gian_thanh_toan:{
+							gte: min_thoi_gian_thanh_toan,
+							lte: max_thoi_gian_thanh_toan,
+						}
+						ma_khach_hang:{
+							contains: ma_khach_hang,
+						},
+					},
+				});
+
+				return result;
+			}
+		}
+		catch(e){
+			throw UnprocessableContentError(e.message);
+		}
+	},
+	postTicket: async function(req){
+		const {
+			ma_ve,
+			gia_ve,
+			ma_rap,
+			ma_phong,
+			ma_ghe,
+			ma_luot_chieu,
+			ma_hoa_don,
+			ma_nhan_vien_ban_ve,
+			thoi_gian_thanh_toan,
+			ma_khach_hang,
+		} = req.body;
+
+		try{
+			const result = await prisma.ve.create({
+				data:{
+					ma_ve: ma_ve,
+					gia_ve: gia_ve,
+					ma_rap: ma_rap,
+					ma_phong: ma_phong,
+					ma_ghe: ma_ghe,
+					ma_luot_chieu: ma_luot_chieu,
+					ma_hoa_don: ma_hoa_don,
+					ma_nhan_vien_ban_ve: ma_nhan_vien_ban_ve,
+					thoi_gian_thanh_toan: thoi_gian_thanh_toan,
+					ma_khach_hang: ma_khach_hang,
+				}
+			});
+
+			return result;
+		}
+		catch(e){
+			throw UnprocessableContentError(e.message);
+		}
+	},
+	patchTicket: async function(req){
+		const {
+			ma_ve,
+		} = req.query;
+
+		const {
+			new_ma_ve,
+			new_gia_ve,
+			new_ma_rap,
+			new_ma_phong,
+			new_ma_ghe,
+			new_ma_luot_chieu,
+			new_ma_hoa_don,
+			new_ma_nhan_vien_ban_ve,
+			new_thoi_gian_thanh_toan,
+			new_ma_khach_hang,
+		} = req.body;
+
+		try{
+			const result = await prisma.ve.patch({
+				where:{
+					ma_ve: ma_ve,
+				},
+				data:{
+					ma_ve: new_ma_ve,
+					gia_ve: new_gia_ve,
+					ma_rap: new_ma_rap,
+					ma_phong: new_ma_phong,
+					ma_ghe: new_ma_ghe,
+					ma_luot_chieu: new_ma_luot_chieu,
+					ma_hoa_don: new_ma_hoa_don,
+					ma_nhan_vien_ban_ve: new_ma_nhan_vien_ban_ve,
+					thoi_gian_thanh_toan: new_thoi_gian_thanh_toan,
+					ma_khach_hang: new_ma_khach_hang,
+				},
+			});
+
+			return result;
+		}
+		catch(e){
+			throw UnprocessableContentError(e.message);
+		}
+	},
+	deleteTicket: async function(req){
+		const {
+			ma_ve
+		} = req.query;
+
+		try{
+			const result = await prisma.ve.delete({
+				where:{
+					ma_ve: ma_ve
 				},
 			});
 			
