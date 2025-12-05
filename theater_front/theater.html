@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AbsCinema — Home</title>
+  <link rel="stylesheet" href="./css/theater.css">
+  
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo">AbsCinema</div>
+      <div class="spacer"></div>
+      <nav>
+        <ul>
+          <li><a href="theater.html">Home</a></li>
+          <li><a href="./films.html">Films</a></li>
+          <li><a href="#promotions">Promotions</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="./login.html">Login</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+<section class="hero">
+   <div class="container">
+     <h1>Welcome to AbsCinema</h1> 
+     <p>Book your seats online — fast, simple and secure.</p> 
+     <a href="#now-showing" class="btn">Book Now</a> 
+  </div> 
+</section>
+
+  
+<section id="now-showing" class="movies container">
+  <h2>Now Showing</h2>
+
+  <div class="slider-container">
+    <button class="slide-btn left" onclick="slideLeft()">&#10094;</button>
+
+    <div class="movie-grid">
+      <div class="movie">
+        <img src="./images/poster1.jpg" alt="Movie 1">
+        <div class="movie-info">
+          <h3>Tam Nhan Hanh</h3>
+          <p>Action • 120 min • 2D • Viet Sub</p>
+          <a class="btn book-btn" href="#" data-movie-title="Tam Nhan Hanh">Book</a>
+        </div>
+      </div>
+
+      <div class="movie">
+        <img src="./images/poster2.jpg" alt="Movie 2">
+        <div class="movie-info">
+          <h3>Am Anh</h3>
+          <p>Horror • 100 min • 2D • Viet Dub</p>
+          <a class="btn book-btn" href="#" data-movie-title="Am Anh">Book</a>
+        </div>
+      </div>
+
+      <div class="movie">
+        <img src="./images/poster4.jpg" alt="Movie 4">
+        <div class="movie-info">
+          <h3>Tomorrow With You</h3>
+          <p>Romance • 120 min • 2D • Viet Sub</p>
+          <a class="btn book-btn" href="#" data-movie-title="Tomorrow With You">Book</a>
+        </div>
+      </div>
+
+      <div class="movie">
+        <img src="./images/poster5.jpg" alt="Movie 5">
+        <div class="movie-info">
+          <h3>Spy x Family</h3>
+          <p>Anime • 90 min • 2D • Viet Sub</p>
+          <a class="btn book-btn" href="#" data-movie-title="Spy x Family">Book</a>
+        </div>
+      </div>
+
+    </div>
+
+    <button class="slide-btn right" onclick="slideRight()">&#10095;</button>
+  </div>
+</section>
+
+<section id="coming-soon" class="movies container">
+  <h2>Coming Soon</h2>
+
+  <div class="slider-container">
+  <button class="slide-btn left" onclick="slideLeftComing()">&#10094;</button>
+
+  <div class="movie-track">
+    <div class="movie">
+      <img src="./images/poster3.jpg" alt="Bo Gia">
+      <div class="movie-info">
+        <h3>Bo Gia</h3>
+        <p>Family • 105 min • 2D • Viet Dub</p>
+        <a class="btn" href="#details">Details</a>
+      </div>
+    </div>
+
+    <div class="movie">
+      <img src="./images/poster6.jpg" alt="Spider-Man">
+      <div class="movie-info">
+        <h3>Spider-Man</h3>
+        <p>Adventure • 150 min • 2D • Viet Sub</p>
+        <a class="btn" href="#details">Details</a>
+      </div>
+    </div>
+
+  </div>
+
+  <button class="slide-btn right" onclick="slideRightComing()">&#10095;</button>
+  </div>
+
+</section>
+
+  <section id="promotions" class="container" style="padding:40px 0;">
+    <h2>Promotions</h2>
+    <p>Check out our latest promotions and combo deals.</p>
+  </section>
+
+  <footer id="contact" class="container" style="padding:20px 0;">
+    <h3>Contact</h3>
+    <p>Email: info@abscinema.com — Phone: +84 795528799</p>
+  </footer>
+
+  <script src="./js/auth.js"></script>
+  <script src="./js/book.js"></script> 
+  <script src="./js/theater.js"></script>
+
+  </body>
+</html>

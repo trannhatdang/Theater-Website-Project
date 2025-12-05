@@ -1,29 +1,28 @@
-import type { EmployeeFilters } from '../components/EmployeeView.tsx'
-import type { EmployeeProps } from '../components/EmployeeTable.tsx'
-const url = 'http://localhost:3000';
+import type { QueryFunctionContext } from "@tanstack/react-query";
 
-export const fetchEmployeeData = async (filters : EmployeeFilters) : Promise<EmployeeProps[]> => {
-	const queryParams = new URLSearchParams();
+const url = "http://localhost:3069";   // <-- keep this
 
-	for(const [key, value] of Object.entries(filters)){
-		if(typeof value !== 'string'){
-			queryParams.append(key, value.toString());
-		}
-		else{
-			queryParams.append(key, value);
+export async function fetchEmployeeData(
+    { queryKey }: QueryFunctionContext
+) {
+    // queryKey = ["employee", { Filters: {...} }]
+    const [_key, params] = queryKey as [
+        string,
+        { Filters?: Record<string, string> }
+    ];
 
-		}
-	}
+    const queryParams = params?.Filters
+        ? new URLSearchParams(params.Filters).toString()
+        : "";
 
-	const employees = await fetch(url + '/employee?' + queryParams, {
-		method: "GET",
-	});
+    const response = await fetch(`${url}/employee?${queryParams}`, {
+        method: "GET"
+    });
 
-	if(!employees.ok){
-		console.error(employees);
+    if (!response.ok) {
+        console.error(response);
+        throw new Error("something went wrong...");
+    }
 
-		throw Error("something went wrong...");
-	}
-
-	return employees.json();
+    return response.json();
 }

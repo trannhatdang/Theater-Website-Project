@@ -1,0 +1,106 @@
+body.signup-body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #141e30, #243b55);
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Signup container */
+.signup-container {
+  background: #ffffffee;
+  padding: 40px 35px;
+  border-radius: 12px;
+  width: 350px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+  animation: fadeIn 0.5s ease;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* center all children horizontally */
+}
+
+/* Heading */
+.signup-container h2 {
+  margin-bottom: 20px;
+  color: #222;
+  font-size: 26px;
+}
+
+/* Form */
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* center input/button horizontally */
+  width: 100%;
+}
+
+.signup-form input,
+.signup-form button {
+  width: 80%;        /* slightly smaller than container */
+  max-width: 300px;  /* prevent over-stretching */
+  margin: 10px 0;    /* consistent vertical spacing */
+  font-size: 16px;
+  border-radius: 6px;
+}
+
+/* Inputs */
+.signup-form input {
+  border: 1px solid #aaa;
+  padding: 12px;
+}
+
+/* Button */
+.signup-form button {
+  background-color: #0059ff;
+  border: none;
+  color: white;
+  font-size: 17px;
+  cursor: pointer;
+  transition: 0.3s;
+  padding: 12px;
+}
+
+.signup-form button:hover {
+  background-color: #003ecb;
+}
+
+/* Login option / links */
+.login-option {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.login-option a {
+  color: #0059ff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.login-option a:hover {
+  text-decoration: underline;
+}
+
+/* Messages */
+.msg {
+  font-size: 14px;
+  margin-top: 12px;
+  display: none;
+}
+
+.error-msg {
+  color: #d9534f;
+}
+
+.success-msg {
+  color: #28a745;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
