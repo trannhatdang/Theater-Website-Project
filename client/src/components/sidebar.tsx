@@ -19,7 +19,7 @@ export default function Sidebar(){
 	}
 
 	return (
-		<motion.div className='bg-slate-700 h-screen' animate={{width: open ? 120 : 70}}>
+		<motion.div className='bg-slate-700 h-sreen' animate={{width: open ? 120 : 70}}>
 			<Stack>
 				<Button onClick={handleClickOpen}> <MenuIcon className='text-cyan-500'/> </Button>
 				<Button href="./"> {open ? <p className='text-cyan-500'>home</p> : <HomeIcon className='text-cyan-500'/>} </Button>

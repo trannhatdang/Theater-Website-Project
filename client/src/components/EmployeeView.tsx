@@ -85,7 +85,7 @@ export default function EmployeeView(){
 	const employees = data;
 
 	return (
-		<div className='flex flex-col m-10 gap-2 w-full'>
+		<div className='flex flex-col m-10 gap-2'>
 			<EmployeeTopBar dispatch={dispatch}/>
 			{(!isPending && !isError) ? <EmployeeTable employees={employees}/> : <>{error?.message}</>}
 		</div>
