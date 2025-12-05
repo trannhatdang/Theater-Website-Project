@@ -8,35 +8,40 @@ import EmployeeTopBar from './EmployeeTopBar.tsx'
 import EmployeeTable from './EmployeeTable.tsx'
 import { useQuery } from "@tanstack/react-query";
 import { fetchEmployeeData } from '../utils/Query.tsx'
+import type { EmployeeProps } from './EmployeeTable.tsx'
 
 export type EmployeeFilters = {
-	ma_nv: string,
-	cccd: string,
-	ten: string,
-	min_luong: number,
-	max_luong: number,
-	min_ngay_sinh: Date,
-	max_ngay_sinh: Date,
-	chuc_vu: string,
-	dia_chi: string,
-	sdt: string,
-	gioi_tinh: string,
-	ma_nv_quan_ly: string,
-	ma_rap_phim: string
+	ma_nv?: string,
+	cccd?: string,
+	ten?: string,
+	min_luong?: number,
+	max_luong?: number,
+	min_ngay_sinh?: Date,
+	max_ngay_sinh?: Date,
+	chuc_vu?: string,
+	dia_chi?: string,
+	sdt?: string,
+	gioi_tinh?: string,
+	ma_nv_quan_ly?: string,
+	ma_rap_phim?: string
 }
 
 export default function EmployeeView(){
-	const [Filters, setFilters] = React.useState<EmployeeFilters>()
-	const { isPending, isError, data, error } = useQuery({ queryKey: [Filters], queryFn: () => {fetchEmployeeData(Filters)}});
+	const [Filters, setFilters] = React.useState<EmployeeFilters>({})
+	const { isPending, isError, data, error } = useQuery({
+		queryKey: [Filters], 
+		queryFn: () : Promise<EmployeeProps[]> => {
+			return Promise.resolve(fetchEmployeeData(Filters));
+		}
+	});
 	const handleChange = (
 		newFilters: EmployeeFilters
 	) => {
-		console.log(newFilters);
 		setFilters(newFilters);
 	}
 
 	if (isPending) {
-		return <span className="text-white"> Loading... </span>;
+		return;
 	}
 
 	if (isError) {
@@ -47,7 +52,7 @@ export default function EmployeeView(){
 
 	return (
 		<div className='flex flex-col m-10 gap-2 w-full'>
-			<EmployeeTopBar onChange={handleChange} filters={Filters}/>
+			<EmployeeTopBar onChange={handleChange}/>
 			<EmployeeTable employees={employees}/>
 		</div>
 	)

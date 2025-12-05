@@ -37,8 +37,8 @@ export const employeeService = {
 							lte: max_ngay_sinh ? new Date(max_ngay_sinh) : undefined,
 						},
 						luong: {
-							gte: min_luong ? parseInt(min_luong) : undefined,
-							lte: max_luong ? parseInt(max_luong) : undefined,
+							gte: min_luong && parseInt(min_luong) > 0 ? parseInt(min_luong) > 0 : undefined,
+							lte: max_luong && parseInt(max_luong) > 0 ? parseInt(max_luong) > 0 : undefined,
 						},
 						chuc_vu: chuc_vu,
 						dia_chi: dia_chi,
@@ -67,8 +67,8 @@ export const employeeService = {
 							lte: max_ngay_sinh ? new Date(max_ngay_sinh) : undefined,
 						},
 						luong: {
-							gte: min_luong ? parseInt(min_luong) : undefined,
-							lte: max_luong ? parseInt(min_luong) : undefined,
+							gte: min_luong && parseInt(min_luong) > 0 ? parseInt(min_luong) : undefined,
+							lte: max_luong && parseInt(max_luong) > 0 ? parseInt(min_luong) : undefined,
 						},
 						chuc_vu: {
 							contains: chuc_vu,
@@ -116,7 +116,7 @@ export const employeeService = {
 					ten: ten,
 					cccd: cccd,
 					ngay_sinh: ngay_sinh ? new Date(ngay_sinh) : undefined,
-					luong: luong ? parseInt(luong) : undefined,
+					luong: luong && parseInt(luong) > 0 ? parseInt(luong) : undefined,
 					chuc_vu: chuc_vu,
 					dia_chi: dia_chi,
 					ma_nv_quan_ly: ma_nv_quan_ly,
@@ -164,7 +164,7 @@ export const employeeService = {
 					ten: new_ten,
 					cccd: new_cccd,
 					ngay_sinh: new_ngay_sinh ? new Date(new_ngay_sinh) : undefined,
-					luong: new_luong ? parseInt(new_luong) : undefined,
+					luong: new_luong && parseInt(new_luong) > 0 ? parseInt(new_luong) : undefined,
 					chuc_vu: new_chuc_vu,
 					dia_chi: new_dia_chi,
 					ma_nv_quan_ly: new_ma_nv_quan_ly,
@@ -411,8 +411,8 @@ export const employeeService = {
 							lte: max_ngay_lam ? new Date(max_ngay_lam) : undefined,
 						},
 						thoi_gian_lam:{
-							gte: min_thoi_gian_lam ? parseInt(min_thoi_gian_lam) : undefined,
-							lte: max_thoi_gian_lam ? parseInt(max_thoi_gian_lam) : undefined,
+							gte: min_thoi_gian_lam && parseInt(min_thoi_gian_lam) > 0 ? parseInt(min_thoi_gian_lam) : undefined,
+							lte: max_thoi_gian_lam && parseInt(max_thoi_gian_lam) > 0 ? parseInt(max_thoi_gian_lam) : undefined,
 						},
 					}
 				})
@@ -433,8 +433,8 @@ export const employeeService = {
 							lte: max_ngay_lam ? new Date(max_ngay_lam) : undefined,
 						},
 						thoi_gian_lam:{
-							gte: min_thoi_gian_lam ? parseInt(min_thoi_gian_lam) : undefined,
-							lte: max_thoi_gian_lam ? parseInt(max_thoi_gian_lam) : undefined,
+							gte: min_thoi_gian_lam && parseInt(min_thoi_gian_lam) > 0 ? parseInt(min_thoi_gian_lam) : undefined,
+							lte: max_thoi_gian_lam && parseInt(max_thoi_gian_lam) > 0 ? parseInt(max_thoi_gian_lam) : undefined,
 						},
 					}
 				});
@@ -461,7 +461,7 @@ export const employeeService = {
 					ma_nv: ma_nv,
 					ca_lam_viec: ca_lam_viec,
 					ngay_lam: ngay_lam ? new Date(ngay_lam) : undefined,
-					thoi_gian: thoi_gian ? parseInt(thoi_gian) : undefined,
+					thoi_gian: thoi_gian && parseInt(thoi_gian) > 0 ? parseInt(thoi_gian) : undefined,
 				}
 			})
 			
@@ -494,7 +494,7 @@ export const employeeService = {
 					ma_nv: new_ma_nv,
 					ca_lam_viec: new_ca_lam_viec,
 					ngay_lam: new_ngay_lam ? new Date(new_ngay_lam) : undefined,
-					thoi_gian_lam: new_thoi_gian_lam ? parseInt(new_thoi_gian_lam) : undefined,
+					thoi_gian_lam: new_thoi_gian_lam && parseInt(new_thoi_gian_lam) > 0 ? parseInt(new_thoi_gian_lam) : undefined,
 				},
 			});
 

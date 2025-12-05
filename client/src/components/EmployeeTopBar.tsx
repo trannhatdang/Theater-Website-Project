@@ -43,9 +43,9 @@ function EmployeeSalaryRangeSlider({salaryRange, onChange, className}: SalaryRan
 	)
 }
 
-function EmployeeFilterMenu({filters, onApply, className}: EmployeeFilterMenuProps) {
+function EmployeeFilterMenu({onApply, className}: EmployeeFilterMenuProps) {
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-	const [menuFilters, setMenuFilters] = React.useState<EmployeeFilters>(filters);
+	const [menuFilters, setMenuFilters] = React.useState<EmployeeFilters>({});
 	const open = Boolean(anchorEl);
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
 		setAnchorEl(event.currentTarget);
@@ -56,14 +56,15 @@ function EmployeeFilterMenu({filters, onApply, className}: EmployeeFilterMenuPro
 	};
 
 	const handleApply = () => {
-		onApply(filters);
+		onApply(menuFilters);
 	};
 
 	const handleSalarySliderChange = (newValue: number[]) => {
-		let outputFilters = menuFilters;
-		outputFilters.min_luong = newValue[0];
-		outputFilters.max_luong = newValue[1];
-		setMenuFilters(outputFilters);
+		setMenuFilters({
+			...menuFilters,
+			min_luong: newValue[0],
+			max_luong: newValue[1]
+		});
 	}
 
 	return (
@@ -89,7 +90,7 @@ function EmployeeFilterMenu({filters, onApply, className}: EmployeeFilterMenuPro
 				}}
 				sx={{
 					'& .MuiMenu-paper': {
-						backgroundColor: '#334155'
+						backgroundColor: ''
 					}
 				}}
 				transformOrigin={{ horizontal: 'right', vertical: 'top' }}
@@ -97,7 +98,7 @@ function EmployeeFilterMenu({filters, onApply, className}: EmployeeFilterMenuPro
 			>
 				<MenuItem disableRipple disableTouchRipple className = 'flex flex-col'>
 					<div className='flex flex-row items-center gap-10'>
-						<p className='text-cyan-500' style={{color: '#1976d2'}}>SALARY</p> <EmployeeSalaryRangeSlider salaryRange={[menuFilters.min_luong, menuFilters.max_luong]} onChange={handleSalarySliderChange} className=''/>
+						<p className='text-cyan-500' style={{color: '#1976d2'}}>SALARY</p> <EmployeeSalaryRangeSlider salaryRange={[menuFilters.min_luong ? menuFilters.min_luong : 0, menuFilters.max_luong ? menuFilters.max_luong : 0]} onChange={handleSalarySliderChange} className=''/>
 					</div>
 
 					<div className='flex flex-row items-center'>
@@ -118,14 +119,14 @@ type SearchBarKey = {
 	val: string
 }
 
-function EmployeeSearch({onChange, key, className} : {onChange: Function, key: SearchKeys, className: string}){
+function EmployeeSearch({onChange, searchKey, className} : {onChange: Function, searchKey: SearchKeys, className: string}){
 	const handleChange = (newValue: string) => {
-		onChange({key: key, val: newValue});
+		onChange({key: searchKey, val: newValue})
 	}
 
 	return(
 		<TextField 
-			label='Search' 
+			label={'Tim ' + searchKey}
 			variant='outlined' 
 			className={className}
 			onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleChange(e.target.value)}
@@ -133,9 +134,15 @@ function EmployeeSearch({onChange, key, className} : {onChange: Function, key: S
 	)
 }
 
-export default function EmployeeTopBar({filters, onChange} : {filters: EmployeeFilters, onChange: Function}){
+interface employee
+
+export default function EmployeeTopBar({onChange} : {onChange: Function}){
+	const filterReducer = (filter : EmployeeFilters, action: Function) => ({
+		const { menuFilter, searchResults }  = action
+	})
+
 	const [searchBars, setSearchBars] = React.useState<SearchBarKey[]>([{key: 'ten', val: ''}]);
-	const [Filters, setFilters] = React.useState<EmployeeFilters>(filters);
+	const [Filters, dispatch] = React.useReducer(filterReducer, {});
 	const [remainingSearchBars, setRemainingSearchBars] = React.useState<SearchKeys[]>([
 		"ma_nv",
 		"cccd",
@@ -156,7 +163,12 @@ export default function EmployeeTopBar({filters, onChange} : {filters: EmployeeF
 	};
 
 	const handleApply = (filters: EmployeeFilters) => {
-		onChange(filters);
+		setFilters(() => {
+			...Filters,
+			min_luong: filters.min_luong,
+			max_luong: filters.max_luong,
+		});
+		onChange(Filters);
 	};
 
 	const handleSearchChange = (searchBarKey: SearchBarKey) => {
@@ -164,7 +176,7 @@ export default function EmployeeTopBar({filters, onChange} : {filters: EmployeeF
 			...Filters,
 			[searchBarKey.key]: searchBarKey.val
 		});
-		onChange(Filters);
+		//onChange(Filters)
 	};
 
 	const removeElement = (array: SearchKeys[], elem: SearchKeys) => {
@@ -189,28 +201,34 @@ export default function EmployeeTopBar({filters, onChange} : {filters: EmployeeF
 
 	return (
 		<div className='shadow-md flex flex-row bg-slate-700 items-center p-2'>
-			{searchBars.map(searchBar => {
-				return <EmployeeSearch className='flex-1 w-full' key={searchBar.key} onChange={handleSearchChange}/>
-			})}
+			<div className='flex-1 w-full'>
+				{searchBars.map(searchBar => {
+					return <EmployeeSearch className='flex-1 w-full' key={searchBar.key} onChange={handleSearchChange} searchKey={searchBar.key}/>
+				})}
+			</div>
 
-			<EmployeeFilterMenu onApply={handleApply} className='' filters={Filters}/>
+			<EmployeeFilterMenu onApply={handleApply} className=''/>
 
 			<Button
 				onClick={handleClick}
+				aria-controls={open ? 'basic-menu' : undefined}
+				aria-haspopup='true'
+				aria-expanded={open ? 'true' : undefined}
 			>
 				Search Bars
-				<Menu
-					open={open}
-					anchorEl={anchorEl}
-					onClose={handleClose}
-				>
-					{remainingSearchBars.map((rem) => {
-						return (
-							<MenuItem onClick={() => {handleSearchBarsChange(rem)}} key={rem}>{rem}</MenuItem>
-						)
-					})}
-				</Menu>
 			</Button>
+
+			<Menu
+				open={open}
+				anchorEl={anchorEl}
+				onClose={handleClose}
+			>
+				{remainingSearchBars.map((rem) => {
+					return (
+						<MenuItem onClick={() => {handleSearchBarsChange(rem)}} key={rem}>{rem}</MenuItem>
+					)
+				})}
+			</Menu>
 		</div>
 	)
 

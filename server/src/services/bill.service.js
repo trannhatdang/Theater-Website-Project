@@ -195,7 +195,7 @@ export const billService = {
 						thoi_gian:{
 							gte: max_thoi_gian,
 							lte: min_thoi_gian,
-						}
+						},
 						phuong_thuc_thanh_toan: phuong_thuc_thanh_toan,
 						ma_nhan_vien_phu_trach: ma_nhan_vien_phu_trach,
 						ma_khach_hang: ma_khach_hang,
@@ -221,7 +221,7 @@ export const billService = {
 						thoi_gian:{
 							gte: max_thoi_gian,
 							lte: min_thoi_gian,
-						}
+						},
 						phuong_thuc_thanh_toan:{
 							contains: phuong_thuc_thanh_toan,
 						},
@@ -491,7 +491,7 @@ export const billService = {
 						thoi_gian_thanh_toan:{
 							gte: min_thoi_gian_thanh_toan,
 							lte: max_thoi_gian_thanh_toan,
-						}
+						},
 						ma_khach_hang: ma_khach_hang,
 					},
 				});
@@ -528,7 +528,7 @@ export const billService = {
 						thoi_gian_thanh_toan:{
 							gte: min_thoi_gian_thanh_toan,
 							lte: max_thoi_gian_thanh_toan,
-						}
+						},
 						ma_khach_hang:{
 							contains: ma_khach_hang,
 						},

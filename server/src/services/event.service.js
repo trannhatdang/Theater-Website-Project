@@ -80,7 +80,7 @@ export const eventService = {
 			throw new UnprocessableContentError(e.message);
 		}
 	},
-	postEvent: const async function(req){
+	postEvent: async function(req){
 		const {
 			ma_sk,
 			ten_sk,
@@ -110,7 +110,7 @@ export const eventService = {
 			throw new UnprocessableContentError(e.message);
 		}
 	},
-	patchEvent: const async function(req){
+	patchEvent: async function(req){
 		const {
 			ma_sk
 		} = req.query;
@@ -147,7 +147,7 @@ export const eventService = {
 			throw new UnprocessableContentError(e.message);
 		}
 	},
-	deleteEvent: const async function(req){
+	deleteEvent: async function(req){
 		const {
 			ma_sk,
 		} = req.query;
@@ -197,7 +197,7 @@ export const eventService = {
 			throw new UnprocessableContentError(e.message);
 		}
 	},
-	postOrganisationParty: const async function(req){
+	postOrganisationParty: async function(req){
 		const {
 			ma_so_rieng,
 		} = req.body;
@@ -215,7 +215,7 @@ export const eventService = {
 			throw new UnprocessableContentError(e.message);
 		}
 	},
-	patchOrganisationParty: const async function(req){
+	patchOrganisationParty: async function(req){
 		const {
 			ma_so_rieng,
 		} = req.query;
@@ -240,7 +240,7 @@ export const eventService = {
 			throw new UnprocessableContentError(e.message);
 		}
 	},
-	deleteOrganisationParty: const async function(req){
+	deleteOrganisationParty: async function(req){
 		const {
 			ma_so_rieng,
 		} = req.query;
@@ -305,7 +305,7 @@ export const eventService = {
 			throw new UnprocessableContentError(e.message);
 		}
 	},
-	postOrganization: const async function(req){
+	postOrganization: async function(req){
 		const {
 			ma_so_rieng,
 			ten_to_chuc,
@@ -329,7 +329,7 @@ export const eventService = {
 			throw new UnprocessableContentError(e.message);
 		}
 	},
-	patchOrganization: const async function(req){
+	patchOrganization: async function(req){
 		const {
 			ma_so_rieng,
 		} = req.query;
@@ -360,7 +360,7 @@ export const eventService = {
 			throw new UnprocessableContentError(e.message);
 		}
 	},
-	deleteOrganization: const async function(req){
+	deleteOrganization: async function(req){
 		const {
 			ma_so_rieng,
 		} = req.query;
@@ -424,7 +424,7 @@ export const eventService = {
 			throw new UnprocessableContentError(e.message);
 		}
 	},
-	postIndividual: const async function(req){
+	postIndividual: async function(req){
 		const {
 			cccd,
 			ten,
@@ -448,7 +448,7 @@ export const eventService = {
 			throw new UnprocessableContentError(e.message);
 		}
 	},
-	patchIndividual: const async function(req){
+	patchIndividual: async function(req){
 		const {
 			cccd,
 		} = req.query;
@@ -479,7 +479,7 @@ export const eventService = {
 			throw new UnprocessableContentError(e.message);
 		}
 	},
-	deleteIndividual: const async function(req){
+	deleteIndividual: async function(req){
 		const {
 			cccd,
 		} = req.query;
@@ -544,7 +544,7 @@ export const eventService = {
 			throw new UnprocessableContentError(e.message);
 		}
 	},
-	postRelationOrangize: const async function(req){
+	postRelationOrangize: async function(req){
 		const {
 			ma_don_vi_to_chuc,
 			ma_su_kien,
@@ -568,7 +568,7 @@ export const eventService = {
 			throw new UnprocessableContentError(e.message);
 		}
 	},
-	patchRelationOrangize: const async function(req){
+	patchRelationOrangize: async function(req){
 		const {
 			ma_don_vi_to_chuc,
 			ma_su_kien,
@@ -603,7 +603,7 @@ export const eventService = {
 			throw new UnprocessableContentError(e.message);
 		}
 	},
-	deleteRelationOrangize: const async function(req){
+	deleteRelationOrangize: async function(req){
 		const {
 			ma_don_vi_to_chuc,
 			ma_su_kien,

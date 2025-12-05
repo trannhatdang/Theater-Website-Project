@@ -1,4 +1,4 @@
-import { BillService } from "../services/bill.service.js"
+import { billService } from "../services/bill.service.js"
 import { handleError } from '../helpers/handleError.js'
 
 const BillControllerMap = {

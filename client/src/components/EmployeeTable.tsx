@@ -1,4 +1,4 @@
-interface EmployeeProps{
+export type EmployeeProps = {
 	ma_nv: string,
 	cccd: string,
 	ten: string,
@@ -32,7 +32,7 @@ const Employee = ({
 	)
 }
 
-export default function EmployeeTable(employees : EmployeeProps[]){
+export default function EmployeeTable({employees}: {employees : EmployeeProps[]}){
 	return (
 		<>
 			{employees.map(employee => 
