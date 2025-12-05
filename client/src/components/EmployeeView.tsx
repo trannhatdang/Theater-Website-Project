@@ -1,9 +1,4 @@
 import * as React from 'react';
-//import Container from '@mui/material/Container';
-//import Box from '@mui/material/Box'
-//import Breadcrumbs, { breadcrumbsClasses } from '@mui/material/Breadcrumbs'
-//import Stack from '@mui/material/Stack'
-//import Sidebar from './Sidebar.tsx'
 import EmployeeTopBar from './EmployeeTopBar.tsx'
 import EmployeeTable from './EmployeeTable.tsx'
 import { useQuery } from "@tanstack/react-query";
@@ -63,22 +58,6 @@ export default function EmployeeView(){
 			return Promise.resolve(fetchEmployeeData(Filters));
 		}
 	});
-
-	/*const handleChange = (
-		newFilters: EmployeeFilters
-	) => {
-		setFilters(newFilters);
-	}
-
-	const handleSearchChange = (
-		searchBarKey: SearchBarKey
-	) => {
-		setFilters({
-			...Filters,
-			[searchBarKey.key]: searchBarKey.val
-		});
-	}*/
-
 	const employees = data;
 
 	return (

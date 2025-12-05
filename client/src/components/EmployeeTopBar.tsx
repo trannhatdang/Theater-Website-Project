@@ -144,7 +144,6 @@ function EmployeeSearch({onChange, onClose, searchKey, className} : {onChange: F
 						<CloseIcon/>
 					</IconButton>
 			}
-
 		</div>
 	)
 }
