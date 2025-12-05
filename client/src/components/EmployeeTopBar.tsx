@@ -20,7 +20,6 @@ interface SalaryRangeProps{
 
 interface EmployeeFilterMenuProps{
 	className: string,
-	filters: EmployeeFilters,
 	onApply(filters: EmployeeFilters): void,
 }
 
@@ -112,9 +111,9 @@ function EmployeeFilterMenu({onApply, className}: EmployeeFilterMenuProps) {
 	);
 }
 
-type SearchKeys = "ma_nv" | "cccd" | "ten" | "chuc_vu" | "dia_chi" | "sdt" | "gioi_tinh" | "ma_nv_quan_ly" | "ma_rap_phim"
+export type SearchKeys = "ma_nv" | "cccd" | "ten" | "chuc_vu" | "dia_chi" | "sdt" | "gioi_tinh" | "ma_nv_quan_ly" | "ma_rap_phim"
 
-type SearchBarKey = {
+export type SearchBarKey = {
 	key: SearchKeys,
 	val: string
 }
@@ -134,15 +133,9 @@ function EmployeeSearch({onChange, searchKey, className} : {onChange: Function, 
 	)
 }
 
-interface employee
-
-export default function EmployeeTopBar({onChange} : {onChange: Function}){
-	const filterReducer = (filter : EmployeeFilters, action: Function) => ({
-		const { menuFilter, searchResults }  = action
-	})
-
+export function EmployeeTopBar({dispatch} : {dispatch: Function}){
 	const [searchBars, setSearchBars] = React.useState<SearchBarKey[]>([{key: 'ten', val: ''}]);
-	const [Filters, dispatch] = React.useReducer(filterReducer, {});
+	//const [Filters, setFilters] = React.useState<EmployeeFilters>({});
 	const [remainingSearchBars, setRemainingSearchBars] = React.useState<SearchKeys[]>([
 		"ma_nv",
 		"cccd",
@@ -163,20 +156,17 @@ export default function EmployeeTopBar({onChange} : {onChange: Function}){
 	};
 
 	const handleApply = (filters: EmployeeFilters) => {
-		setFilters(() => {
-			...Filters,
-			min_luong: filters.min_luong,
-			max_luong: filters.max_luong,
+		dispatch({
+			type: 'FILTER',
+			filters: filters,
 		});
-		onChange(Filters);
 	};
 
 	const handleSearchChange = (searchBarKey: SearchBarKey) => {
-		setFilters({
-			...Filters,
-			[searchBarKey.key]: searchBarKey.val
+		dispatch({
+			type: 'SEARCH',
+			search: searchBarKey,
 		});
-		//onChange(Filters)
 	};
 
 	const removeElement = (array: SearchKeys[], elem: SearchKeys) => {
@@ -233,3 +223,4 @@ export default function EmployeeTopBar({onChange} : {onChange: Function}){
 	)
 
 }
+export default React.memo(EmployeeTopBar);

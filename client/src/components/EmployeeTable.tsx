@@ -32,7 +32,8 @@ const Employee = ({
 	)
 }
 
-export default function EmployeeTable({employees}: {employees : EmployeeProps[]}){
+export default function EmployeeTable({employees}: {employees : EmployeeProps[] | undefined}){
+	if(!employees) return;
 	return (
 		<>
 			{employees.map(employee => 
