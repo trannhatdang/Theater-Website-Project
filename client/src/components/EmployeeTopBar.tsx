@@ -8,7 +8,8 @@ import Slider from '@mui/material/Slider';
 import TextField from '@mui/material/TextField';
 //import RangeSlider from './RangeSlider.tsx'
 import IconButton from '@mui/material/IconButton'
-//import Typography from '@mui/material/Typography'
+import Typography from '@mui/material/Typography'
+import CloseIcon from '@mui/icons-material/Close';
 
 import type { EmployeeFilters } from './EmployeeView.tsx'
 
@@ -17,12 +18,6 @@ interface SalaryRangeProps{
 	salaryRange: number[],
 	onChange(newValue: number[]): void,
 }
-
-interface EmployeeFilterMenuProps{
-	className: string,
-	onApply(filters: EmployeeFilters): void,
-}
-
 
 function EmployeeSalaryRangeSlider({salaryRange, onChange, className}: SalaryRangeProps){
 	const [val, setValue] = React.useState<number[]>(salaryRange);
@@ -37,9 +32,16 @@ function EmployeeSalaryRangeSlider({salaryRange, onChange, className}: SalaryRan
 				value = {val}
 				onChange = {(_, newValue) => handleChange(newValue)}
 				className= {className}
+				//aria-labelledby = 'label'
 			/>
+			<Typography> {val} </Typography>
 		</div>
 	)
+}
+
+interface EmployeeFilterMenuProps{
+	className: string,
+	onApply(filters: EmployeeFilters): void,
 }
 
 function EmployeeFilterMenu({onApply, className}: EmployeeFilterMenuProps) {
@@ -118,24 +120,37 @@ export type SearchBarKey = {
 	val: string
 }
 
-function EmployeeSearch({onChange, searchKey, className} : {onChange: Function, searchKey: SearchKeys, className: string}){
+function EmployeeSearch({onChange, onClose, searchKey, className} : {onChange: Function, onClose: Function, searchKey: SearchKeys, className: string}){
 	const handleChange = (newValue: string) => {
 		onChange({key: searchKey, val: newValue})
 	}
 
 	return(
-		<TextField 
-			label={'Tim ' + searchKey}
-			variant='outlined' 
-			className={className}
-			onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleChange(e.target.value)}
-		/>
+		<div className='flex'>
+			<TextField 
+				label={'Tim ' + searchKey}
+				variant='outlined' 
+				className={className}
+				onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleChange(e.target.value)}
+			/>
+
+			{
+				(searchKey !== 'ten') &&
+
+					<IconButton
+					id='basic-button'
+					onClick={() => onClose(searchKey)}
+					>
+						<CloseIcon/>
+					</IconButton>
+			}
+
+		</div>
 	)
 }
 
 export function EmployeeTopBar({dispatch} : {dispatch: Function}){
 	const [searchBars, setSearchBars] = React.useState<SearchBarKey[]>([{key: 'ten', val: ''}]);
-	//const [Filters, setFilters] = React.useState<EmployeeFilters>({});
 	const [remainingSearchBars, setRemainingSearchBars] = React.useState<SearchKeys[]>([
 		"ma_nv",
 		"cccd",
@@ -189,11 +204,29 @@ export function EmployeeTopBar({dispatch} : {dispatch: Function}){
 		handleClose();
 	}
 
+	const handleSearchBarsClose = (newValue : SearchKeys) => {
+		if(newValue === 'ten'){
+			return;
+		}
+
+		setRemainingSearchBars([
+			...remainingSearchBars,
+			newValue,
+		]);
+
+		let newBars = searchBars.filter((bar) => {
+			return bar.key !== newValue;
+		});
+		setSearchBars(newBars);
+
+		handleClose();
+	}
+
 	return (
 		<div className='shadow-md flex flex-row bg-slate-700 items-center p-2'>
 			<div className='flex-1 w-full'>
 				{searchBars.map(searchBar => {
-					return <EmployeeSearch className='flex-1 w-full' key={searchBar.key} onChange={handleSearchChange} searchKey={searchBar.key}/>
+					return <EmployeeSearch className='flex-1 w-full' key={searchBar.key} onChange={handleSearchChange} onClose={handleSearchBarsClose} searchKey={searchBar.key}/>
 				})}
 			</div>
 

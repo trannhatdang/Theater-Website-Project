@@ -40,8 +40,7 @@ function filterReducer(filter : EmployeeFilters, action: FilterAction){
 			if(!filters) return filter;
 			return {
 				...filter,
-				min_luong: filters.min_luong,
-				max_luong: filters.max_luong,
+				...filters,
 			}
 		};
 		case 'SEARCH':{
@@ -54,8 +53,6 @@ function filterReducer(filter : EmployeeFilters, action: FilterAction){
 		default:
 			return filter;
 	}
-
-	console.log(filter)
 }
 
 export default function EmployeeView(){
