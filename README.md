@@ -21,4 +21,4 @@ Chạy dự án bằng cách gõ lệnh
 npm run dev
 ```
 
-Hiện tại server chỉ mới hiện thực API nhân viên và rạp phim, tui sẽ làm tiếp những cái sau.
+Server có đủ API (trừ trigger), giao diện employee còn thiếu patch, delete
