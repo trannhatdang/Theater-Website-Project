@@ -1,28 +1,20 @@
-import type { QueryFunctionContext } from "@tanstack/react-query";
+import type { EmployeeProps, EmployeeFilters } from '../types/employee';
 
-const url = "http://localhost:3069";   // <-- keep this
+const url = "http://localhost:3069";
 
 export async function fetchEmployeeData(
-    { queryKey }: QueryFunctionContext
-) {
-    // queryKey = ["employee", { Filters: {...} }]
-    const [_key, params] = queryKey as [
-        string,
-        { Filters?: Record<string, string> }
-    ];
+  filters: EmployeeFilters,
+  signal?: AbortSignal
+): Promise<EmployeeProps[]> {
+  const queryParams = new URLSearchParams();
 
-    const queryParams = params?.Filters
-        ? new URLSearchParams(params.Filters).toString()
-        : "";
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value !== undefined) queryParams.append(key, String(value));
+  });
 
-    const response = await fetch(`${url}/employee?${queryParams}`, {
-        method: "GET"
-    });
+  const response = await fetch(`${url}/employee?${queryParams.toString()}`, { signal });
 
-    if (!response.ok) {
-        console.error(response);
-        throw new Error("something went wrong...");
-    }
+  if (!response.ok) throw new Error("Failed to fetch employees");
 
-    return response.json();
+  return response.json();
 }

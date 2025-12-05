@@ -1,4 +1,4 @@
-interface EmployeeProps{
+export interface EmployeeProps{
 	ma_nv: string,
 	cccd: string,
 	ten: string,
