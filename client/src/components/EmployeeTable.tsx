@@ -33,7 +33,11 @@ const columns: GridColDef[] = [
 			return new Date(value);
 		}
 	},
-
+	{ field: 'chuc_vu', headerName: 'Chuc Vu', width: 100 },
+	{ field: 'dia_chi', headerName: 'Dia Chi', width: 200 },
+	{ field: 'sdt', headerName: 'SDT', width: 200 },
+	{ field: 'ma_nv_quan_ly', headerName: 'Ma NV Quan Ly', width: 200 },
+	{ field: 'ma_rap_phim', headerName: 'Ma Rap Phim', width: 200 },
 ];
 
 /*const Employee = (employeeProps : EmployeeProps) => {
