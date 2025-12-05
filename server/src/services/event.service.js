@@ -30,16 +30,16 @@ export const eventService = {
 						ten_sk: ten_sk,
 						quy_mo: quy_mo,
 						do_tuoi_gioi_han: {
-							gte: min_do_tuoi_gioi_han,
-							lte: max_do_tuoi_gioi_han,
+							gte: min_do_tuoi_gioi_han ? parseInt(min_do_tuoi_gioi_han) : undefined,
+							lte: max_do_tuoi_gioi_han ? parseInt(max_do_tuoi_gioi_han) : undefined,
 						},
 						chi_phi: {
-							gte: min_chi_phi,
-							lte: max_chi_phi,
+							gte: min_chi_phi ? parseInt(min_chi_phi) : undefined,
+							lte: max_chi_phi ? parseInt(max_chi_phi) : undefined,
 						},
 						thoi_gian: {
-							gte: min_thoi_gian,
-							lte: max_thoi_gian,
+							gte: min_thoi_gian ? new Date(min_thoi_gian) : undefined,
+							lte: max_thoi_gian ? new Date(max_thoi_gian) : undefined,
 						},
 					},
 				});
@@ -59,16 +59,16 @@ export const eventService = {
 							contains: quy_mo,
 						},
 						do_tuoi_gioi_han: {
-							gte: min_do_tuoi_gioi_han,
-							lte: max_do_tuoi_gioi_han,
+							gte: min_do_tuoi_gioi_han ? parseInt(min_do_tuoi_gioi_han) : undefined,
+							lte: max_do_tuoi_gioi_han ? parseInt(max_do_tuoi_gioi_han) : undefined,
 						},
 						chi_phi: {
-							gte: min_chi_phi,
-							lte: max_chi_phi,
+							gte: min_chi_phi ? parseInt(min_chi_phi) : undefined,
+							lte: max_chi_phi ? parseInt(max_chi_phi) : undefined,
 						},
 						thoi_gian: {
-							gte: min_thoi_gian,
-							lte: max_thoi_gian,
+							gte: min_thoi_gian ? new Date(min_thoi_gian) : undefined,
+							lte: max_thoi_gian ? new Date(max_thoi_gian) : undefined,
 						},
 					},
 				});
@@ -97,9 +97,9 @@ export const eventService = {
 					ma_sk: ma_sk,
 					ten_sk: ten_sk,
 					quy_mo: quy_mo,
-					do_tuoi_gioi_han: do_tuoi_gioi_han,
-					chi_phi: chi_phi,
-					thoi_gian: thoi_gian,
+					do_tuoi_gioi_han: do_tuoi_gioi_han ? parseInt(do_tuoi_gioi_han) : undefined,
+					chi_phi: chi_phi ? parseInt(chi_phi) : undefined,
+					thoi_gian: thoi_gian ? new Date(thoi_gian) : undefined,
 					noi_dung_su_kien: noi_dung_su_kien,
 				},
 			});
@@ -134,9 +134,9 @@ export const eventService = {
 					ma_sk: new_ma_sk,
 					ten_sk: new_ten_sk,
 					quy_mo: new_quy_mo,
-					do_tuoi_gioi_han: new_do_tuoi_gioi_han,
-					chi_phi: new_chi_phi,
-					thoi_gian: new_thoi_gian,
+					do_tuoi_gioi_han: new_do_tuoi_gioi_han ? parseInt(new_do_tuoi_gioi_han) : undefined,
+					chi_phi: new_chi_phi ? parseInt(new_chi_phi) : undefined,
+					thoi_gian: new_thoi_gian ? new Date(new_thoi_gian) : undefined,
 					noi_dung_su_kien: new_noi_dung_su_kien,
 				},
 			});

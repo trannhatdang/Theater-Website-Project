@@ -162,12 +162,12 @@ export const customerService = {
 						mat_khau: mat_khau,
 						cap: cap,
 						so_diem_tich_duoc: {
-							gte: min_so_diem_tich_duoc,
-							lte: max_so_diem_tich_duoc,
+							gte: min_so_diem_tich_duoc ? parseInt(min_so_diem_tich_duoc) : undefined,
+							lte: max_so_diem_tich_duoc ? parseInt(max_so_diem_tich_duoc) : undefined,
 						},
 						so_diem_can_len_cap: {
-							gte: min_so_diem_can_len_cap,
-							lte: max_so_diem_can_len_cap,
+							gte: min_so_diem_can_len_cap ? parseInt(min_so_diem_can_len_cap) : undefined,
+							lte: max_so_diem_can_len_cap ? parseInt(max_so_diem_can_len_cap) : undefined,
 						},
 					},
 				});
@@ -190,12 +190,12 @@ export const customerService = {
 							contains: cap,
 						},
 						so_diem_tich_duoc: {
-							gte: min_so_diem_tich_duoc,
-							lte: max_so_diem_tich_duoc,
+							gte: min_so_diem_tich_duoc ? parseInt(min_so_diem_tich_duoc) : undefined,
+							lte: max_so_diem_tich_duoc ? parseInt(max_so_diem_tich_duoc) : undefined,
 						},
 						so_diem_can_len_cap: {
-							gte: min_so_diem_can_len_cap,
-							lte: max_so_diem_can_len_cap,
+							gte: min_so_diem_can_len_cap ? parseInt(min_so_diem_can_len_cap) : undefined,
+							lte: max_so_diem_can_len_cap ? parseInt(max_so_diem_can_len_cap) : undefined,
 						},
 					},
 				});
@@ -225,8 +225,8 @@ export const customerService = {
 					ten_tai_khoan: ten_tai_khoan,
 					mat_khau: mat_khau,
 					cap: cap,
-					so_diem_tich_duoc: so_diem_tich_duoc,
-					so_diem_can_len_cap: so_diem_can_len_cap,
+					so_diem_tich_duoc: so_diem_tich_duoc ? parseInt(so_diem_tich_duoc) : undefined,
+					so_diem_can_len_cap: so_diem_can_len_cap ? parseInt(so_diem_can_len_cap) : undefined,
 				},
 			});
 
@@ -264,8 +264,8 @@ export const customerService = {
 					ten_tai_khoan: new_ten_tai_khoan,
 					mat_khau: new_mat_khau,
 					cap: new_cap,
-					so_diem_tich_duoc: new_so_diem_tich_duoc,
-					so_diem_can_len_cap: new_so_diem_can_len_cap,
+					so_diem_tich_duoc: new_so_diem_tich_duoc ? parseInt(new_so_diem_tich_duoc) : undefined,
+					so_diem_can_len_cap: new_so_diem_can_len_cap ? parseInt(new_so_diem_can_len_cap) : undefined,
 				},
 			});
 
@@ -312,12 +312,12 @@ export const customerService = {
 				const result = await prisma.cap_do.findMany({
 					where:{
 						cap: {
-							gte: min_cap,
-							lte: max_cap,
+							gte: min_cap ? parseInt(min_cap) : undefined,
+							lte: max_cap ? parseInt(max_cap) : undefined,
 						},
 						so_diem_can: {
-							gte: min_so_diem_can,
-							lte: max_so_diem_can,
+							gte: min_so_diem_can ? parseInt(min_so_diem_can) : undefined,
+							lte: max_so_diem_can ? parseInt(max_so_diem_can) : undefined,
 						},
 						ten_cap_do: ten_cap_do,
 					},
@@ -329,12 +329,12 @@ export const customerService = {
 				const result = await prisma.cap_do.findMany({
 					where:{
 						cap: {
-							gte: min_cap,
-							lte: max_cap,
+							gte: min_cap ? parseInt(min_cap) : undefined,
+							lte: max_cap ? parseInt(max_cap) : undefined,
 						},
 						so_diem_can: {
-							gte: min_so_diem_can,
-							lte: max_so_diem_can,
+							gte: min_so_diem_can ? parseInt(min_so_diem_can) : undefined,
+							lte: max_so_diem_can ? parseInt(max_so_diem_can) : undefined,
 						},
 						ten_cap_do: {
 							contains: ten_cap_do,
@@ -363,8 +363,8 @@ export const customerService = {
 		try{
 			const result = await prisma.cap_do.create({
 				data:{
-					cap: cap,
-					so_diem_can: so_diem_can,
+					cap: cap ? parseInt(cap) : undefined,
+					so_diem_can: so_diem_can ? parseInt(so_diem_can) : undefined,
 					ten_cap_do: ten_cap_do,
 				},
 			});
@@ -380,8 +380,6 @@ export const customerService = {
 	patchLevel: async function(req){
 		const {
 			cap,
-			so_diem_can,
-			ten_cap_do,
 		} = req.query;
 
 		const {
@@ -393,13 +391,11 @@ export const customerService = {
 		try{
 			const result = await prisma.khach_hang.update({
 				where:{
-					cap: cap,
-					so_diem_can: so_diem_can,
-					ten_cap_do: ten_cap_do,
+					cap: cap ? parseInt(cap) : undefined,
 				},
 				data:{
-					cap: new_cap,
-					so_diem_can: new_so_diem_can,
+					cap: new_cap ? parseInt(new_cap) : undefined,
+					so_diem_can: new_so_diem_can ? parseInt(new_so_diem_can) : undefined,
 					ten_cap_do: new_ten_cap_do,
 				},
 			});
@@ -415,16 +411,12 @@ export const customerService = {
 	deleteLevel: async function(req){
 		const {
 			cap,
-			so_diem_can,
-			ten_cap_do,
 		} = req.query;
 
 		try{
 			const result = await prisma.khach_hang.delete({
 				where:{
-					cap: cap,
-					so_diem_can: so_diem_can,
-					ten_cap_do: ten_cap_do
+					cap: cap ? parseInt(cap) : undefined,
 				}
 			});
 
