@@ -1,6 +1,5 @@
 import { DataGrid } from '@mui/x-data-grid'
 import type { GridColDef } from '@mui/x-data-grid'
-import Paper from '@mui/material/Paper';
 export type EmployeeProps = {
 	ma_nv: string,
 	cccd: string,
@@ -25,10 +24,19 @@ const columns: GridColDef[] = [
 		type: 'number',
 		width: 200,
 	},
+	{
+		field: 'ngay_sinh',
+		headerName: 'Ngay Sinh',
+		type: 'date',
+		width: 200,
+		valueGetter: (value) => {
+			return new Date(value);
+		}
+	},
 
 ];
 
-const Employee = (employeeProps : EmployeeProps) => {
+/*const Employee = (employeeProps : EmployeeProps) => {
 	const {
 		ma_nv,
 		cccd,
@@ -50,7 +58,7 @@ const Employee = (employeeProps : EmployeeProps) => {
 			</div>
 		</Paper>
 	)
-}
+}*/
 
 export default function EmployeeTable({employees}: {employees : EmployeeProps[] | undefined}){
 	if(!employees) return;
