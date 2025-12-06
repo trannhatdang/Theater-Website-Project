@@ -1,20 +1,29 @@
-import type { EmployeeProps, EmployeeFilters } from '../types/employee';
+import type { EmployeeFilters } from '../components/EmployeeView.tsx'
+import type { EmployeeProps } from '../components/EmployeeTable.tsx'
+const url = 'http://localhost:3000';
 
-const url = "http://localhost:3069";
+export const fetchEmployeeData = async (filters : EmployeeFilters) : Promise<EmployeeProps[]> => {
+	const queryParams = new URLSearchParams();
 
-export async function fetchEmployeeData(
-  filters: EmployeeFilters,
-  signal?: AbortSignal
-): Promise<EmployeeProps[]> {
-  const queryParams = new URLSearchParams();
+	for(const [key, value] of Object.entries(filters)){
+		if(typeof value !== 'string'){
+			queryParams.append(key, value.toString());
+		}
+		else{
+			queryParams.append(key, value);
 
-  Object.entries(filters).forEach(([key, value]) => {
-    if (value !== undefined) queryParams.append(key, String(value));
-  });
+		}
+	}
 
-  const response = await fetch(`${url}/employee?${queryParams.toString()}`, { signal });
+	const employees = await fetch(url + '/employee?' + queryParams, {
+		method: "GET",
+	});
 
-  if (!response.ok) throw new Error("Failed to fetch employees");
+	if(!employees.ok){
+		console.error(employees);
 
-  return response.json();
+		throw Error("something went wrong...");
+	}
+
+	return employees.json();
 }

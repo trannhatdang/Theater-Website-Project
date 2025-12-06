@@ -1,54 +1,69 @@
 import * as React from 'react';
-//import Container from '@mui/material/Container';
-//import Box from '@mui/material/Box'
-//import Breadcrumbs, { breadcrumbsClasses } from '@mui/material/Breadcrumbs'
-//import Stack from '@mui/material/Stack'
-//import Sidebar from './Sidebar.tsx'
 import EmployeeTopBar from './EmployeeTopBar.tsx'
 import EmployeeTable from './EmployeeTable.tsx'
 import { useQuery } from "@tanstack/react-query";
-import { fetchEmployeeData } from '../utils/Query';
-import type { EmployeeProps, EmployeeFilters } from '../types/employee';
-import type { SearchBarKey } from './EmployeeTopBar';
+import { fetchEmployeeData } from '../utils/Query.tsx'
+import type { EmployeeProps } from './EmployeeTable.tsx'
+import type { SearchBarKey } from './EmployeeTopBar.tsx'
 
-interface FilterAction {
-	type: string;
-	filters?: EmployeeFilters;
-	search?: SearchBarKey;
+export type EmployeeFilters = {
+	ma_nv?: string,
+	cccd?: string,
+	ten?: string,
+	min_luong?: number,
+	max_luong?: number,
+	min_ngay_sinh?: Date,
+	max_ngay_sinh?: Date,
+	chuc_vu?: string,
+	dia_chi?: string,
+	sdt?: string,
+	gioi_tinh?: string,
+	ma_nv_quan_ly?: string,
+	ma_rap_phim?: string
 }
 
-function filterReducer(filter: EmployeeFilters, action: FilterAction): EmployeeFilters {
-	const { type, filters, search } = action;
+interface FilterAction{
+	type: string,
+	filters?: EmployeeFilters,
+	search?: SearchBarKey
+}
 
-	switch (type) {
-		case 'FILTER':
-			return filters ? { ...filter, ...filters } : filter;
-		case 'SEARCH':
-			return search ? { ...filter, [search.key]: search.val } : filter;
+function filterReducer(filter : EmployeeFilters, action: FilterAction){
+	const {type, filters, search} = action
+	switch (type){
+		case 'FILTER':{
+			if(!filters) return filter;
+			return {
+				...filter,
+				...filters,
+			}
+		};
+		case 'SEARCH':{
+			if(!search) return filter;
+			return {
+				...filter,
+				[search.key]: search.val,
+			}
+		}
 		default:
 			return filter;
 	}
 }
 
 export default function EmployeeView(){
-	const [Filters, dispatch] = React.useReducer(filterReducer, {} as EmployeeFilters);
+	const [Filters, dispatch] = React.useReducer(filterReducer, {})
 	const { isPending, isError, data, error } = useQuery({
 		queryKey: [Filters], 
 		queryFn: () : Promise<EmployeeProps[]> => {
 			return Promise.resolve(fetchEmployeeData(Filters));
 		}
 	});
-
-	const employees: EmployeeProps[] = data ?? [];
+	const employees = data;
 
 	return (
 		<div className='flex flex-col m-10 gap-2'>
-			<EmployeeTopBar dispatch={dispatch} />
-			{!isLoading && !isError ? (
-				<EmployeeTable employees={employees} />
-			) : (
-				<>{error instanceof Error ? error.message : 'Loading...'}</>
-			)}
+			<EmployeeTopBar dispatch={dispatch}/>
+			{(!isPending && !isError) ? <EmployeeTable employees={employees}/> : <>{error?.message}</>}
 		</div>
-	);
+	)
 }
