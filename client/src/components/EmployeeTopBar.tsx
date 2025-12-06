@@ -32,6 +32,7 @@ function EmployeeSalaryRangeSlider({salaryRange, onChange, className}: SalaryRan
 				value = {val}
 				onChange = {(_, newValue) => handleChange(newValue)}
 				className= {className}
+				//aria-labelledby = 'label'
 			/>
 			<Typography> {val} </Typography>
 		</div>
@@ -143,7 +144,6 @@ function EmployeeSearch({onChange, onClose, searchKey, className} : {onChange: F
 						<CloseIcon/>
 					</IconButton>
 			}
-
 		</div>
 	)
 }
@@ -229,7 +229,7 @@ export function EmployeeTopBar({dispatch} : {dispatch: Function}){
 				})}
 			</div>
 
-			{// return (<EmployeeFilterMenu onApply={handleApply} className=''/)>}
+			<EmployeeFilterMenu onApply={handleApply} className=''/>
 
 			<Button
 				onClick={handleClick}
