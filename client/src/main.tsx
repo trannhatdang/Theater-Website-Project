@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom' //added dom
 import './index.css'
-import Sidebar from './components/sidebar.tsx'
+import Sidebar from './components/Sidebar.tsx'
 import HomePage from './components/Homepage.tsx'
 import EmployeeView from './components/EmployeeView.tsx'
 import Dashboard from './components/dashboard.tsx'

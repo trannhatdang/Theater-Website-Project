@@ -1,0 +1,99 @@
+.book-body {
+  font-family: Arial, sans-serif;
+  background: #121212;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background: #111;
+  padding: 16px 0;
+}
+
+header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+header .logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+header nav ul {
+  list-style: none;
+  display: flex;
+  gap: 16px;
+}
+
+header nav a {
+  color: #fff;
+  text-decoration: none;
+}
+
+header nav a:hover {
+  color: #e50914;
+}
+
+.booking-container {
+  max-width: 500px;
+  margin: 50px auto;
+  background: #1a1a1a;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+.booking-container h2 {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+form .form-group {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+form label {
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #ccc;
+}
+
+form input {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #333;
+  background: #222;
+  color: #fff;
+  font-size: 16px;
+}
+
+form button {
+  width: 100%;
+  padding: 12px;
+  background: #e50914;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+form button:hover {
+  background: #f40612;
+}
+
+.success-msg {
+  display: none;
+  margin-top: 12px;
+  color: lightgreen;
+  text-align: center;
+}
