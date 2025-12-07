@@ -18,8 +18,13 @@ export default function FilmImageCarousel({
 	const [filmsShown, setFilmsShown] = React.useState<FilmProps[]>(films.slice(0,4))
 	const slideLeft = () => {
 		setX(x-200)
-		setLeft((left-1) - ((left-1) * films.length))
-		setRight((right-1) - ((right-1) * films.length))
+		const n: number = films.length
+		const newLeft = left-1
+		const newRight = right-1
+
+		setLeft(newLeft - (newLeft * parseInt(n/newLeft)));
+		setLeft(newRight - (newRight * parseInt(n/newRight)));
+
 		if(left < right){
 			setFilmsShown(films.slice(left, right))
 		}
@@ -39,8 +44,6 @@ export default function FilmImageCarousel({
 			setFilmsShown(films.slice(right, left))
 
 		}
-		console.log(left)
-		console.log(right)
 	}
 
 
