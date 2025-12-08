@@ -3,6 +3,7 @@ import Logo from './Logo.tsx'
 import ImageCarousel from './ImageCarousel.tsx'
 import type { FilmProps } from './Film.tsx'
 
+
 export default function HomePage(){
 	const [films, _] = React.useState<FilmProps[]>(
 	[
@@ -45,7 +46,7 @@ export default function HomePage(){
 	])
 
 	return (
-		<div className="homepage-container">
+		<div className="h-screen">
 			<Logo />
 			<ImageCarousel films={films}/>
 		</div>

@@ -1,65 +1,52 @@
 import * as React from 'react'
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import IconButton from '@mui/material/IconButton';
 import type { FilmProps } from './Film.tsx'
 import Film from './Film.tsx'
+//import modulo from '../utils/Modulo.tsx'
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { motion } from 'motion/react'
+import IconButton from '@mui/material/IconButton';
 
+function CarouselItem({ film, pos, len } : { film : FilmProps, pos: number, len: number}){
+	return (
+		<motion.div className={'absolute' + ((pos === 0 || pos === 1 || pos === 2) ? '' : ' opacity-0')} animate={{x: (pos * 250)}}>
+			<Film film={film}/>
+		</motion.div>
+	)
+}
 
-export default function FilmImageCarousel({
-	films,
-}:{
-	films: FilmProps[]
-}){
-	const [x, setX] = React.useState(0);
-	const [left, setLeft] = React.useState(0)
-	const [right, setRight] = React.useState(4)
-	const [filmsShown, setFilmsShown] = React.useState<FilmProps[]>(films.slice(0,4))
-	const slideLeft = () => {
-		setX(x-200)
-		const n: number = films.length
-		const newLeft = left-1
-		const newRight = right-1
-
-		setLeft(newLeft - (newLeft * parseInt(n/newLeft)));
-		setLeft(newRight - (newRight * parseInt(n/newRight)));
-
-		if(left < right){
-			setFilmsShown(films.slice(left, right))
-		}
-		else{
-			setFilmsShown(films.slice(right, left))
-		}
-	}
+export default function ImageCarousel({films} : {films: FilmProps[]}){
+	const [filmArr, _] = React.useState(films.concat(films))
+	const [items, setItems] = React.useState(Array.from(filmArr.keys()))
 
 	const slideRight = () => {
-		setX(x+200)
-		setRight((right + 1) % films.length)
-		setLeft((left + 1) % films.length)
-		if(left < right){
-			setFilmsShown(films.slice(left, right))
-		}
-		else{
-			setFilmsShown(films.slice(right, left))
-
-		}
+		const n = items.length;
+		setItems((prev) => {
+			return prev.map((_, idx) => prev[(idx + 1) % n])
+		})
 	}
 
+	const slideLeft = () => {
+		const n = items.length;
+		setItems((prev) => {
+			return prev.map((_, idx) => prev[(idx - 1 + n) % n])
+		})
+	}
 
 	return (
-		<div className='flex'>
-			<IconButton aria-label="back" onClick={slideLeft}>
+		<div className='flex h-100 w-200'>
+			<IconButton onClick={slideLeft}>
 				<ArrowBackIosIcon />
 			</IconButton>
 
-			<div className='overflow-hidden'>
-				<motion.div animate={{x}} className='flex w-full'>
-					{filmsShown.map((film) => {return <Film film={film} key={film.name}/>})}
-				</motion.div>
+			<div className='overflow-hidden relative h-full w-full'>
+				{items.map((item, idx) =>{
+					console.log(items)
+					return <CarouselItem film={filmArr[idx]} key={idx} pos={item} len={films.length}/>
+				})}
 			</div>
 
-			<IconButton aria-label="back" onClick={slideRight}>
+			<IconButton onClick={slideRight}>
 				<ArrowForwardIosIcon />
 			</IconButton>
 		</div>
