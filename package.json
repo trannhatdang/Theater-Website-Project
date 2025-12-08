@@ -2,8 +2,7 @@
   "dependencies": {
     "concurrently": "^9.2.1",
     "dotenv": "^17.2.3",
-    "just-modulo": "^2.2.0",
-    "react-multi-carousel": "^2.8.5"
+    "just-modulo": "^2.2.0"
   },
   "name": "database-assignment2",
   "version": "1.0.0",

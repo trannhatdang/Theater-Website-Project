@@ -1,5 +1,4 @@
 import * as React from 'react'
-import Logo from './Logo.tsx'
 import ImageCarousel from './ImageCarousel.tsx'
 import type { FilmProps } from './Film.tsx'
 
@@ -40,12 +39,9 @@ export default function HomePage(){
 	])
 
 	return (
-		<div className="h-svh w-svh">
-			<Logo />
-			<div className='bg-slate-700 rounded-md py-1'>
-				<p className='m-5 text-xl'>Now Showing:</p>
-				<ImageCarousel films={films}/>
-			</div>
+		<div className='bg-slate-700 rounded-md py-1'>
+			<p className='m-5 text-xl'>Now Showing:</p>
+			<ImageCarousel films={films}/>
 		</div>
 	);
 }
