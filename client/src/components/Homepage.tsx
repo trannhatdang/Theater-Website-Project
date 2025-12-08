@@ -26,19 +26,13 @@ export default function HomePage(){
 			alt: "Tomorrow With You  Poster",
 		},
 		{
-			name: "Spy x Familysgdg",
+			name: "Spy x Family",
 			img: "./assets/images/poster5.jpg",
 			descript: "• 90 min • 2D • Viet Sub",
 			alt: "Spy x Family Poster",
 		},
 		{
-			name: "Spy x Familfify",
-			img: "./assets/images/poster5.jpg",
-			descript: "• 90 min • 2D • Viet Sub",
-			alt: "Spy x Family Poster",
-		},
-		{
-			name: "Spy x Familfy",
+			name: "Spy x Family",
 			img: "./assets/images/poster5.jpg",
 			descript: "• 90 min • 2D • Viet Sub",
 			alt: "Spy x Family Poster",
@@ -46,9 +40,12 @@ export default function HomePage(){
 	])
 
 	return (
-		<div className="h-screen">
+		<div className="h-svh w-svh">
 			<Logo />
-			<ImageCarousel films={films}/>
+			<div className='bg-slate-700 rounded-md py-1'>
+				<p className='m-5 text-xl'>Now Showing:</p>
+				<ImageCarousel films={films}/>
+			</div>
 		</div>
 	);
 }

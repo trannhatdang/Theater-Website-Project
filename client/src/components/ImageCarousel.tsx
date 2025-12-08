@@ -9,7 +9,7 @@ import IconButton from '@mui/material/IconButton';
 
 function CarouselItem({ film, pos, len } : { film : FilmProps, pos: number, len: number}){
 	return (
-		<motion.div className={'absolute' + ((pos === 0 || pos === 1 || pos === 2) ? '' : ' opacity-0')} animate={{x: (pos * 250)}}>
+		<motion.div className={'absolute' + ((pos === len || pos === len-1 || pos === len+1) ? '' : '')} animate={{x: (pos * 250)}}>
 			<Film film={film}/>
 		</motion.div>
 	)
@@ -33,17 +33,20 @@ export default function ImageCarousel({films} : {films: FilmProps[]}){
 		})
 	}
 
+
 	return (
-		<div className='flex h-100 w-200'>
+		<div className='flex h-100 w-svh overflow-hidden'>
 			<IconButton onClick={slideLeft}>
 				<ArrowBackIosIcon />
 			</IconButton>
 
-			<div className='overflow-hidden relative h-full w-full'>
-				{items.map((item, idx) =>{
-					console.log(items)
-					return <CarouselItem film={filmArr[idx]} key={idx} pos={item} len={films.length}/>
-				})}
+			<div className='overflow-hidden h-full w-full'>
+				<div className='relative flex -translate-x-120'>
+					{items.map((item, idx) =>{
+						console.log(items)
+						return <CarouselItem film={filmArr[idx]} key={idx} pos={item} len={films.length}/>
+					})}
+				</div>
 			</div>
 
 			<IconButton onClick={slideRight}>
