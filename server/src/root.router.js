@@ -10,6 +10,7 @@ import promotionController from './controllers/promotion.controller.js'
 
 const rootRouter = express.Router();
 
+rootRouter.use('/assets', express.static('assets'))
 rootRouter.use('/auth{/*type}', authController); 
 rootRouter.use('/film{/*type}', filmController);
 rootRouter.use('/employee{/*type}', employeeController);

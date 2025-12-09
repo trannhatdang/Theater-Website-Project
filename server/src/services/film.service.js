@@ -8,21 +8,21 @@ import {
 
 export const filmService = {
 	getFilm: async function(req){
-		const { 
-			ma_phim,
-			ten_phim,
-			min_thoi_luong,
-			max_thoi_luong,
-			min_do_tuoi_yeu_cau,
-			max_do_tuoi_yeu_cau,
-			min_thoi_gian_cong_chieu,
-			max_thoi_gian_cong_chieu,
-			tom_tat_noi_dung,
-			dao_dien,
-			isStrict
-		} = req.query;
-
 		try{
+			const { 
+				ma_phim,
+				ten_phim,
+				min_thoi_luong,
+				max_thoi_luong,
+				min_do_tuoi_yeu_cau,
+				max_do_tuoi_yeu_cau,
+				min_thoi_gian_cong_chieu,
+				max_thoi_gian_cong_chieu,
+				tom_tat_noi_dung,
+				dao_dien,
+				isStrict
+			} = req.query;
+
 			if(isStrict){
 				const result = await prisma.phim.findMany({
 					where:{
@@ -86,17 +86,17 @@ export const filmService = {
 	},
 
 	postFilm: async function(req){
-		const {
-			ma_phim,
-			ten_phim,
-			thoi_luong,
-			do_tuoi_yeu_cau,
-			thoi_gian_cong_chieu,
-			tom_tat_noi_dung,
-			dao_dien,
-		} = req.body;
-
 		try{
+			const {
+				ma_phim,
+				ten_phim,
+				thoi_luong,
+				do_tuoi_yeu_cau,
+				thoi_gian_cong_chieu,
+				tom_tat_noi_dung,
+				dao_dien,
+			} = req.body;
+
 			const result = await prisma.phim.create({
 				data:{
 					ma_phim: ma_phim,
@@ -112,27 +112,27 @@ export const filmService = {
 			return result;
 		}
 		catch(e){
-			throw UnprocessableContentError(e.message);
+			throw new UnprocessableContentError(e.message);
 		}
 
 	},
 
 	patchFilm: async function(req){
-		const {
-			ma_phim
-		} = req.query;
-
-		const {
-			new_ma_phim,
-			new_ten_phim,
-			new_thoi_luong,
-			new_do_tuoi_yeu_cau,
-			new_thoi_gian_cong_chieu,
-			new_tom_tat_noi_dung,
-			new_dao_dien,
-		} = req.body;
-
 		try{
+			const {
+				ma_phim
+			} = req.query;
+
+			const {
+				new_ma_phim,
+				new_ten_phim,
+				new_thoi_luong,
+				new_do_tuoi_yeu_cau,
+				new_thoi_gian_cong_chieu,
+				new_tom_tat_noi_dung,
+				new_dao_dien,
+			} = req.body;
+
 			const result = await prisma.phim.update({
 				where:{
 					ma_phim: ma_phim,
@@ -156,11 +156,11 @@ export const filmService = {
 	},
 
 	deleteFilm: async function(req){
-		const {
-			ma_phim,
-		} = req.query;
-
 		try{
+			const {
+				ma_phim,
+			} = req.query;
+
 			const result = await prisma.phim.delete({
 				where:{
 					ma_phim: ma_phim
@@ -175,13 +175,13 @@ export const filmService = {
 	},
 
 	getGenre: async function(req){
-		const { 
-			ma_phim,
-			the_loai,
-			isStrict,
-		} = req.query;
-
 		try{
+			const { 
+				ma_phim,
+				the_loai,
+				isStrict,
+			} = req.query;
+
 			if(isStrict){
 				const result = await prisma.the_loai.findMany({
 					where:{
@@ -214,12 +214,12 @@ export const filmService = {
 	},
 
 	postGenre: async function(req){
-		const {
-			ma_phim,
-			the_loai,
-		} = req.body;
-
 		try{
+			const {
+				ma_phim,
+				the_loai,
+			} = req.body;
+
 			const result = await prisma.the_loai.create({
 				data:{
 					ma_phim: ma_phim,
@@ -236,17 +236,17 @@ export const filmService = {
 	},
 
 	patchGenre: async function(req){
-		const {
-			ma_phim,
-			the_loai,
-		} = req.query;
-
-		const {
-			new_ma_phim,
-			new_the_loai,
-		} = req.body;
-
 		try{
+			const {
+				ma_phim,
+				the_loai,
+			} = req.query;
+
+			const {
+				new_ma_phim,
+				new_the_loai,
+			} = req.body;
+
 			const result = await prisma.the_loai.update({
 				where:{
 					ma_phim: ma_phim,
@@ -267,12 +267,12 @@ export const filmService = {
 	},
 
 	deleteGenre: async function(req){
-		const {
-			ma_phim,
-			the_loai,
-		} = req.query;
-
 		try{
+			const {
+				ma_phim,
+				the_loai,
+			} = req.query;
+
 			const result = await prisma.the_loai.delete({
 				where:{
 					ma_phim: ma_phim,
@@ -287,13 +287,13 @@ export const filmService = {
 		}
 	},
 	getActor: async function(req){
-		const { 
-			ma_phim,
-			dien_vien,
-			isStrict
-		} = req.query;
-
 		try{
+			const { 
+				ma_phim,
+				dien_vien,
+				isStrict
+			} = req.query;
+
 			if(isStrict){
 				const result = await prisma.dien_vien.findMany({
 					where:{
@@ -326,12 +326,12 @@ export const filmService = {
 	},
 
 	postActor: async function(req){
-		const {
-			ma_phim,
-			dien_vien,
-		} = req.body;
-
 		try{
+			const {
+				ma_phim,
+				dien_vien,
+			} = req.body;
+
 			const result = await prisma.dien_vien.create({
 				data:{
 					ma_phim: ma_phim,
@@ -348,17 +348,17 @@ export const filmService = {
 	},
 
 	patchActor: async function(req){
-		const {
-			ma_phim,
-			dien_vien,
-		} = req.query;
-
-		const {
-			new_ma_phim,
-			new_dien_vien,
-		} = req.body;
-
 		try{
+			const {
+				ma_phim,
+				dien_vien,
+			} = req.query;
+
+			const {
+				new_ma_phim,
+				new_dien_vien,
+			} = req.body;
+
 			const result = await prisma.dien_vien.update({
 				where:{
 					ma_phim: ma_phim,
@@ -379,12 +379,12 @@ export const filmService = {
 	},
 
 	deleteActor: async function(req){
-		const {
-			ma_phim,
-			dien_vien,
-		} = req.query;
-
 		try{
+			const {
+				ma_phim,
+				dien_vien,
+			} = req.query;
+
 			const result = await prisma.dien_vien.delete({
 				where:{
 					ma_phim: ma_phim,
@@ -400,22 +400,22 @@ export const filmService = {
 	},
 
 	getScreening: async function(req){
-		const { 
-			ma_luot_chieu,
-			min_thoi_gian_bat_dau,
-			max_thoi_gian_bat_dau,
-			min_thoi_gian_ket_thuc,
-			max_thoi_gian_ket_thuc,
-			hinh_thuc_chieu,
-			ngon_ngu,
-			phu_de_hoac_long_tieng,
-			ma_phim,
-			ma_rap,
-			ma_phong_chieu,
-			ma_nhan_vien_quan_ly,
-		} = req.query;
-
 		try{
+			const { 
+				ma_luot_chieu,
+				min_thoi_gian_bat_dau,
+				max_thoi_gian_bat_dau,
+				min_thoi_gian_ket_thuc,
+				max_thoi_gian_ket_thuc,
+				hinh_thuc_chieu,
+				ngon_ngu,
+				phu_de_hoac_long_tieng,
+				ma_phim,
+				ma_rap,
+				ma_phong_chieu,
+				ma_nhan_vien_quan_ly,
+			} = req.query;
+
 			if(isStrict){
 				const result = await prisma.suat_chieu.findMany({
 					where:{
@@ -483,20 +483,20 @@ export const filmService = {
 	},
 
 	postScreening: async function(req){
-		const {
-			ma_luot_chieu,
-			thoi_gian_bat_dau,
-			thoi_gian_ket_thuc,
-			hinh_thuc_chieu,
-			ngon_ngu,
-			phu_de_hoac_long_tieng,
-			ma_phim,
-			ma_rap,
-			ma_phong_chieu,
-			ma_nhan_vien_quan_ly,
-		} = req.body;
-
 		try{
+			const {
+				ma_luot_chieu,
+				thoi_gian_bat_dau,
+				thoi_gian_ket_thuc,
+				hinh_thuc_chieu,
+				ngon_ngu,
+				phu_de_hoac_long_tieng,
+				ma_phim,
+				ma_rap,
+				ma_phong_chieu,
+				ma_nhan_vien_quan_ly,
+			} = req.body;
+
 			const result = await prisma.suat_chieu.create({
 				data:{
 					ma_suat_chieu: ma_suat_chieu,
@@ -521,24 +521,24 @@ export const filmService = {
 	},
 
 	patchScreening: async function(req){
-		const {
-			ma_luot_chieu
-		} = req.query;
-
-		const {
-			new_ma_luot_chieu,
-			new_thoi_gian_bat_dau,
-			new_thoi_gian_ket_thuc,
-			new_hinh_thuc_chieu,
-			new_ngon_ngu,
-			new_phu_de_hoac_long_tieng,
-			new_ma_phim,
-			new_ma_rap,
-			new_ma_phong_chieu,
-			new_ma_nhan_vien_quan_ly,
-		} = req.body;
-
 		try{
+			const {
+				ma_luot_chieu
+			} = req.query;
+
+			const {
+				new_ma_luot_chieu,
+				new_thoi_gian_bat_dau,
+				new_thoi_gian_ket_thuc,
+				new_hinh_thuc_chieu,
+				new_ngon_ngu,
+				new_phu_de_hoac_long_tieng,
+				new_ma_phim,
+				new_ma_rap,
+				new_ma_phong_chieu,
+				new_ma_nhan_vien_quan_ly,
+			} = req.body;
+
 			const result = await prisma.suat_chieu.update({
 				where:{
 					ma_suat_chieu: ma_suat_chieu
@@ -566,11 +566,11 @@ export const filmService = {
 	},
 
 	deleteScreening: async function(req){
-		const { 
-			ma_luot_chieu,
-		} = req.query;
-
 		try{
+			const { 
+				ma_luot_chieu,
+			} = req.query;
+
 			const result = await prisma.suat_chieu.delete({
 				where:{
 					ma_suat_chieu: ma_suat_chieu,

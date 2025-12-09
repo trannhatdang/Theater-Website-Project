@@ -18,6 +18,8 @@ import * as React from 'react'
 import SaveIcon from '@mui/icons-material/Save';
 import EditIcon from '@mui/icons-material/Edit';
 import CancelIcon from '@mui/icons-material/Cancel';
+import type { EmployeeProps } from './EmployeeView.tsx'
+
 
 const columns: GridColDef[] = [
 	{ field: 'ma_nv', headerName: 'Ma NV', width: 100, editable: true },
@@ -47,19 +49,6 @@ const columns: GridColDef[] = [
 	{ field: 'ma_rap_phim', headerName: 'Ma Rap Phim', width: 150, editable: true },
 ];
 
-export type EmployeeProps = {
-	ma_nv: string,
-	cccd: string,
-	ten: string,
-	luong: number,
-	ngay_sinh: Date,
-	chuc_vu: string,
-	dia_chi: string,
-	sdt: string,
-	gioi_tinh: string,
-	ma_nv_quan_ly: string,
-	ma_rap_phim: string,
-}
 interface SelectedCellParams {
 	id: GridRowId;
 	field: string;

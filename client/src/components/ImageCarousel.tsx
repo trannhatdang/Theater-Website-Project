@@ -22,20 +22,20 @@ export default function ImageCarousel({films} : {films: FilmProps[]}){
 	const slideRight = () => {
 		const n = items.length;
 		setItems((prev) => {
-			return prev.map((_, idx) => prev[(idx + 1) % n])
+			return prev.map((_, idx) => prev[(idx - 1 + n) % n])
 		})
 	}
 
 	const slideLeft = () => {
 		const n = items.length;
 		setItems((prev) => {
-			return prev.map((_, idx) => prev[(idx - 1 + n) % n])
+			return prev.map((_, idx) => prev[(idx + 1) % n])
 		})
 	}
 
 
 	return (
-		<div className='flex h-100 w-svh overflow-hidden'>
+		<div className='flex h-100 w-full overflow-hidden mx-auto'>
 			<IconButton onClick={slideLeft}>
 				<ArrowBackIosIcon />
 			</IconButton>

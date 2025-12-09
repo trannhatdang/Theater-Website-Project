@@ -2,8 +2,7 @@ import * as React from 'react';
 import EmployeeTopBar from './EmployeeTopBar.tsx'
 import EmployeeTable from './EmployeeTable.tsx'
 import { useQuery } from "@tanstack/react-query";
-import { fetchEmployeeData } from '../utils/Query.tsx'
-import type { EmployeeProps } from './EmployeeTable.tsx'
+import { fetchEmployee } from '../utils/Query.tsx'
 import type { SearchBarKey } from './EmployeeTopBar.tsx'
 
 export type EmployeeFilters = {
@@ -20,6 +19,20 @@ export type EmployeeFilters = {
 	gioi_tinh?: string,
 	ma_nv_quan_ly?: string,
 	ma_rap_phim?: string
+}
+
+export type EmployeeProps = {
+	ma_nv: string,
+	cccd: string,
+	ten: string,
+	luong: number,
+	ngay_sinh: Date,
+	chuc_vu: string,
+	dia_chi: string,
+	sdt: string,
+	gioi_tinh: string,
+	ma_nv_quan_ly: string,
+	ma_rap_phim: string,
 }
 
 interface FilterAction{
@@ -55,7 +68,7 @@ export default function EmployeeView(){
 	const { isPending, isError, data, error } = useQuery({
 		queryKey: [Filters], 
 		queryFn: () : Promise<EmployeeProps[]> => {
-			return Promise.resolve(fetchEmployeeData(Filters));
+			return Promise.resolve(fetchEmployee(Filters));
 		}
 	});
 	const employees = data;
