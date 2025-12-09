@@ -21,6 +21,7 @@ export type FilmFilters = {
 	max_thoi_gian_cong_chieu?: number,
 	tom_tat_noi_dung?: string,
 	dao_dien?: string,
+	isStrict?: Boolean
 }
 
 export default function Film({film} : {film: FilmProps}){

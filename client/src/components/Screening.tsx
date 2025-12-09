@@ -11,6 +11,7 @@ export type ScreeningFilters = {
 	ma_rap? : string,
 	ma_phong_chieu? : string,
 	ma_nhan_vien_quan_ly? : string,
+	isStrict?: string,
 }
 
 export type ScreeningProps = {

@@ -2,22 +2,15 @@ import * as React from 'react'
 import ImageCarousel from './ImageCarousel.tsx'
 import type { FilmProps, FilmFilters } from './Film.tsx'
 import type { ScreeningProps, ScreeningFilters } from './Screening.tsx'
-import { fetchScreening, fetchFilm } from '../utils/Query.tsx'
+import { fetchScreening, fetchFilmArr } from '../utils/Query.tsx'
 import { useQuery } from "@tanstack/react-query";
 
 function createNowShowingFilters() : ScreeningFilters {
 	const currTime = new Date()
-	let min_temp = currTime.toISOString().split('T')[0]
-	let min_parts = min_temp.split('-')
-	min_parts[2] = (parseInt(min_parts[2]) - 14).toString();
-
-	const min = new Date(min_parts.join('-'))
-
-	let max_temp = currTime.toISOString().split('T')[0]
-	let max_parts = max_temp.split('-')
-	max_parts[2] = (parseInt(max_parts[2]) + 14).toString();
-
-	const max = new Date(max_parts.join('-'))
+	const min = new Date();
+	const max = new Date();
+	min.setDate(currTime.getDate() - 3)
+	max.setDate(currTime.getDate() + 4)
 
 	return {
 		min_thoi_gian_bat_dau: min,
@@ -26,12 +19,12 @@ function createNowShowingFilters() : ScreeningFilters {
 }
 
 export default function HomePage(){
-	const [filmFiltersArr, filmFiltersArr] = React.useState<FilmFilters[]>([])
+	const [filmFiltersArr, _] = React.useState<FilmFilters[]>([[]])
 	const filmQuery = useQuery({
 		queryKey: [filmFiltersArr],
 		queryFn: async () : Promise<FilmProps[]> => {
-			return filmFiltersArr.map((filmFilters) => fetchFilm(filmFilters));
-		}
+			return fetchFilmArr(filmFiltersArr);
+		},
 	});
 
 	const screeningQuery = useQuery({
@@ -39,17 +32,15 @@ export default function HomePage(){
 		queryFn: async () : Promise<ScreeningProps[]> => {
 			const screenings : ScreeningProps[] = await fetchScreening(createNowShowingFilters());
 
-			let films : FilmFilters[] = [];
+			let queried_films : FilmFilters[] = [];
 			screenings.forEach((screening) => {
-				films.push({
+				queried_films.push({
 					ma_phim: screening.ma_phim
 				})
 			})
 
-			setFilmFiltersArr(films);
-
 			return screenings;
-		}
+		},
 	});
 
 	if(filmQuery.isError || screeningQuery.isError){
@@ -60,11 +51,10 @@ export default function HomePage(){
 		)
 	}
 
-
 	return (
 		<div className='bg-slate-700 rounded-md py-1 max-w-7xl mx-auto'>
 			<p className='m-5 text-xl'>Now Showing:</p>
-			<ImageCarousel films={filmQuery.data}/>
+			{filmQuery.isPending ? <p> wait </p> : <ImageCarousel films={filmQuery.data}/>}
 		</div>
 	);
 }

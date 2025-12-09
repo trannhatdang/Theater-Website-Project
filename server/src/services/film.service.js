@@ -414,6 +414,7 @@ export const filmService = {
 				ma_rap,
 				ma_phong_chieu,
 				ma_nhan_vien_quan_ly,
+				isStrict
 			} = req.query;
 
 			if(isStrict){

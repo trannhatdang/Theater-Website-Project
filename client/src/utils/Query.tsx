@@ -1,25 +1,17 @@
-import type { EmployeeFilters } from '../components/EmployeeView.tsx'
-import type { EmployeeProps } from '../components/EmployeeTable.tsx'
-import type { ScreeningFilters } from '../components/Screening.tsx'
-import type { ScreeningProps } from '../components/Screening.tsx'
+import type { EmployeeFilters, EmployeeProps } from '../components/EmployeeView.tsx'
+import type { ScreeningFilters, ScreeningProps } from '../components/Screening.tsx'
+import type { FilmFilters, FilmProps } from '../components/Film.tsx'
 const url = 'http://localhost:3000';
 
-function createQueryParams(filters : any){
+function createQueryParams(filters: any) : URLSearchParams{
 	const queryParams = new URLSearchParams();
 
 	for(const [key, value] of Object.entries(filters)){
-		if(typeof value !== 'string'){
-			queryParams.append(key, value.toString());
-		}
-		else{
-			queryParams.append(key, value);
-
-		}
+		queryParams.append(key, String(value));
 	}
 
 	return queryParams;
 }
-
 export const fetchEmployee = async (filters : EmployeeFilters) : Promise<EmployeeProps[]> => {
 	const queryParams = createQueryParams(filters);
 
@@ -49,10 +41,10 @@ export const fetchScreening = async (filters : ScreeningFilters) : Promise<Scree
 		throw Error("something went wrong...");
 	}
 
-	return film.json()
+	return screening.json()
 }
 
-export const fetchFilm = async (filters : filmFilters) : Promise<filmProps[]> => {
+export const fetchFilm = async (filters : FilmFilters) : Promise<FilmProps[]> => {
 	const queryParams = createQueryParams(filters);
 
 	const film = await fetch(url + '/film?' + queryParams, {
@@ -68,6 +60,20 @@ export const fetchFilm = async (filters : filmFilters) : Promise<filmProps[]> =>
 	return film.json()
 }
 
-export const fetchFilmArray = async (filters : filmFilters[]) : Promise <filmProps[]> => {
-	return filters.map((filter) => fetchFilm(filter))
+export const fetchFilmArr = async (filters : FilmFilters[]) : Promise<FilmProps[]> => {
+	const films = filters.map((filter) => fetchFilm(filter))
+	let ans: FilmProps[] = []
+
+	Promise.allSettled(films).then((results) =>{
+		results.forEach((result) => {
+			if(result.status == 'fulfilled'){
+				ans.concat(result.value)
+				
+			}
+			console.log(result.value)
+		})
+
+	})
+
+	return ans;
 }
