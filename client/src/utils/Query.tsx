@@ -153,19 +153,20 @@ export const postEmployee = async (employee : EmployeeProps) : Promise<EmployeeP
 
 }
 
-export const deleteEmployee = async (employee : EmployeeProps) : Promise<EmployeeProps> => {
-	const queryParams = createQueryParams(employee);
-
-	const employees = await fetch(url + '/employee?' + queryParams, {
+export const deleteEmployee = async (ma_nv : string) : Promise<EmployeeProps> => {
+	const employees = await fetch(url + '/employee?ma_nv=' + ma_nv, {
 		method: "DELETE",
 	});
 
-	if(!employees.ok){
-		console.error(employees);
+	console.log(url + '/employee?ma_nv=' + ma_nv)
 
-		throw Error("something went wrong...");
+
+	const ret = await employees.json()
+	if(!employees.ok){
+
+		throw Error(ret.stack)
 	}
 
-	return employees.json();
+	return ret;
 
 }

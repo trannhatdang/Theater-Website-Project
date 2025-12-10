@@ -2,12 +2,17 @@ import {
 	DataGrid,
 	Toolbar,
 	ToolbarButton,
+	GridActionsCell,
+	GridActionsCellItem
+
 } from '@mui/x-data-grid';
 import type {
 	GridRowModesModel,
 	GridColDef,
 	GridSlots,
 	GridSlotProps,
+	GridRowId,
+	GridRenderCellParams,
 } from '@mui/x-data-grid';
 import * as React from 'react'
 
@@ -24,9 +29,10 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import AddIcon from '@mui/icons-material/Add';
 import Alert from '@mui/material/Alert';
+import DeleteIcon from '@mui/icons-material/DeleteOutlined'
 import type { AlertProps } from '@mui/material/Alert'
 
-import { patchEmployee, postEmployee, } from '../utils/Query.tsx'
+import { patchEmployee, postEmployee, deleteEmployee } from '../utils/Query.tsx'
 
 declare module '@mui/x-data-grid' {
 	interface ToolbarPropsOverrides {
@@ -215,6 +221,31 @@ function EditToolbar(slotProps: GridSlotProps['toolbar']) {
 	);
 }
 
+interface ActionHandlers {
+	handleDeleteClick: (id: GridRowId) => void;
+}
+
+const ActionHandlersContext = React.createContext<ActionHandlers>({
+	handleDeleteClick: () => {},
+});
+
+function ActionsCell(props: GridRenderCellParams) {
+	const { handleDeleteClick } = React.useContext(ActionHandlersContext);
+
+	return (
+		<GridActionsCell {...props}>
+			<React.Fragment>
+				<GridActionsCellItem
+					icon={<DeleteIcon />}
+					label="Delete"
+						onClick={() => handleDeleteClick(props.id)}
+					color="inherit"
+				/>
+			</React.Fragment>
+		</GridActionsCell>
+	);
+}
+
 export type EmployeeRowProps = {
 	ma_nv: string,
 	cccd: string,
@@ -255,11 +286,20 @@ const columns: GridColDef[] = [
 	{ field: 'dia_chi', headerName: 'Dia Chi', width: 250, editable: true },
 	{ field: 'sdt', headerName: 'SDT', width: 100, editable: true },
 	{ field: 'ma_nv_quan_ly', headerName: 'Ma NV Quan Ly', width: 150, editable: true },
-	{ field: 'ma_rap_phim', headerName: 'Ma Rap Phim', width: 150, editable: true },
+	{ field: 'ma_rap_phim', headerName: 'Ma Rap Phim', width: 150, editable: true },  
+	{
+		field: 'actions',
+		type: 'actions',
+		headerName: 'Actions',
+		width: 100,
+		cellClassName: 'actions',
+		renderCell: (params) => <ActionsCell {...params} />,
+	},
 ];
 
 export default function EmployeeTable({employees}: {employees : EmployeeProps[] | undefined}){
 	if(!employees) return;
+
 	const [rows, _] = React.useState<EmployeeProps[]>(employees);
 	const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
 
@@ -288,33 +328,50 @@ export default function EmployeeTable({employees}: {employees : EmployeeProps[] 
 		setSnackbar({ children: error.message, severity: 'error' });
 	}, []);
 
+	const actionHandlers = React.useMemo<ActionHandlers>(
+		() => ({
+			handleDeleteClick: (id: GridRowId) => {
+				try{
+					deleteEmployee(String(id))
+				}
+				catch(e : any){
+					console.log('hi')
+					handleProcessRowUpdateError(e)
+				}
+			}
+		}),
+		[],
+	);
+
 	return (
 		<div className='w-full h-svh'>
-			<DataGrid
-				rows={rows}
-				columns={columns}
-				editMode="row"
-				rowModesModel={rowModesModel}
-				onRowModesModelChange={setRowModesModel}
-				processRowUpdate={processRowUpdate}
-				onProcessRowUpdateError={handleProcessRowUpdateError}
-				showToolbar
-				slots={{ toolbar: EditToolbar as GridSlots['toolbar'] }}
-				slotProps={{
-					toolbar: { handleProcessRowUpdateError, handleProcessRowUpdateSuccess },
-				}}
-				getRowId={(row) => row.ma_nv}
-			/>
-			{!!snackbar && (
-				<Snackbar
-					open
-					anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-					onClose={handleCloseSnackbar}
-					autoHideDuration={6000}
-				>
-					<Alert {...snackbar} onClose={handleCloseSnackbar} />
-				</Snackbar>
-			)}
+			<ActionHandlersContext.Provider value={actionHandlers}>
+				<DataGrid
+					rows={rows}
+					columns={columns}
+					editMode="row"
+					rowModesModel={rowModesModel}
+					onRowModesModelChange={setRowModesModel}
+					processRowUpdate={processRowUpdate}
+					onProcessRowUpdateError={handleProcessRowUpdateError}
+					showToolbar
+					slots={{ toolbar: EditToolbar as GridSlots['toolbar'] }}
+					slotProps={{
+						toolbar: { handleProcessRowUpdateError, handleProcessRowUpdateSuccess },
+					}}
+					getRowId={(row) => row.ma_nv}
+				/>
+				{!!snackbar && (
+					<Snackbar
+						open
+						anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+						onClose={handleCloseSnackbar}
+						autoHideDuration={6000}
+					>
+						<Alert {...snackbar} onClose={handleCloseSnackbar} />
+					</Snackbar>
+				)}
+			</ActionHandlersContext.Provider>
 		</div>
 	);
 }

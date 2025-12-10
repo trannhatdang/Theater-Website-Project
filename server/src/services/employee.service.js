@@ -95,7 +95,6 @@ export const employeeService = {
 	},
 
 	postEmployee: async function(req){
-
 		try{
 			const {
 				ma_nv,
@@ -181,20 +180,22 @@ export const employeeService = {
 	},
 
 	deleteEmployee: async function(req){
-		const {
-			ma_nv,
-		} = req.query;
-
 		try{
-			const result = await prisma.employee.delete({
+			const {
+				ma_nv,
+			} = req.query;
+
+			const result = await prisma.nhan_vien.delete({
 				where:{
 					ma_nv: ma_nv,
 				},
 			});
+
 			return result;
 		}
 		catch (e){
-			throw UnprocessableContentError(e.message);
+			throw new UnprocessableContentError(e.message);
+
 		}
 	},
 
