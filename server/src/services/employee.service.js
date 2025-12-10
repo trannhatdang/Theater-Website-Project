@@ -110,19 +110,6 @@ export const employeeService = {
 				gioi_tinh,
 				sdt
 			} = req.body;
-			console.log({
-					ma_nv: ma_nv,
-					ten: ten,
-					cccd: cccd,
-					ngay_sinh: ngay_sinh ? new Date(ngay_sinh) : undefined,
-					luong: luong ? parseInt(luong) : undefined,
-					chuc_vu: chuc_vu,
-					dia_chi: dia_chi,
-					ma_nv_quan_ly: ma_nv_quan_ly,
-					ma_rap_phim: ma_rap_phim,
-					gioi_tinh: gioi_tinh,
-					sdt: sdt,
-			})
 
 			const result = await prisma.nhan_vien.create({
 				data:{

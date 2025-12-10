@@ -30,13 +30,14 @@ import { patchEmployee, postEmployee, } from '../utils/Query.tsx'
 
 declare module '@mui/x-data-grid' {
 	interface ToolbarPropsOverrides {
-		handleProcessRowUpdateError: (error: Error) => void;
+		handleProcessRowUpdateError: (error: Error) => void,
+		handleProcessRowUpdateSuccess: (message: string) => void,
 	}
 }
 
 
 function EditToolbar(slotProps: GridSlotProps['toolbar']) {
-	const { handleProcessRowUpdateError } = slotProps
+	const { handleProcessRowUpdateError, handleProcessRowUpdateSuccess } = slotProps
 	const [newPanelOpen, setNewPanelOpen] = React.useState(false);
 	const newPanelTriggerRef = React.useRef<HTMLButtonElement>(null);
 
@@ -63,8 +64,10 @@ function EditToolbar(slotProps: GridSlotProps['toolbar']) {
 
 		try{
 			await postEmployee(employee)
+			handleProcessRowUpdateSuccess("User successfully created")
 		}
 		catch(e : any){
+			console.log(e.message)
 			handleProcessRowUpdateError(e)
 		}
 
@@ -277,6 +280,10 @@ export default function EmployeeTable({employees}: {employees : EmployeeProps[] 
 		[],
 	);
 
+	const handleProcessRowUpdateSuccess = React.useCallback((message: string) => {
+		setSnackbar({ children: message, severity: 'success' });
+	}, []);
+
 	const handleProcessRowUpdateError = React.useCallback((error: Error) => {
 		setSnackbar({ children: error.message, severity: 'error' });
 	}, []);
@@ -294,7 +301,7 @@ export default function EmployeeTable({employees}: {employees : EmployeeProps[] 
 				showToolbar
 				slots={{ toolbar: EditToolbar as GridSlots['toolbar'] }}
 				slotProps={{
-					toolbar: { handleProcessRowUpdateError },
+					toolbar: { handleProcessRowUpdateError, handleProcessRowUpdateSuccess },
 				}}
 				getRowId={(row) => row.ma_nv}
 			/>

@@ -85,7 +85,6 @@ export const patchEmployee = async (employee : EmployeeProps) : Promise<Employee
 
 	const newDate = new Date(employee.ngay_sinh)
 	newDate.setMinutes(newDate.getMinutes() - newDate.getTimezoneOffset())
-	console.log(newDate)
 
 	const body = {
 		new_ma_nv: employee.ma_nv,
