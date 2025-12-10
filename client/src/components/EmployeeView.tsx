@@ -64,19 +64,19 @@ function filterReducer(filter : EmployeeFilters, action: FilterAction){
 }
 
 export default function EmployeeView(){
-	const [Filters, dispatch] = React.useReducer(filterReducer, {})
-	const { isPending, isError, data, error } = useQuery({
-		queryKey: [Filters], 
+	const [filters, dispatch] = React.useReducer(filterReducer, {})
+	const { isPending, isError, data, error, refetch } = useQuery({
+		queryKey: [filters], 
 		queryFn: () : Promise<EmployeeProps[]> => {
-			return Promise.resolve(fetchEmployee(Filters));
-		}
+			return Promise.resolve(fetchEmployee(filters));
+		},
 	});
 	const employees = data;
 
 	return (
 		<div className='flex flex-col m-10 gap-2'>
 			<EmployeeTopBar dispatch={dispatch}/>
-			{(!isPending && !isError) ? <EmployeeTable employees={employees}/> : <>{error?.message}</>}
+			{(!isPending && !isError) ? <EmployeeTable employees={employees} refetch={refetch}/> : <>{error?.message}</>}
 		</div>
 	)
 }

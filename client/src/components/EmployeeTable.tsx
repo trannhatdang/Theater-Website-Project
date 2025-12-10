@@ -297,11 +297,13 @@ const columns: GridColDef[] = [
 	},
 ];
 
-export default function EmployeeTable({employees}: {employees : EmployeeProps[] | undefined}){
+export default function EmployeeTable({employees, refetch}: {employees : EmployeeProps[] | undefined, refetch: Function}){
 	if(!employees) return;
 
-	const [rows, _] = React.useState<EmployeeProps[]>(employees);
+	const [rows, setRows] = React.useState<EmployeeProps[]>(employees);
 	const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
+	
+	React.useEffect(() => setRows(employees), [employees])
 
 	const [snackbar, setSnackbar] = React.useState<Pick<
 		AlertProps,
@@ -312,7 +314,6 @@ export default function EmployeeTable({employees}: {employees : EmployeeProps[] 
 
 	const processRowUpdate = React.useCallback(
 		async (newRow: EmployeeProps) => {
-			// Make the HTTP request to save in the backend
 			const response = await patchEmployee(newRow);
 			setSnackbar({ children: 'User successfully saved', severity: 'success' });
 			return response;
@@ -321,10 +322,12 @@ export default function EmployeeTable({employees}: {employees : EmployeeProps[] 
 	);
 
 	const handleProcessRowUpdateSuccess = React.useCallback((message: string) => {
+		refetch()
 		setSnackbar({ children: message, severity: 'success' });
 	}, []);
 
 	const handleProcessRowUpdateError = React.useCallback((error: Error) => {
+		refetch()
 		setSnackbar({ children: error.message, severity: 'error' });
 	}, []);
 
