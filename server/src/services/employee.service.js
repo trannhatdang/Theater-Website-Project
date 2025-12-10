@@ -134,27 +134,25 @@ export const employeeService = {
 	},
 
 	patchEmployee: async function(req){
-		const {
-			ma_nv,
-		} = req.query;
-
-		const {
-			new_ma_nv,
-			new_ten,
-			new_cccd,
-			new_min_ngay_sinh,
-			new_max_ngay_sinh,
-			new_min_luong,
-			new_max_luong,
-			new_chuc_vu,
-			new_dia_chi,
-			new_ma_nv_quan_ly,
-			new_ma_rap_phim,
-			new_gioi_tinh,
-			new_sdt,
-		} = req.body;
-
 		try{
+			const {
+				ma_nv,
+			} = req.query;
+
+			const {
+				new_ma_nv,
+				new_ten,
+				new_cccd,
+				new_ngay_sinh,
+				new_luong,
+				new_chuc_vu,
+				new_dia_chi,
+				new_ma_nv_quan_ly,
+				new_ma_rap_phim,
+				new_gioi_tinh,
+				new_sdt,
+			} = req.body;
+
 			const result = await prisma.nhan_vien.update({
 				where: {
 					ma_nv: ma_nv,

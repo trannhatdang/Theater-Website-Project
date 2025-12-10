@@ -22,3 +22,7 @@ export default function sqlDateFormat(dateStr) {
   // Không đúng định dạng mong muốn
   return null;
 }
+
+export function convertTZ(date, tzString) {
+    return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: tzString}));   
+}
