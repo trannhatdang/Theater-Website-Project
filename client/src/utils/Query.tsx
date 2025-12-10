@@ -158,12 +158,8 @@ export const deleteEmployee = async (ma_nv : string) : Promise<EmployeeProps> =>
 		method: "DELETE",
 	});
 
-	console.log(url + '/employee?ma_nv=' + ma_nv)
-
-
 	const ret = await employees.json()
 	if(!employees.ok){
-
 		throw Error(ret.stack)
 	}
 

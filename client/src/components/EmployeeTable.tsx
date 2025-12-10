@@ -330,12 +330,12 @@ export default function EmployeeTable({employees}: {employees : EmployeeProps[] 
 
 	const actionHandlers = React.useMemo<ActionHandlers>(
 		() => ({
-			handleDeleteClick: (id: GridRowId) => {
+			handleDeleteClick: async (id: GridRowId) => {
 				try{
-					deleteEmployee(String(id))
+					await deleteEmployee(String(id))
+					handleProcessRowUpdateSuccess("Delete employee successfully!")
 				}
 				catch(e : any){
-					console.log('hi')
 					handleProcessRowUpdateError(e)
 				}
 			}
