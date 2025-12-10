@@ -70,10 +70,13 @@ export const fetchFilmArr = async (filters : FilmFilters[]) : Promise<FilmProps[
 				ans.concat(result.value)
 				
 			}
-			console.log(result.value)
 		})
 
 	})
 
 	return ans;
+}
+
+export const patchEmployee = async (employee : EmployeeProps) : Promise<EmployeeProps> => {
+
 }

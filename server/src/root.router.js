@@ -7,6 +7,7 @@ import theaterController from './controllers/theater.controller.js'
 import customerController from './controllers/customer.controller.js'
 import billController from './controllers/bill.controller.js'
 import promotionController from './controllers/promotion.controller.js'
+import advancedController from './controllers/advanced.controller.js'
 
 const rootRouter = express.Router();
 
@@ -19,5 +20,6 @@ rootRouter.use('/promotion{/*type}', promotionController);
 rootRouter.use('/bill{/*type}', billController);
 rootRouter.use('/theater{/*type}', theaterController);
 rootRouter.use('/customer{/*type}', customerController);
+rootRouter.use('/advanced{/*type}', advancedController)
 
 export default rootRouter;
