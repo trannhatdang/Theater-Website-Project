@@ -229,7 +229,7 @@ export function EmployeeTopBar({dispatch} : {dispatch: Function}){
 				})}
 			</div>
 
-			<EmployeeFilterMenu onApply={handleApply} className=''/>
+			{/* <EmployeeFilterMenu onApply={handleApply} className=''/> */}
 
 			<Button
 				onClick={handleClick}
