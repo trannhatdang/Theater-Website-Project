@@ -117,3 +117,56 @@ export const patchEmployee = async (employee : EmployeeProps) : Promise<Employee
 
 	return employees.json();
 }
+
+export const postEmployee = async (employee : EmployeeProps) : Promise<EmployeeProps> => {
+	const newDate = new Date(employee.ngay_sinh)
+	newDate.setMinutes(newDate.getMinutes() - newDate.getTimezoneOffset())
+
+	const body = {
+		ma_nv: employee.ma_nv,
+		cccd: employee.cccd !== "" ? employee.cccd : undefined,
+		ten: employee.ten !== "" ? employee.ten : undefined,
+		luong: employee.luong > 0 ? employee.luong : undefined,
+		ngay_sinh: !isNaN(newDate.getTime()) ? newDate : undefined,
+		chuc_vu: employee.chuc_vu !== "" ? employee.chuc_vu : undefined,
+		dia_chi: employee.dia_chi !== "" ? employee.dia_chi : undefined,
+		sdt: employee.sdt !== "" ? employee.sdt : undefined,
+		gioi_tinh: employee.gioi_tinh !== "" ? employee.gioi_tinh : undefined,
+		ma_nv_quan_ly: employee.ma_nv_quan_ly !== "" ? employee.ma_nv_quan_ly : undefined,
+		ma_rap_phim: employee.ma_rap_phim !== "" ? employee.ma_rap_phim : undefined,
+	}
+
+	const employees = await fetch(url + '/employee', {
+		method: "POST",
+		body: JSON.stringify(body),
+		headers:{
+			"content-type": "application/json"
+		}
+	});
+
+	if(!employees.ok){
+		console.error(employees);
+
+		throw Error("something went wrong...");
+	}
+
+	return employees.json();
+
+}
+
+export const deleteEmployee = async (employee : EmployeeProps) : Promise<EmployeeProps> => {
+	const queryParams = createQueryParams(employee);
+
+	const employees = await fetch(url + '/employee?' + queryParams, {
+		method: "DELETE",
+	});
+
+	if(!employees.ok){
+		console.error(employees);
+
+		throw Error("something went wrong...");
+	}
+
+	return employees.json();
+
+}

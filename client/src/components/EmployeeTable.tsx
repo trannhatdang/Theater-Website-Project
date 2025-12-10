@@ -1,7 +1,6 @@
 import {
 	DataGrid,
 	Toolbar,
-	GridRowModes,
 	ToolbarButton,
 } from '@mui/x-data-grid';
 import type {
@@ -16,39 +15,199 @@ import type { EmployeeProps } from './EmployeeView.tsx'
 import Snackbar from '@mui/material/Snackbar';
 
 import Tooltip from '@mui/material/Tooltip';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 import AddIcon from '@mui/icons-material/Add';
-import Alert from '@mui/material/Alert'
+import Alert from '@mui/material/Alert';
 import type { AlertProps } from '@mui/material/Alert'
 
-import {
-	randomId
-} from '@mui/x-data-grid-generator'
+import { patchEmployee, postEmployee, } from '../utils/Query.tsx'
 
-import { patchEmployee } from '../utils/Query.tsx'
+declare module '@mui/x-data-grid' {
+	interface ToolbarPropsOverrides {
+		handleProcessRowUpdateError: (error: Error) => void;
+	}
+}
+
 
 function EditToolbar(slotProps: GridSlotProps['toolbar']) {
-	const { setRows, setRowModesModel } = slotProps;
+	const { handleProcessRowUpdateError } = slotProps
+	const [newPanelOpen, setNewPanelOpen] = React.useState(false);
+	const newPanelTriggerRef = React.useRef<HTMLButtonElement>(null);
+
+	const handleClose = () => {
+		setNewPanelOpen(false);
+	};
+
+	const handleSubmit = async (event: React.FormEvent) => {
+		event.preventDefault();
+		const formData = new FormData(event.target as HTMLFormElement);
+		const employee : EmployeeProps = {
+			ma_nv: String(formData.get('ma_nv')),
+			cccd: String(formData.get('cccd')),
+			ten: String(formData.get('ten')),
+			luong: Number(formData.get('luong')),
+			ngay_sinh: new Date(String(formData.get('ngay_sinh'))),
+			chuc_vu: String(formData.get('chuc_vu')),
+			dia_chi: String(formData.get('dia_chi')),
+			sdt: String(formData.get('sdt')),
+			gioi_tinh: String(formData.get('gioi_tinh')),
+			ma_nv_quan_ly: String(formData.get('ma_nv_quan_ly')),
+			ma_rap_phim: String(formData.get('ma_rap_phim')),
+		}
+
+		try{
+			await postEmployee(employee)
+		}
+		catch(e : any){
+			handleProcessRowUpdateError(e)
+		}
+
+		handleClose();
+	};
+
+	const handleKeyDown = (event: React.KeyboardEvent) => {
+		if (event.key === 'Escape') {
+			handleClose();
+		}
+	};
 
 	const handleClick = () => {
-		const id = randomId();
-		setRows((oldRows) => [
-			...oldRows,
-			{ id, name: '', age: '', role: '', isNew: true },
-		]);
-
-		setRowModesModel((oldModel) => ({
-			...oldModel,
-			[id]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
-		}));
+		setNewPanelOpen(true)
 	};
 
 	return (
 		<Toolbar>
 			<Tooltip title="Add record">
-				<ToolbarButton onClick={handleClick}>
+				<ToolbarButton onClick={handleClick} ref={newPanelTriggerRef}>
 					<AddIcon fontSize="small" />
 				</ToolbarButton>
 			</Tooltip>
+
+			<Popper
+				open={newPanelOpen}
+				anchorEl={newPanelTriggerRef.current}
+				placement="bottom-end"
+				id="new-panel"
+				onKeyDown={handleKeyDown}
+			>
+			<ClickAwayListener onClickAway={handleClose}>
+				<Paper
+					sx={{
+					display: 'flex',
+					flexDirection: 'column',
+					gap: 2,
+					width: 300,
+					p: 2,
+					}}
+					elevation={8}
+				>
+				<Typography fontWeight="bold">Add new employee</Typography>
+
+				<form onSubmit={handleSubmit}>
+					<Stack spacing={2}>
+
+					<TextField
+						label="Ma NV"
+						name="ma_nv"
+						size="small"
+						autoFocus
+						fullWidth
+						required
+						defaultValue="NEWNV"
+					/>
+
+					<TextField
+						label="CCCD"
+						name="cccd"
+						size="small"
+						required
+						fullWidth
+						defaultValue="999999999"
+					/>
+
+					<TextField
+						label="Ho Va Ten"
+						name="ten"
+						size="small"
+						fullWidth
+					/>
+
+					<TextField
+						label="Luong"
+						type="number"
+						name="luong"
+						size="small"
+						fullWidth
+					/>
+
+					<TextField
+						label="Ngay Sinh"
+						type="date"
+						name="ngay_sinh"
+						InputLabelProps={{ shrink: true }}
+						size="small"
+						fullWidth
+					/>
+
+					<TextField
+						label="Chuc Vu"
+						name="chuc_vu"
+						size="small"
+						fullWidth
+					/>
+
+					<TextField
+						label="Dia Chi"
+						name="dia_chi"
+						size="small"
+						fullWidth
+					/>
+
+					<TextField
+						label="SDT"
+						name="sdt"
+						size="small"
+						fullWidth
+					/>
+
+					<TextField
+						label="Gioi Tinh"
+						name="gioi_tinh"
+						size="small"
+						fullWidth
+					/>
+
+					<TextField
+						label="Ma NV Quan Ly"
+						name="ma_nv_quan_ly"
+						size="small"
+						fullWidth
+					/>
+					
+					<TextField
+						label="Ma Rap Phim"
+						name="ma_rap_phim"
+						size="small"
+						required
+						fullWidth
+						defaultValue="R001"
+					/>
+
+					<Button type="submit" variant="contained" fullWidth>
+					Add Employee
+					</Button>
+
+					</Stack>
+				</form>
+				</Paper>
+			</ClickAwayListener>
+			</Popper>
 		</Toolbar>
 	);
 }
@@ -98,7 +257,7 @@ const columns: GridColDef[] = [
 
 export default function EmployeeTable({employees}: {employees : EmployeeProps[] | undefined}){
 	if(!employees) return;
-	const [rows, setRows] = React.useState(employees);
+	const [rows, _] = React.useState<EmployeeProps[]>(employees);
 	const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
 
 	const [snackbar, setSnackbar] = React.useState<Pick<
@@ -123,17 +282,21 @@ export default function EmployeeTable({employees}: {employees : EmployeeProps[] 
 	}, []);
 
 	return (
-		<div className='w-full h-96'>
+		<div className='w-full h-svh'>
 			<DataGrid
 				rows={rows}
 				columns={columns}
+				editMode="row"
+				rowModesModel={rowModesModel}
+				onRowModesModelChange={setRowModesModel}
 				processRowUpdate={processRowUpdate}
 				onProcessRowUpdateError={handleProcessRowUpdateError}
-				getRowId={(row) => row.ma_nv}
+				showToolbar
 				slots={{ toolbar: EditToolbar as GridSlots['toolbar'] }}
 				slotProps={{
-					toolbar: { setRows, setRowModesModel },
+					toolbar: { handleProcessRowUpdateError },
 				}}
+				getRowId={(row) => row.ma_nv}
 			/>
 			{!!snackbar && (
 				<Snackbar
