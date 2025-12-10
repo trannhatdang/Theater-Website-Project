@@ -1,3 +1,4 @@
+import * as React from 'react'
 import {
 	DataGrid,
 	Toolbar,
@@ -14,11 +15,9 @@ import type {
 	GridRowId,
 	GridRenderCellParams,
 } from '@mui/x-data-grid';
-import * as React from 'react'
 
 import type { EmployeeProps } from './EmployeeView.tsx'
 import Snackbar from '@mui/material/Snackbar';
-
 import Tooltip from '@mui/material/Tooltip';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
@@ -40,7 +39,6 @@ declare module '@mui/x-data-grid' {
 		handleProcessRowUpdateSuccess: (message: string) => void,
 	}
 }
-
 
 function EditToolbar(slotProps: GridSlotProps['toolbar']) {
 	const { handleProcessRowUpdateError, handleProcessRowUpdateSuccess } = slotProps
@@ -128,7 +126,7 @@ function EditToolbar(slotProps: GridSlotProps['toolbar']) {
 						autoFocus
 						fullWidth
 						required
-						defaultValue="NEWNV"
+						defaultValue="new ma_nv"
 					/>
 
 					<TextField

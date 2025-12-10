@@ -2,18 +2,18 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import Slider from '@mui/material/Slider';
-//import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-//import RangeSlider from './RangeSlider.tsx'
-import IconButton from '@mui/material/IconButton'
-import Typography from '@mui/material/Typography'
 import CloseIcon from '@mui/icons-material/Close';
+import IconButton from '@mui/material/IconButton'
+import TextField from '@mui/material/TextField';
+//import FilterAltIcon from '@mui/icons-material/FilterAlt';
+//import Slider from '@mui/material/Slider';
+//import Box from '@mui/material/Box';
+//import RangeSlider from './RangeSlider.tsx'
+//import Typography from '@mui/material/Typography'
 
-import type { EmployeeFilters } from './EmployeeView.tsx'
+//import type { EmployeeFilters } from './EmployeeView.tsx'
 
-interface SalaryRangeProps{
+/*interface SalaryRangeProps{
 	className: string,
 	salaryRange: number[],
 	onChange(newValue: number[]): void,
@@ -111,7 +111,7 @@ function EmployeeFilterMenu({onApply, className}: EmployeeFilterMenuProps) {
 			</Menu>
 		</div>
 	);
-}
+}*/
 
 export type SearchKeys = "ma_nv" | "cccd" | "ten" | "chuc_vu" | "dia_chi" | "sdt" | "gioi_tinh" | "ma_nv_quan_ly" | "ma_rap_phim"
 
@@ -169,12 +169,12 @@ export function EmployeeTopBar({dispatch} : {dispatch: Function}){
 		setAnchorEl(null);
 	};
 
-	const handleApply = (filters: EmployeeFilters) => {
+	/*const handleApply = (filters: EmployeeFilters) => {
 		dispatch({
 			type: 'FILTER',
 			filters: filters,
 		});
-	};
+	};*/
 
 	const handleSearchChange = (searchBarKey: SearchBarKey) => {
 		dispatch({

@@ -1,6 +1,7 @@
 import type { EmployeeFilters, EmployeeProps } from '../components/EmployeeView.tsx'
 import type { ScreeningFilters, ScreeningProps } from '../components/Screening.tsx'
 import type { FilmFilters, FilmProps } from '../components/Film.tsx'
+import type { AdvancedSearchFilters } from '../components/AdvancedSearch.tsx'
 const url = 'http://localhost:3000';
 
 function createQueryParams(filters: any) : URLSearchParams{
@@ -13,7 +14,7 @@ function createQueryParams(filters: any) : URLSearchParams{
 	return queryParams;
 }
 
-export const fetchEmployee = async (filters : EmployeeFilters) : Promise<EmployeeProps[]> => {
+export const getEmployee = async (filters : EmployeeFilters) : Promise<EmployeeProps[]> => {
 	const queryParams = createQueryParams(filters);
 
 	const employees = await fetch(url + '/employee?' + queryParams, {
@@ -31,7 +32,7 @@ export const fetchEmployee = async (filters : EmployeeFilters) : Promise<Employe
 	return ans;
 }
 
-export const fetchScreening = async (filters : ScreeningFilters) : Promise<ScreeningProps[]> => {
+export const getScreening = async (filters : ScreeningFilters) : Promise<ScreeningProps[]> => {
 	const queryParams = createQueryParams(filters);
 
 	const screening = await fetch(url + '/film/screening?' + queryParams, {
@@ -47,7 +48,7 @@ export const fetchScreening = async (filters : ScreeningFilters) : Promise<Scree
 	return screening.json()
 }
 
-export const fetchFilm = async (filters : FilmFilters) : Promise<FilmProps[]> => {
+export const getFilm = async (filters : FilmFilters) : Promise<FilmProps[]> => {
 	const queryParams = createQueryParams(filters);
 
 	const film = await fetch(url + '/film?' + queryParams, {
@@ -63,7 +64,7 @@ export const fetchFilm = async (filters : FilmFilters) : Promise<FilmProps[]> =>
 	return film.json()
 }
 
-export const fetchFilmArr = async (filters : FilmFilters[]) : Promise<FilmProps[]> => {
+export const getFilmArr = async (filters : FilmFilters[]) : Promise<FilmProps[]> => {
 	const films = filters.map((filter) => fetchFilm(filter))
 	let ans: FilmProps[] = []
 
@@ -164,5 +165,30 @@ export const deleteEmployee = async (ma_nv : string) : Promise<EmployeeProps> =>
 	}
 
 	return ret;
+}
+
+export const fetchAdvancedSearch = async (filter : AdvancedSearchFilters) : Promise<EmployeeProps[]> => {
+	const queryParams = createQueryParams(filters);
+
+	const advancedEmployees = await fetch(url + '/advanced?' + queryParams, {
+		method: "GET",
+	});
+
+	if(!advancedEmployees.ok){
+		console.error(employees);
+
+		throw Error("something went wrong...");
+	}
+	const advancedEmployeesJSON = await advancedEmployees.json();
+
+	const ids = advancedEmployeesJSON.map((employee) => employee.ma_nv)
+
+	let employees : EmployeeProps = []
+
+	ids.forEach(async (id) => {
+		employees.push(await getEmployee({ma_nv: id}))
+	})
+
+	return employees;
 
 }
