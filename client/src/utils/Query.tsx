@@ -111,6 +111,10 @@ export const patchEmployee = async (employee : EmployeeProps) : Promise<Employee
 		new_ma_rap_phim: employee.ma_rap_phim,
 	}
 
+	if(body.new_luong < 0){
+		throw Error("Luong khong duoc nho hon 0!")
+	}
+
 	const employees = await fetch(url + '/employee?' + queryParams, {
 		method: "PATCH",
 		body: JSON.stringify(body),
@@ -132,11 +136,15 @@ export const postEmployee = async (employee : EmployeeProps) : Promise<EmployeeP
 	const newDate = new Date(employee.ngay_sinh)
 	newDate.setMinutes(newDate.getMinutes() - newDate.getTimezoneOffset())
 
+	if(employee.luong < 0){
+		throw Error("Luong phai lon hon 0!")
+	}
+
 	const body = {
 		ma_nv: employee.ma_nv,
 		cccd: employee.cccd !== "" ? employee.cccd : undefined,
 		ten: employee.ten !== "" ? employee.ten : undefined,
-		luong: employee.luong > 0 ? employee.luong : undefined,
+		luong: employee.luong,
 		ngay_sinh: !isNaN(newDate.getTime()) ? newDate : undefined,
 		chuc_vu: employee.chuc_vu !== "" ? employee.chuc_vu : undefined,
 		dia_chi: employee.dia_chi !== "" ? employee.dia_chi : undefined,
