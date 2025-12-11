@@ -94,7 +94,7 @@ export default function AdvancedTable({employees}: {employees : AdvancedSearchPr
 	}
 
 	return (
-		<div className='w-full h-svh'>
+		<div className='w-380 h-200'>
 			<DataGrid
 				rows={rows}
 				columns={columns}

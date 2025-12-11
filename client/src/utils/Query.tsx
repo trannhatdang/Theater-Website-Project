@@ -21,16 +21,15 @@ export const getEmployee = async (filters : EmployeeFilters) : Promise<EmployeeP
 	const employees = await fetch(url + '/employee?' + queryParams, {
 		method: "GET",
 	});
+	
+	const ret = await employees.json();
 
 	if(!employees.ok){
-		console.error(employees);
-
-		throw Error("something went wrong...");
+		throw Error(ret.stack);
 	}
 
-	const ans = await employees.json();
 
-	return ans;
+	return ret;
 }
 
 export const getScreening = async (filters : ScreeningFilters) : Promise<ScreeningProps[]> => {
@@ -67,19 +66,19 @@ export const getFilm = async (filters : FilmFilters) : Promise<FilmProps[]> => {
 
 export const getFilmArr = async (filters : FilmFilters[]) : Promise<FilmProps[]> => {
 	const films = filters.map((filter) => getFilm(filter))
-	let ans: FilmProps[] = []
+	let ret: FilmProps[] = []
 
 	Promise.allSettled(films).then((results) =>{
 		results.forEach((result) => {
 			if(result.status == 'fulfilled'){
-				ans.concat(result.value)
+				ret.concat(result.value)
 				
 			}
 		})
 
 	})
 
-	return ans;
+	return ret;
 }
 
 export const patchEmployee = async (employee : EmployeeProps) : Promise<EmployeeProps> => {
@@ -110,13 +109,13 @@ export const patchEmployee = async (employee : EmployeeProps) : Promise<Employee
 		}
 	});
 
-	if(!employees.ok){
-		console.error(employees);
+	const ret = await employees.json()
 
-		throw Error("something went wrong...");
+	if(!employees.ok){
+		throw Error(ret.stack);
 	}
 
-	return employees.json();
+	return ret;
 }
 
 export const postEmployee = async (employee : EmployeeProps) : Promise<EmployeeProps> => {
@@ -145,13 +144,13 @@ export const postEmployee = async (employee : EmployeeProps) : Promise<EmployeeP
 		}
 	});
 
-	if(!employees.ok){
-		console.error(employees);
+	const ret = await employees.json()
 
-		throw Error("something went wrong...");
+	if(!employees.ok){
+		throw Error(ret.stack);
 	}
 
-	return employees.json();
+	return ret;
 
 }
 
@@ -180,10 +179,11 @@ export const getAdvancedSearch = async (filters : AdvancedSearchFilters) : Promi
 		throw Error(advancedEmployeesJSON.stack);
 	}
 
-	let ans : AdvancedSearchProps[] = []
+
+	let ret : AdvancedSearchProps[] = []
 
 	advancedEmployeesJSON.forEach((employee : any) => {
-		ans.push({
+		ret.push({
 			ma_nv: employee.f0,
 			ho_va_ten: employee.f1,
 			gioi_tinh: employee.f2,
@@ -197,7 +197,7 @@ export const getAdvancedSearch = async (filters : AdvancedSearchFilters) : Promi
 		})
 	})
 
-	return ans;
+	return ret;
 }
 
 export const getEmployeeProfits = async (filters : EmployeeProfitsFilters) : Promise<EmployeeProfitsProps[]> => {
@@ -212,10 +212,10 @@ export const getEmployeeProfits = async (filters : EmployeeProfitsFilters) : Pro
 		throw Error(employeeProfitsJSON.stack);
 	}
 
-	let ans : EmployeeProfitsProps[] = []
+	let ret : EmployeeProfitsProps[] = []
 
 	employeeProfitsJSON.forEach((employee : any) => {
-		ans.push({
+		ret.push({
 			ten_rap: employee.f0,
 			ma_nv: employee.f1,
 			ten_nhan_vien: employee.f2,
@@ -225,5 +225,5 @@ export const getEmployeeProfits = async (filters : EmployeeProfitsFilters) : Pro
 		})
 	})
 
-	return ans;
+	return ret;
 }

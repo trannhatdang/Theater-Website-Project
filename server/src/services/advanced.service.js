@@ -9,7 +9,7 @@ import {
 export const advancedService = {
 	getAdvanced: async function(req){
 		try{
-			const {
+			let {
 				p_tu_khoa,
 				p_gioi_tinh,
 				p_luong_min,
@@ -19,6 +19,13 @@ export const advancedService = {
 				p_cot_sap_xep,
 				p_kieu_sap_xep
 			} = req.query;
+
+			p_tu_khoa = p_tu_khoa !== 'undefined' ? p_tu_khoa : null
+			p_gioi_tinh = p_gioi_tinh !== 'undefined' ? p_gioi_tinh : null
+			p_luong_min = p_luong_min !== 'undefined' ? p_luong_min : null
+			p_luong_max = p_luong_max !== 'undefined' ? p_luong_max : null
+			p_chuc_vu = p_chuc_vu !== 'undefined' ? p_chuc_vu : null
+			p_ten_rap = p_ten_rap !== 'undefined' ? p_ten_rap : null
 
 			const result = await prisma.$queryRaw`call thu_tuc_tim_kiem_nhan_vien_nang_cao(${p_tu_khoa || null}, ${p_gioi_tinh || null}, ${p_luong_min || null}, ${p_luong_max || null}, ${p_chuc_vu || null}, ${p_ten_rap || null}, ${p_cot_sap_xep || null}, ${p_kieu_sap_xep || null});`
 

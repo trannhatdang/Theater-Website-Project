@@ -8,6 +8,9 @@ import Stack from '@mui/material/Stack';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import type { AlertProps } from '@mui/material/Alert'
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 
 const genders = [
 	{
@@ -17,6 +20,10 @@ const genders = [
 	{
 		value: 'Nu',
 		label: 'Nu'
+	},
+	{
+		value: '',
+		label: ''
 	}
 ]
 
@@ -64,26 +71,38 @@ export type AdvancedSearchProps = {
 	ten_quan_ly: string,
 }
 
-function AdvancedSearchInput({onSubmit} : {onSubmit : Function}){
+function AdvancedSearchInput({onSubmit, onError} : {onSubmit : Function, onError : Function}){
 	const handleSubmit = (event: React.FormEvent) => {
-		event.preventDefault()
-		const formData = new FormData(event.target as HTMLFormElement);
-		const employee : AdvancedSearchFilters = {
-			p_tu_khoa: String(formData.get('p_tu_khoa')) === '' ? String(formData.get('p_tu_khoa')) : undefined,
-			p_gioi_tinh: String(formData.get('p_gioi_tinh')),
-			p_luong_min: Number(formData.get('p_luong_min')),
-			p_luong_max: Number(formData.get('p_luong_max')),
-			p_chuc_vu: String(formData.get('p_chuc_vu')),
-			p_ten_rap: String(formData.get('p_ten_rap')),
-			p_cot_sap_xep: String(formData.get('p_cot_sap_xep')),
-			p_kieu_sap_xep: String(formData.get('p_kieu_sap_xep')),
-		}
+		try{
+			event.preventDefault()
+			const formData = new FormData(event.target as HTMLFormElement);
 
-		onSubmit(employee)
+			if((Number(formData.get('p_luong_min')) !== 0 && Number(formData.get('p_luong_min')) < 0) || (Number(formData.get('p_luong_max')) !== 0 && Number(formData.get('p_luong_max')) < 0)){
+				throw Error('Luong phai lon hon 0!')
+			}
+
+			const employee : AdvancedSearchFilters = {
+				p_tu_khoa: String(formData.get('p_tu_khoa')) !== '' ? String(formData.get('p_tu_khoa')) : undefined,
+				p_gioi_tinh: String(formData.get('p_gioi_tinh')) !== '' ? String(formData.get('p_gioi_tinh')) : undefined,
+				p_luong_min: Number(formData.get('p_luong_min')) !== 0 ? Number(formData.get('p_luong_min')) : undefined,
+				p_luong_max: Number(formData.get('p_luong_max')) !== 0 ? Number(formData.get('p_luong_max')) : undefined,
+				p_chuc_vu: String(formData.get('p_chuc_vu')) !== '' ? String(formData.get('p_chuc_vu')) : undefined,
+				p_ten_rap: String(formData.get('p_ten_rap')) !== ''? String(formData.get('p_ten_rap')) : undefined,
+				p_cot_sap_xep: String(formData.get('p_cot_sap_xep')),
+				p_kieu_sap_xep: String(formData.get('p_kieu_sap_xep')),
+			}
+
+			onSubmit(employee)
+
+		}
+		catch(e : any){
+			onError(e.message)
+
+		}
 	}
 
 	return(
-		<Paper elevation={3} className='bg-slate-700 p-2 mb-2'>
+		<Paper elevation={3} className='p-2 mr-2'>
 			<form onSubmit={handleSubmit}>
 				<Typography fontWeight="bold">Tim Kiem Nang Cao</Typography>
 
@@ -103,7 +122,7 @@ function AdvancedSearchInput({onSubmit} : {onSubmit : Function}){
 						size="small"
 						fullWidth
 						select
-						defaultValue='Nu'
+						defaultValue=''
 					>
 						{genders.map((gender) => (
 							<MenuItem key={gender.value} value={gender.value}>
@@ -132,6 +151,13 @@ function AdvancedSearchInput({onSubmit} : {onSubmit : Function}){
 					<TextField
 						label="Chuc Vu"
 						name="p_chuc_vu"
+						size="small"
+						fullWidth
+					/>
+
+					<TextField
+						label="Ten Rap"
+						name="p_ten_rap"
 						size="small"
 						fullWidth
 					/>
@@ -171,7 +197,7 @@ function AdvancedSearchInput({onSubmit} : {onSubmit : Function}){
 
 						</div>
 
-						<Button type="submit" variant="contained" className='bg-slate-700 w-50'>
+						<Button type="submit" variant="contained" className='w-50'>
 							Apply Filters 
 						</Button>
 					</div>
@@ -192,15 +218,40 @@ export default function AdvancedSearch(){
 		},
 	});
 
+	const [snackbar, setSnackbar] = React.useState<Pick<
+		AlertProps,
+		'children' | 'severity'
+	> | null>(null);
+
 	const handleSubmit = (filters : AdvancedSearchFilters) => {
 		setFilters(filters)
 	}
 
+	const handleError = (message : string) => {
+		setSnackbar({children: message, severity: 'error'})
+	}
+
+	const handleCloseSnackbar = () => setSnackbar(null);
+
 	const employees = data;
+
 	return (
-		<div className='flex-col m-10'>
-			<AdvancedSearchInput onSubmit={handleSubmit}/>
-			{(!isPending && !isError) ? <AdvancedTable employees={employees}/> : <>{error?.message}</>}
-		</div>
+		<>
+			<div className='flex m-10'>
+				<AdvancedSearchInput onSubmit={handleSubmit} onError={handleError}/>
+				{(!isPending && !isError) ? <AdvancedTable employees={employees}/> : <>{error?.message}</>}
+			</div>
+
+			{!!snackbar && (
+				<Snackbar
+					open
+					anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+					onClose={handleCloseSnackbar}
+					autoHideDuration={6000}
+				>
+					<Alert {...snackbar} onClose={handleCloseSnackbar} />
+				</Snackbar>
+			)}
+		</>
 	)
 }

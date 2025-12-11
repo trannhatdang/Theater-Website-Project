@@ -222,7 +222,7 @@ export function EmployeeTopBar({dispatch} : {dispatch: Function}){
 	}
 
 	return (
-		<div className='shadow-md flex flex-row bg-slate-700 items-center p-2'>
+		<div className='shadow-md flex flex-row bg-white items-center p-2'>
 			<div className='flex-1 w-full'>
 				{searchBars.map(searchBar => {
 					return <EmployeeSearch className='flex-1 w-full' key={searchBar.key} onChange={handleSearchChange} onClose={handleSearchBarsClose} searchKey={searchBar.key}/>

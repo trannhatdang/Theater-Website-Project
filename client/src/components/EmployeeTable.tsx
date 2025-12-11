@@ -288,7 +288,7 @@ const columns: GridColDef[] = [
 	{
 		field: 'actions',
 		type: 'actions',
-		headerName: 'Actions',
+		headerName: '',
 		width: 100,
 		cellClassName: 'actions',
 		renderCell: (params) => <ActionsCell {...params} />,
