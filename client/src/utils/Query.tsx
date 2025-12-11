@@ -3,14 +3,18 @@ import type { ScreeningFilters, ScreeningProps } from '../components/Screening.t
 import type { FilmFilters, FilmProps } from '../components/Film.tsx'
 import type { AdvancedSearchFilters, AdvancedSearchProps } from '../components/AdvancedSearch.tsx'
 import type { EmployeeProfitsFilters, EmployeeProfitsProps } from '../components/Dashboard.tsx'
-const url = 'http://localhost:3000';
+const url = 'http://localhost:3069';
 
 function createQueryParams(filters: any) : URLSearchParams{
 	const queryParams = new URLSearchParams();
 
-	for(const [key, value] of Object.entries(filters)){
-		queryParams.append(key, String(value));
-	}
+	for (const [key, value] of Object.entries(filters)) {
+    	if (value instanceof Date) {
+      		queryParams.append(key, value.toISOString()); // use ISO format
+    	} else {
+      		queryParams.append(key, String(value));
+    	}
+  	}
 
 	return queryParams;
 }
@@ -34,6 +38,7 @@ export const getEmployee = async (filters : EmployeeFilters) : Promise<EmployeeP
 
 export const getScreening = async (filters : ScreeningFilters) : Promise<ScreeningProps[]> => {
 	const queryParams = createQueryParams(filters);
+	
 
 	const screening = await fetch(url + '/film/screening?' + queryParams, {
 		method: "GET",
@@ -64,22 +69,27 @@ export const getFilm = async (filters : FilmFilters) : Promise<FilmProps[]> => {
 	return film.json()
 }
 
-export const getFilmArr = async (filters : FilmFilters[]) : Promise<FilmProps[]> => {
-	const films = filters.map((filter) => getFilm(filter))
-	let ret: FilmProps[] = []
+export const getFilmArr = async (filters: FilmFilters[]): Promise<FilmProps[]> => {
+  // If no filters, just fetch all films
+  if (filters.length === 0) {
+    const res = await fetch('http://localhost:3069/film'); // match your Express route
+    if (!res.ok) throw new Error('Failed to fetch films');
+    return res.json() as Promise<FilmProps[]>;
+  }
 
-	Promise.allSettled(films).then((results) =>{
-		results.forEach((result) => {
-			if(result.status == 'fulfilled'){
-				ret.concat(result.value)
-				
-			}
-		})
+  // Otherwise, apply filters individually (your current logic)
+  const filmsPromises = filters.map((filter) => getFilm(filter));
+  const results = await Promise.allSettled(filmsPromises);
 
-	})
+  let ret: FilmProps[] = [];
+  results.forEach((result) => {
+    if (result.status === 'fulfilled') {
+      ret = ret.concat(result.value);
+    }
+  });
 
-	return ret;
-}
+  return ret;
+};
 
 export const patchEmployee = async (employee : EmployeeProps) : Promise<EmployeeProps> => {
 	const queryParams = createQueryParams(employee);

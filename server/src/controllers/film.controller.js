@@ -26,6 +26,7 @@ const filmControllerMap = {
 
 export default async function filmController(req, res){
 	try{
+
 		const word = req.params?.type ? req.params.type[0] : "film";
 		const type = word[0].toUpperCase() + word.slice(1)
 		const method = req.method.toLowerCase();

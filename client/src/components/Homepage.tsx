@@ -19,46 +19,61 @@ function createNowShowingFilters() : ScreeningFilters {
 	}
 }
 
-export default function HomePage(){
-	const [filmFiltersArr, _] = React.useState<FilmFilters[]>([])
-	const filmQuery = useQuery({
-		queryKey: [filmFiltersArr],
-		queryFn: async () : Promise<FilmProps[]> => {
-			return getFilmArr(filmFiltersArr);
-		},
-	});
+export default function HomePage() {
+  const [filmFiltersArr, _] = React.useState<FilmFilters[]>([])
+  
+  const filmQuery = useQuery({
+    queryKey: [filmFiltersArr],
+    queryFn: async (): Promise<FilmProps[]> => getFilmArr(filmFiltersArr),
+  });
 
-	const screeningQuery = useQuery({
-		queryKey: [createNowShowingFilters()], 
-		queryFn: async () : Promise<ScreeningProps[]> => {
-			const screenings : ScreeningProps[] = await getScreening(createNowShowingFilters());
+  const screeningQuery = useQuery({
+    queryKey: [createNowShowingFilters()],
+    queryFn: async (): Promise<ScreeningProps[]> => getScreening(createNowShowingFilters()),
+  });
 
-			let queried_films : FilmFilters[] = [];
-			screenings.forEach((screening) => {
-				queried_films.push({
-					ma_phim: screening.ma_phim
-				})
-			})
+  if (filmQuery.isError || screeningQuery.isError) {
+    return (
+      <div className='bg-gray-900 text-white min-h-screen flex items-center justify-center'>
+        <p className='text-red-500 text-xl'>Error loading data. Please try again later.</p>
+      </div>
+    )
+  }
 
-			return screenings;
-		},
-	});
+  return (
+    <div className="bg-gray-900 text-white min-h-screen">
+      {/* Navbar */}
+      <Navbar />
 
-	if(filmQuery.isError || screeningQuery.isError){
-		return (
-			<div className='bg-slate-700'>
-				<p className='text-cyan-500'>Err, come back later</p>
-			</div>
-		)
-	}
+		
+	{/* Hero Section */}
+	<section className="hero py-20 bg-gray-900 flex justify-center">
+	<div className="max-w-4xl bg-red-600 p-10 rounded-md shadow-lg text-center">
+		<h1 className="text-4xl font-bold text-yellow-100">Welcome to |Cinema|</h1>
+		<p className="mt-4 text-lg text-yellow-200">Book your seats online — fast, simple and secure.</p>
+		<a
+		href="#now-showing"
+		className="btn mt-6 inline-block px-6 py-2 bg-yellow-400 text-red-800 font-semibold rounded"
+		>
+		Book Now
+		</a>
+	</div>
+	</section>
 
-	return (
-		<>
-			<Navbar />
-			<div className='bg-slate-700 rounded-md py-1 max-w-7xl mx-auto'>
-				<p className='m-5 text-xl'>Now Showing:</p>
-				{filmQuery.isPending ? <p> wait </p> : <ImageCarousel films={filmQuery.data}/>}
-			</div>
-		</>
-	);
+      {/* Now Showing Section */}
+      <section id="now-showing" className="movies container mx-auto py-10 bg-gray-800 text-white rounded-md">
+		<h2 className="text-3xl font-extrabold mb-6 bg-gradient-to-r from-yellow-300 to-red-500 text-transparent bg-clip-text tracking-wide">
+  		NOW SHOWING
+		</h2>
+        <div className="slider-container relative">
+          {filmQuery.isPending ? (
+            <p>Loading films...</p>
+          ) : (
+            <ImageCarousel films={filmQuery.data} />
+          )}
+        </div>
+      </section>
+
+    </div>
+  )
 }

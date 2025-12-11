@@ -24,22 +24,35 @@ export type FilmFilters = {
 	isStrict?: Boolean
 }
 
-export default function Film({film} : {film: FilmProps}){
-	const {
-		ma_phim,
-		ten_phim,
-		tom_tat_noi_dung,
-	} = film;
 
-	return (
-		<div className="bg-gray-800 w-60 h-80 rounded-3xl p-1 text-center mx-2">
-			<img src={'https://localhost:3000/assets/images/' + ma_phim + '.jpg'} alt={ten_phim} className="h-40 bg-black-800 object-contain"></img>
-			<div className="p-4 h-25 flex-col">
-				<p className="mb-2 flex-1 text-sm">{ten_phim}</p>
-				<p className="mb-2 h-full text-md text-white">{tom_tat_noi_dung}</p>
-				<Button>Book</Button>
-			</div>
-		</div>
+export default function Film({ film }: { film: FilmProps }) {
+  const { ma_phim, ten_phim, tom_tat_noi_dung } = film;
 
-	)
+  return (
+    <div className="bg-gray-800 w-60 h-96 rounded-3xl p-1 text-center mx-2 flex flex-col shadow-lg overflow-hidden">
+      
+      {/* Poster container */}
+      <div className="h-72 flex justify-center items-center bg-black">
+        <picture>
+          <source 
+            srcSet={`http://localhost:3069/assets/${ma_phim}.webp`} 
+            type="image/webp" 
+          />
+          <img
+            src={`http://localhost:3069/assets/${ma_phim}.jpg`}
+            alt={ten_phim}
+            className="max-h-full max-w-full object-contain"
+          />
+        </picture>
+      </div>
+
+      {/* Info and button */}
+      <div className="p-4 flex flex-col justify-between flex-1">
+        <p className="text-sm font-semibold text-white">{ten_phim}</p>
+        <p className="text-xs text-gray-300 flex-1">{tom_tat_noi_dung}</p>
+        <Button variant="contained" size="small">Book</Button>
+      </div>
+
+    </div>
+  )
 }

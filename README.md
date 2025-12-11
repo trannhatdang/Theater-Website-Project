@@ -31,8 +31,6 @@ Chạy dự án bằng cách gõ lệnh
 npm run dev
 ```
 
-Server có đủ API (trừ trigger), giao diện employee còn thiếu patch, delete
-
 Lưu ý
 ---
 

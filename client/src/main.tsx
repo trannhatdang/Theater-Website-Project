@@ -7,6 +7,7 @@ import './index.css'
 //import EmployeeView from './components/EmployeeView.tsx'
 //import Dashboard from './components/Dashboard.tsx'
 import Homepage from './components/Homepage.tsx'
+import FilmList from './components/FilmList.tsx'
 import Login from './components/Login.tsx'
 import Register from './components/Register.tsx'
 import Admin from './components/Admin.tsx'
@@ -32,7 +33,7 @@ createRoot(document.getElementById('root')!).render(
 							<Route index element={<Homepage />} />
 							<Route path='/login' element={<Login />} />
 							<Route path='/register' element={<Register />} />
-
+							<Route path='/film' element={<FilmList />} />
 							<Route path='/admin' element={<Admin />}>
 								<Route path='employee' element={<EmployeeView />} />
 								<Route path='advanced' element={<AdvancedSearch />} />
