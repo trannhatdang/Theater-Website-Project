@@ -1,7 +1,7 @@
 import type { EmployeeFilters, EmployeeProps } from '../components/EmployeeView.tsx'
 import type { ScreeningFilters, ScreeningProps } from '../components/Screening.tsx'
 import type { FilmFilters, FilmProps } from '../components/Film.tsx'
-import type { AdvancedSearchFilters } from '../components/AdvancedSearch.tsx'
+import type { AdvancedSearchFilters, AdvancedSearchProps } from '../components/AdvancedSearch.tsx'
 const url = 'http://localhost:3000';
 
 function createQueryParams(filters: any) : URLSearchParams{
@@ -65,7 +65,7 @@ export const getFilm = async (filters : FilmFilters) : Promise<FilmProps[]> => {
 }
 
 export const getFilmArr = async (filters : FilmFilters[]) : Promise<FilmProps[]> => {
-	const films = filters.map((filter) => fetchFilm(filter))
+	const films = filters.map((filter) => getFilm(filter))
 	let ans: FilmProps[] = []
 
 	Promise.allSettled(films).then((results) =>{
@@ -167,28 +167,34 @@ export const deleteEmployee = async (ma_nv : string) : Promise<EmployeeProps> =>
 	return ret;
 }
 
-export const fetchAdvancedSearch = async (filter : AdvancedSearchFilters) : Promise<EmployeeProps[]> => {
+export const getAdvancedSearch = async (filters : AdvancedSearchFilters) : Promise<AdvancedSearchProps[]> => {
 	const queryParams = createQueryParams(filters);
 
 	const advancedEmployees = await fetch(url + '/advanced?' + queryParams, {
 		method: "GET",
 	});
-
-	if(!advancedEmployees.ok){
-		console.error(employees);
-
-		throw Error("something went wrong...");
-	}
 	const advancedEmployeesJSON = await advancedEmployees.json();
 
-	const ids = advancedEmployeesJSON.map((employee) => employee.ma_nv)
+	if(!advancedEmployees.ok){
+		throw Error(advancedEmployeesJSON.stack);
+	}
 
-	let employees : EmployeeProps = []
+	let ans : AdvancedSearchProps[] = []
 
-	ids.forEach(async (id) => {
-		employees.push(await getEmployee({ma_nv: id}))
+	advancedEmployeesJSON.forEach((employee : any) => {
+		ans.push({
+			ma_nv: employee.f0,
+			ho_va_ten: employee.f1,
+			gioi_tinh: employee.f2,
+			ngay_sinh: new Date(employee.f3),
+			sdt: employee.f4,
+			luong: employee.f5,
+			chuc_vu: employee.f6,
+			dia_chi: employee.f7,
+			ten_rap: employee.f8,
+			ten_quan_ly: employee.f9
+		})
 	})
 
-	return employees;
-
+	return ans;
 }

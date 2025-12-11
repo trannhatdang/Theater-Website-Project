@@ -29,19 +29,23 @@ import Stack from '@mui/material/Stack';
 import AddIcon from '@mui/icons-material/Add';
 import Alert from '@mui/material/Alert';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined'
+import DownloadIcon from '@mui/icons-material/Download';
 import type { AlertProps } from '@mui/material/Alert'
 
 import { patchEmployee, postEmployee, deleteEmployee } from '../utils/Query.tsx'
+import { mkConfig, generateCsv, download } from "export-to-csv";
+const csvConfig = mkConfig({ useKeysAsHeaders: true });
 
 declare module '@mui/x-data-grid' {
 	interface ToolbarPropsOverrides {
 		handleProcessRowUpdateError: (error: Error) => void,
 		handleProcessRowUpdateSuccess: (message: string) => void,
+		handleExport: () => void;
 	}
 }
 
 function EditToolbar(slotProps: GridSlotProps['toolbar']) {
-	const { handleProcessRowUpdateError, handleProcessRowUpdateSuccess } = slotProps
+	const { handleProcessRowUpdateError, handleProcessRowUpdateSuccess, handleExport } = slotProps
 	const [newPanelOpen, setNewPanelOpen] = React.useState(false);
 	const newPanelTriggerRef = React.useRef<HTMLButtonElement>(null);
 
@@ -215,6 +219,12 @@ function EditToolbar(slotProps: GridSlotProps['toolbar']) {
 				</Paper>
 			</ClickAwayListener>
 			</Popper>
+
+			<Tooltip title="Export to CSV">
+				<ToolbarButton onClick={handleExport}>
+					<DownloadIcon fontSize="small"/>
+				</ToolbarButton>
+			</Tooltip>
 		</Toolbar>
 	);
 }
@@ -244,21 +254,6 @@ function ActionsCell(props: GridRenderCellParams) {
 	);
 }
 
-export type EmployeeRowProps = {
-	ma_nv: string,
-	cccd: string,
-	ten: string,
-	luong: number,
-	ngay_sinh: Date,
-	chuc_vu: string,
-	dia_chi: string,
-	sdt: string,
-	gioi_tinh: string,
-	ma_nv_quan_ly: string,
-	ma_rap_phim: string,
-	is_new: Boolean
-}
-
 const columns: GridColDef[] = [
 	{ field: 'ma_nv', headerName: 'Ma NV', width: 100},
 	{ field: 'cccd', headerName: 'CCCD', width: 100, editable: true },
@@ -280,6 +275,7 @@ const columns: GridColDef[] = [
 			return new Date(value);
 		},
 	},
+	{ field: 'gioi_tinh', headerName: 'Gioi Tinh', width: 100, editable: true },
 	{ field: 'chuc_vu', headerName: 'Chuc Vu', width: 100, editable: true },
 	{ field: 'dia_chi', headerName: 'Dia Chi', width: 250, editable: true },
 	{ field: 'sdt', headerName: 'SDT', width: 100, editable: true },
@@ -344,6 +340,28 @@ export default function EmployeeTable({employees, refetch}: {employees : Employe
 		[],
 	);
 
+	const handleExport = () => {
+		let employeeCSV : any[] = []
+
+		employees.forEach((employee) => {
+			employeeCSV.push({
+				ma_nv: employee.ma_nv,
+				cccd: employee.cccd,
+				ten: employee.ten,
+				luong: employee.luong,
+				ngay_sinh: String(employee.ngay_sinh),
+				chuc_vu: employee.chuc_vu,
+				dia_chi: employee.dia_chi,
+				sdt: employee.sdt,
+				gioi_tinh: employee.gioi_tinh,
+				ma_nv_quan_ly: employee.ma_nv_quan_ly,
+				ma_rap_phim: employee.ma_rap_phim,
+			})
+		})
+		const csv = generateCsv(csvConfig)(employeeCSV)
+		download(csvConfig)(csv)
+	}
+
 	return (
 		<div className='w-full h-svh'>
 			<ActionHandlersContext.Provider value={actionHandlers}>
@@ -358,7 +376,7 @@ export default function EmployeeTable({employees, refetch}: {employees : Employe
 					showToolbar
 					slots={{ toolbar: EditToolbar as GridSlots['toolbar'] }}
 					slotProps={{
-						toolbar: { handleProcessRowUpdateError, handleProcessRowUpdateSuccess },
+						toolbar: { handleProcessRowUpdateError, handleProcessRowUpdateSuccess, handleExport },
 					}}
 					getRowId={(row) => row.ma_nv}
 				/>

@@ -2,7 +2,7 @@ import * as React from 'react'
 import ImageCarousel from './ImageCarousel.tsx'
 import type { FilmProps, FilmFilters } from './Film.tsx'
 import type { ScreeningProps, ScreeningFilters } from './Screening.tsx'
-import { fetchScreening, fetchFilmArr } from '../utils/Query.tsx'
+import { getScreening, getFilmArr } from '../utils/Query.tsx'
 import { useQuery } from "@tanstack/react-query";
 import Navbar from './Navbar.tsx'
 
@@ -24,14 +24,14 @@ export default function HomePage(){
 	const filmQuery = useQuery({
 		queryKey: [filmFiltersArr],
 		queryFn: async () : Promise<FilmProps[]> => {
-			return fetchFilmArr(filmFiltersArr);
+			return getFilmArr(filmFiltersArr);
 		},
 	});
 
 	const screeningQuery = useQuery({
 		queryKey: [createNowShowingFilters()], 
 		queryFn: async () : Promise<ScreeningProps[]> => {
-			const screenings : ScreeningProps[] = await fetchScreening(createNowShowingFilters());
+			const screenings : ScreeningProps[] = await getScreening(createNowShowingFilters());
 
 			let queried_films : FilmFilters[] = [];
 			screenings.forEach((screening) => {
