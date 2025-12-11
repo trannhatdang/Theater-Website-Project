@@ -367,7 +367,7 @@ export default function EmployeeTable({employees, refetch}: {employees : Employe
 	}
 
 	return (
-		<div className='w-full h-svh'>
+		<div className='w-full h-dvh'>
 			<ActionHandlersContext.Provider value={actionHandlers}>
 				<DataGrid
 					rows={rows}
@@ -384,6 +384,7 @@ export default function EmployeeTable({employees, refetch}: {employees : Employe
 					}}
 					getRowId={(row) => row.ma_nv}
 				/>
+
 				{!!snackbar && (
 					<Snackbar
 						open
