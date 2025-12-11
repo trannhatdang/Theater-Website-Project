@@ -14,6 +14,7 @@ import Tooltip from '@mui/material/Tooltip';
 
 import type { AdvancedSearchProps } from '../components/AdvancedSearch.tsx'
 import { mkConfig, generateCsv, download } from "export-to-csv";
+import dayjs from 'dayjs'
 import DownloadIcon from '@mui/icons-material/Download';
 const csvConfig = mkConfig({ useKeysAsHeaders: true });
 
@@ -49,6 +50,9 @@ const columns: GridColDef[] = [
 		valueGetter: (value) => {
 			return new Date(value);
 		},
+		valueFormatter: params => {
+			return dayjs(params).format('DD/MM/YYYY')
+		}
 	},
 	{ field: 'sdt', headerName: 'SDT', width: 100, },
 	{
@@ -75,7 +79,7 @@ export default function AdvancedTable({employees}: {employees : AdvancedSearchPr
 				ma_nv: employee.ma_nv,
 				ho_va_ten: employee.ho_va_ten,
 				gioi_tinh: employee.gioi_tinh,
-				ngay_sinh: String(employee.ngay_sinh),
+				ngay_sinh: String(dayjs(employee.ngay_sinh).format('DD/MM/YYYY')),
 				sdt: employee.sdt,
 				luong: employee.luong,
 				chuc_vu: employee.chuc_vu,

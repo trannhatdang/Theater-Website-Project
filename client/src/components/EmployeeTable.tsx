@@ -31,6 +31,7 @@ import Alert from '@mui/material/Alert';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined'
 import DownloadIcon from '@mui/icons-material/Download';
 import type { AlertProps } from '@mui/material/Alert'
+import dayjs from 'dayjs'
 
 import { patchEmployee, postEmployee, deleteEmployee } from '../utils/Query.tsx'
 import { mkConfig, generateCsv, download } from "export-to-csv";
@@ -274,6 +275,9 @@ const columns: GridColDef[] = [
 		valueGetter: (value) => {
 			return new Date(value);
 		},
+		valueFormatter: params => {
+			return dayjs(params).format('DD/MM/YYYY')
+		}
 	},
 	{ field: 'gioi_tinh', headerName: 'Gioi Tinh', width: 100, editable: true },
 	{ field: 'chuc_vu', headerName: 'Chuc Vu', width: 100, editable: true },
