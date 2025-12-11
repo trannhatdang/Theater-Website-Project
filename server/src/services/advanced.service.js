@@ -28,4 +28,22 @@ export const advancedService = {
 			throw new UnprocessableContentError(e.message);
 		}
 	},
+
+	getStats: async function(req){
+		try{
+			const {
+				p_thang,
+				p_nam,
+				p_doanh_thu_min
+			} = req.query;
+
+			const result = await prisma.$queryRaw`call thu_tuc_thong_ke_hieu_suat_nhan_vien(${p_thang || null}, ${p_nam || null}, ${p_doanh_thu_min || null});`
+
+			return result;
+		}
+		catch(e){
+			throw new UnprocessableContentError(e.message);
+		}
+
+	}
 }

@@ -2,6 +2,7 @@ import type { EmployeeFilters, EmployeeProps } from '../components/EmployeeView.
 import type { ScreeningFilters, ScreeningProps } from '../components/Screening.tsx'
 import type { FilmFilters, FilmProps } from '../components/Film.tsx'
 import type { AdvancedSearchFilters, AdvancedSearchProps } from '../components/AdvancedSearch.tsx'
+import type { EmployeeProfitsFilters, EmployeeProfitsProps } from '../components/Dashboard.tsx'
 const url = 'http://localhost:3000';
 
 function createQueryParams(filters: any) : URLSearchParams{
@@ -193,6 +194,34 @@ export const getAdvancedSearch = async (filters : AdvancedSearchFilters) : Promi
 			dia_chi: employee.f7,
 			ten_rap: employee.f8,
 			ten_quan_ly: employee.f9
+		})
+	})
+
+	return ans;
+}
+
+export const getEmployeeProfits = async (filters : EmployeeProfitsFilters) : Promise<EmployeeProfitsProps[]> => {
+	const queryParams = createQueryParams(filters);
+
+	const employeeProfits = await fetch(url + '/advanced/stats?' + queryParams, {
+		method: "GET",
+	});
+	const employeeProfitsJSON = await employeeProfits.json();
+
+	if(!employeeProfits.ok){
+		throw Error(employeeProfitsJSON.stack);
+	}
+
+	let ans : EmployeeProfitsProps[] = []
+
+	employeeProfitsJSON.forEach((employee : any) => {
+		ans.push({
+			ten_rap: employee.f0,
+			ma_nv: employee.f1,
+			ten_nhan_vien: employee.f2,
+			so_ve_da_ban: Number(employee.f3),
+			doanh_so_ban_ve: Number(employee.f4),
+			so_don_hang_xu_ly: Number(employee.f5)
 		})
 	})
 

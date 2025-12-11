@@ -11,6 +11,7 @@ export default function Navbar(){
 				<Button href="./promotion"> <p className='text-cyan-500'>promotion</p> </Button>
 				<Button href="./event"> <p className='text-cyan-500'>event</p> </Button>
 				<Button href="./login"> <p className='text-cyan-500'>login</p> </Button>
+				<Button href="./admin"> <p className='text-cyan-500'>admin</p> </Button>
 			</div>
 		</div>
 	)
