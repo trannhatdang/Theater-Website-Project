@@ -36,9 +36,18 @@ export default function ImageCarousel({films} : {films: FilmProps[]}){
 
 	return (
 		<div className='flex h-100 w-full overflow-hidden mx-auto'>
-			<IconButton onClick={slideLeft}>
-				<ArrowBackIosIcon />
-			</IconButton>
+			<IconButton
+				onClick={slideLeft}
+				sx={{
+					color: 'white',
+					backgroundColor: 'rgba(255,255,255,0.25)',
+					backdropFilter: 'blur(4px)',
+					borderRadius: '9999px',
+					width: 48,
+					height: 48,
+					'&:hover': { backgroundColor: 'rgba(255,255,255,0.5)' }
+				}}
+			><ArrowBackIosIcon /></IconButton>
 
 			<div className='overflow-hidden h-full w-full'>
 				<div className='relative flex -translate-x-120'>
@@ -49,9 +58,18 @@ export default function ImageCarousel({films} : {films: FilmProps[]}){
 				</div>
 			</div>
 
-			<IconButton onClick={slideRight}>
-				<ArrowForwardIosIcon />
-			</IconButton>
+			<IconButton
+				onClick={slideRight}
+				sx={{
+					color: 'white',
+					backgroundColor: 'rgba(255,255,255,0.25)',
+					backdropFilter: 'blur(4px)',
+					borderRadius: '9999px',
+					width: 48,
+					height: 48,
+					'&:hover': { backgroundColor: 'rgba(255,255,255,0.5)' }
+				}}
+			><ArrowForwardIosIcon /></IconButton>
 		</div>
 	)
 }
