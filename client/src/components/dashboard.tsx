@@ -45,28 +45,39 @@ function EmployeeProfitsInput({onSubmit} : {onSubmit : Function}){
 	}
 
 	return(
-		<Paper elevation={3} className='bg-slate-700 p-2 mb-2'>
+		<Paper elevation={3} className='p-2 mb-2'>
 			<form onSubmit={handleSubmit}>
-				<Typography fontWeight="bold">Tim Kiem Nang Cao</Typography>
+				<Typography className=''>Doanh Thu Theo Thang</Typography>
 
 				<Stack spacing={2}>
-					<YearCalendar 
-						minDate={dayjs('1-1-1970')}
-						onChange={(newVal) => {setYear(newVal)}}
-						value={year}
-						maxDate={currDate}
-						defaultValue={currDate}
-					/>
+					<div className='flex w-full'>
+						<YearCalendar 
+							minDate={dayjs('1-1-1970')}
+							onChange={(newVal) => {setYear(newVal)}}
+							value={year}
+							maxDate={currDate}
+							defaultValue={currDate}
+							className=''
+							slotProps={{
+								yearButton:{
+									className: '',
+								},
+							}}
+						/>
 
-					<MonthCalendar 
-						value={month}
-						minDate={dayjs('1-1-1970')}
-						maxDate={currDate}
-						onChange={(newVal) => {setMonth(newVal)}}
-					/>
+						<div className='w-40'>
+						</div>
+
+						<MonthCalendar 
+							value={month}
+							minDate={dayjs('1-1-1970')}
+							maxDate={currDate}
+							onChange={(newVal) => {setMonth(newVal)}}
+						/>
+					</div>
 
 					<TextField
-						label="Chuc Vu"
+						label="Doanh Thu Min"
 						name="p_doanh_thu_min"
 						type="number"
 						size="small"
@@ -78,7 +89,7 @@ function EmployeeProfitsInput({onSubmit} : {onSubmit : Function}){
 
 						</div>
 
-						<Button type="submit" variant="contained" className='bg-slate-700 w-50'>
+						<Button type="submit" variant="contained" className='w-50'>
 							Apply Filters 
 						</Button>
 					</div>
@@ -116,11 +127,11 @@ function EmployeeProfits(){
 	};
 
 	return (
-		<div className='bg-slate-700'>
+		<div className='bg-white m-2 rounded-xs w-full text-white'>
 			<EmployeeProfitsInput onSubmit={setFilters}/>
 			
 			{!(isPending || isError) ? (
-				<BarChart
+				<BarChart className='m-2 text-white'
 					dataset={data}
 					xAxis={[{ dataKey: 'ten_nhan_vien'}]}
 					series={[
@@ -141,7 +152,7 @@ function EmployeeProfits(){
 export default function Dashboard(){
 	const [employeeProfitOpen, setEmployeeProfitOpen] = React.useState(false)
 	return (
-		<div className='w-svh'>
+		<div className=''>
 			<div className='w-full bg-slate-700 m-2 rounded-xs'>
 				<Button className='bg-gray-500 text-white m-2' onClick={() => {setEmployeeProfitOpen(!employeeProfitOpen)}}> EMPLOYEE PROFITS </Button>
 			</div>
