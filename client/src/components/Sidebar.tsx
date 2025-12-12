@@ -31,7 +31,7 @@ export default function Sidebar(){
 				<Button href="/admin/event"> {open ? <p className='text-cyan-500'>event</p> : <CelebrationIcon className='text-cyan-500'/>} </Button>
 				<Button href="/admin/advanced"> {open ? <p className='text-cyan-500'>advanced</p> : <ManageSearchIcon className='text-cyan-500'/>} </Button>
 				<Button href="/admin/shifts"> {open ? <p className='text-cyan-500'>shifts</p> : <WorkIcon className='text-cyan-500'/>} </Button>
-				<Button href="/"> {open ? <p className='text-cyan-500'>home</p> : <KeyboardReturnIcon className='text-cyan-500'/>} </Button>
+				<Button href="/"> {open ? <p className='text-cyan-500'>back</p> : <KeyboardReturnIcon className='text-cyan-500'/>} </Button>
 
 			</Stack>
 		</motion.div>
