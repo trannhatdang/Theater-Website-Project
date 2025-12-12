@@ -3,18 +3,20 @@ import type { ScreeningFilters, ScreeningProps } from '../components/Screening.t
 import type { FilmFilters, FilmProps } from '../components/Film.tsx'
 import type { AdvancedSearchFilters, AdvancedSearchProps } from '../components/AdvancedSearch.tsx'
 import type { EmployeeProfitsFilters, EmployeeProfitsProps } from '../components/Dashboard.tsx'
+
+import { postEmployeeChecks, patchEmployeeChecks, deleteEmployeeChecks } from './Checks.tsx'
 const url = 'http://localhost:3069';
 
-function createQueryParams(filters: any) : URLSearchParams{
+export function createQueryParams(filters: any) : URLSearchParams{
 	const queryParams = new URLSearchParams();
 
 	for (const [key, value] of Object.entries(filters)) {
-    	if (value instanceof Date) {
-      		queryParams.append(key, value.toISOString()); // use ISO format
-    	} else {
-      		queryParams.append(key, String(value));
-    	}
-  	}
+		if (value instanceof Date) {
+			queryParams.append(key, value.toISOString()); // use ISO format
+		} else {
+			queryParams.append(key, String(value));
+		}
+	}
 
 	return queryParams;
 }

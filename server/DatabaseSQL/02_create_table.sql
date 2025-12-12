@@ -1,4 +1,5 @@
-
+CREATE database cinemaDB;
+use cinemaDB;
 
 # tao rap
 CREATE TABLE rap_phim (
@@ -34,7 +35,7 @@ CREATE TABLE ghe(
 CREATE TABLE nhan_vien (
 	ma_nv VARCHAR(10) PRIMARY KEY,
     ten VARCHAR(50),
-    cccd VARCHAR(15) NOT NULL,
+    cccd VARCHAR(15) NOT NULL UNIQUE,
     sdt VARCHAR(10),
     ngay_sinh date,
     gioi_tinh VARCHAR(3),
@@ -66,7 +67,7 @@ CREATE TABLE ca_lam_viec(
     ngay_lam DATE NOT NULL  ,
     thoi_gian_lam INT DEFAULT 8,
     
-    PRIMARY KEY(ma_nv,ca_lam_viec,ngay_lam),
+    PRIMARY KEY(ma_nv,ca_lam_viec),
     FOREIGN KEY (ma_nv) REFERENCES nhan_vien(ma_nv)
 );
 

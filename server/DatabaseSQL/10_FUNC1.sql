@@ -1,3 +1,4 @@
+use cinemaDB;
 DELIMITER $$
 drop function if exists ham_tinh_chi_phi_luong_ca_theo_rap$$
 

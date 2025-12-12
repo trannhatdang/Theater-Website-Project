@@ -1,4 +1,4 @@
-
+USE CinemaDB;
 
 INSERT INTO rap_phim (ma_rap,ten, dia_chi, sdt) VALUES
 ('R001','BK Cinema Dĩ An', 'Dĩ An, Bình Dương', '0987676767'),
@@ -59,41 +59,41 @@ INSERT INTO quan_tri_vien (ma_nv) VALUES
 ('QL01001') , ('QL02001') , ('QL03001') , ('QL04001') , ('QL05001');
 
 INSERT INTO nhan_vien (ma_nv, ten, cccd, sdt, ngay_sinh, gioi_tinh, luong, chuc_vu, dia_chi, ma_nv_quan_ly, ma_rap_phim) VALUES
-('NV01001', 'Pham Bao Anh Lam', 551708827, '0928206316', '2000-01-19', 'Nu', 9769, 'NhanVien', '301 Tran Hung Dao, Quan 10', 'QL01001', 'R001'),
-('NV01002', 'Dao Thanh Thanh Trang', 378325319, '0936378790', '1992-04-14', 'Nam', 13622, 'NhanVien', '170 Cach Mang Thang 8, Tan Binh', 'QL01001', 'R001'),
-('NV01003', 'Nguyen Hong Van Trang', 668119187, '0933475297', '2001-09-22', 'Nu', 11918, 'NhanVien', '121 Tran Hung Dao, Quan 1', 'QL01001', 'R001'),
-('NV01004', 'Pham Van Lam', 609845920, '0996270824', '1988-03-25', 'Nam', 14171, 'NhanVien', '141 Nguyen Trai, Quan 10', 'QL01001', 'R001'),
-('NV01005', 'Pham Minh Anh Troi', 267915885, '0920607684', '1996-04-08', 'Nu', 11830, 'NhanVien', '450 Nguyen Trai, Go Vap', 'QL01001', 'R001'),
-('NV01006', 'Nguyen Hong Son', 928634881, '0983132874', '1994-10-30', 'Nam', 10360, 'NhanVien', '455 Le Loi, Quan 3', 'QL01001', 'R001'),
-('NV01007', 'Tran Anh Giai', 588700037, '0968658642', '1995-09-11', 'Nu', 12692, 'NhanVien', '5 Pham Van Dong, Phu Nhuan', 'QL01001', 'R001'),
-('NV02001', 'Hoang Thanh Ngoc Troi', 595363627, '0960356722', '1991-07-15', 'Nam', 14913, 'NhanVien', '57 Cach Mang Thang 8, Binh Thanh', 'QL02001', 'R002'),
-('NV02002', 'Do Anh Hong Ha', 988677021, '0998864547', '1987-10-07', 'Nu', 14107, 'NhanVien', '412 Pham Van Dong, Quan 1', 'QL02001', 'R002'),
-('NV02003', 'Bui Bao Troi', 483125281, '0938211236', '1988-08-17', 'Nam', 8684, 'NhanVien', '336 Hai Ba Trung, Quan 3', 'QL02001', 'R002'),
-('NV02004', 'Pham Thanh Linh', 180622730, '0999166005', '1992-08-06', 'Nam', 8348, 'NhanVien', '96 Nguyen Trai, Binh Thanh', 'QL02001', 'R002'),
-('NV02005', 'Dao Hong Hieu', 532042248, '0950597504', '1996-05-31', 'Nam', 12967, 'NhanVien', '287 Le Loi, Phu Nhuan', 'QL02001', 'R002'),
-('NV02006', 'Dang Ngoc Anh Dung', 744354396, '0980131058', '1998-05-05', 'Nu', 10594, 'NhanVien', '343 Nguyen Van Cu, Go Vap', 'QL02001', 'R002'),
-('NV02007', 'Do Hong Quang Giai', 821705336, '0912695045', '2000-03-01', 'Nam', 12741, 'NhanVien', '264 Cach Mang Thang 8, Phu Nhuan', 'QL02001', 'R002'),
-('NV03001', 'Le Bao Dung', 448376135, '0982618537', '1992-02-07', 'Nam', 11056, 'NhanVien', '239 Le Loi, Binh Thanh', 'QL03001', 'R003'),
-('NV03002', 'Le Minh Hong Ha', 183261052, '0940456153', '2003-01-10', 'Nu', 12413, 'NhanVien', '27 Le Loi, Phu Nhuan', 'QL03001', 'R003'),
-('NV03003', 'Le Thanh Truc', 879585085, '0999008767', '2001-12-26', 'Nu', 10111, 'NhanVien', '6 Tran Hung Dao, Thu Duc', 'QL03001', 'R003'),
-('NV03004', 'Bui Ngoc Thi Truc', 498955819, '0954595318', '2003-05-01', 'Nu', 9738, 'NhanVien', '243 Hai Ba Trung, Quan 1', 'QL03001', 'R003'),
-('NV03005', 'Hoang Ngoc Troi', 564111846, '0949386784', '1992-06-04', 'Nu', 14739, 'NhanVien', '464 Le Duan, Quan 3', 'QL03001', 'R003'),
-('NV03006', 'Vo Minh Quang Lam', 605741550, '0948437694', '1994-10-19', 'Nu', 8873, 'NhanVien', '492 Tran Hung Dao, Thu Duc', 'QL03001', 'R003'),
-('NV03007', 'Le Thi Ngoc Ha', 462872183, '0911455862', '1994-01-06', 'Nam', 10948, 'NhanVien', '413 Cach Mang Thang 8, Quan 5', 'QL03001', 'R003'),
-('NV04001', 'Le Ngoc Trang', 989045158, '0971493588', '2000-01-08', 'Nu', 13255, 'NhanVien', '19 Hai Ba Trung, Tan Binh', 'QL04001', 'R004'),
-('NV04002', 'Hoang Bao Van Diep', 808301495, '0969728440', '1992-11-03', 'Nam', 8437, 'NhanVien', '453 Cach Mang Thang 8, Phu Nhuan', 'QL04001', 'R004'),
-('NV04003', 'Vo Anh Thanh Truc', 930568515, '0976724539', '2003-07-19', 'Nam', 10745, 'NhanVien', '337 Cach Mang Thang 8, Quan 10', 'QL04001', 'R004'),
-('NV04004', 'Hoang Thi Diep', 150837704, '0985235821', '1988-02-04', 'Nu', 8515, 'NhanVien', '441 Pham Van Dong, Phu Nhuan', 'QL04001', 'R004'),
-('NV04005', 'Tran Thanh Truc', 348091917, '0964364545', '2000-08-15', 'Nu', 13890, 'NhanVien', '212 Pham Van Dong, Phu Nhuan', 'QL04001', 'R004'),
-('NV04006', 'Nguyen Ngoc Hong Hieu', 827323711, '0955497552', '1994-10-18', 'Nu', 9225, 'NhanVien', '99 Nguyen Trai, Quan 1', 'QL04001', 'R004'),
-('NV04007', 'Bui Anh Truc', 623787325, '0975597606', '1986-11-15', 'Nu', 8691, 'NhanVien', '274 Tran Hung Dao, Thu Duc', 'QL04001', 'R004'),
-('NV05001', 'Do Anh Khanh', 303530602, '0921166570', '1997-07-03', 'Nu', 11279, 'NhanVien', '109 Hai Ba Trung, Tan Binh', 'QL05001', 'R005'),
-('NV05002', 'Le Hong Anh Son', 314757239, '0968010830', '1992-07-04', 'Nu', 8330, 'NhanVien', '216 Pham Van Dong, Quan 5', 'QL05001', 'R005'),
-('NV05003', 'Dao Hong Son', 975023212, '0987855290', '1989-02-28', 'Nam', 12314, 'NhanVien', '353 Nguyen Van Cu, Tan Binh', 'QL05001', 'R005'),
-('NV05004', 'Bui Hong Ngoc Son', 407872892, '0972359869', '1993-09-01', 'Nam', 9378, 'NhanVien', '135 Pham Van Dong, Quan 10', 'QL05001', 'R005'),
-('NV05005', 'Vo Thanh Anh Linh', 125705205, '0931282607', '1991-12-12', 'Nam', 9142, 'NhanVien', '25 Cach Mang Thang 8, Quan 10', 'QL05001', 'R005'),
-('NV05006', 'Dang Anh Linh', 226989270, '0950697975', '1985-09-28', 'Nu', 9953, 'NhanVien', '460 Cach Mang Thang 8, Quan 10', 'QL05001', 'R005'),
-('NV05007', 'Le Hong Quang Giai', 505009929, '0967557354', '1993-10-05', 'Nam', 9799, 'NhanVien', '252 Le Loi, Quan 5', 'QL05001', 'R005');
+('NV01001', 'Pham Bao Anh Lam', 551708827, '0928206316', '2000-01-19', 'Nu', 9769, 'Nhân viên', '301 Tran Hung Dao, Quan 10', 'QL01001', 'R001'),
+('NV01002', 'Dao Thanh Thanh Trang', 378325319, '0936378790', '1992-04-14', 'Nam', 13622, 'Nhân viên', '170 Cach Mang Thang 8, Tan Binh', 'QL01001', 'R001'),
+('NV01003', 'Nguyen Hong Van Trang', 668119187, '0933475297', '2001-09-22', 'Nu', 11918, 'Nhân viên', '121 Tran Hung Dao, Quan 1', 'QL01001', 'R001'),
+('NV01004', 'Pham Van Lam', 609845920, '0996270824', '1988-03-25', 'Nam', 14171, 'Nhân viên', '141 Nguyen Trai, Quan 10', 'QL01001', 'R001'),
+('NV01005', 'Pham Minh Anh Troi', 267915885, '0920607684', '1996-04-08', 'Nu', 11830, 'Nhân viên', '450 Nguyen Trai, Go Vap', 'QL01001', 'R001'),
+('NV01006', 'Nguyen Hong Son', 928634881, '0983132874', '1994-10-30', 'Nam', 10360, 'Nhân viên', '455 Le Loi, Quan 3', 'QL01001', 'R001'),
+('NV01007', 'Tran Anh Giai', 588700037, '0968658642', '1995-09-11', 'Nu', 12692, 'Nhân viên', '5 Pham Van Dong, Phu Nhuan', 'QL01001', 'R001'),
+('NV02001', 'Hoang Thanh Ngoc Troi', 595363627, '0960356722', '1991-07-15', 'Nam', 14913, 'Nhân viên', '57 Cach Mang Thang 8, Binh Thanh', 'QL02001', 'R002'),
+('NV02002', 'Do Anh Hong Ha', 988677021, '0998864547', '1987-10-07', 'Nu', 14107, 'Nhân viên', '412 Pham Van Dong, Quan 1', 'QL02001', 'R002'),
+('NV02003', 'Bui Bao Troi', 483125281, '0938211236', '1988-08-17', 'Nam', 8684, 'Nhân viên', '336 Hai Ba Trung, Quan 3', 'QL02001', 'R002'),
+('NV02004', 'Pham Thanh Linh', 180622730, '0999166005', '1992-08-06', 'Nam', 8348, 'Nhân viên', '96 Nguyen Trai, Binh Thanh', 'QL02001', 'R002'),
+('NV02005', 'Dao Hong Hieu', 532042248, '0950597504', '1996-05-31', 'Nam', 12967, 'Nhân viên', '287 Le Loi, Phu Nhuan', 'QL02001', 'R002'),
+('NV02006', 'Dang Ngoc Anh Dung', 744354396, '0980131058', '1998-05-05', 'Nu', 10594, 'Nhân viên', '343 Nguyen Van Cu, Go Vap', 'QL02001', 'R002'),
+('NV02007', 'Do Hong Quang Giai', 821705336, '0912695045', '2000-03-01', 'Nam', 12741, 'Nhân viên', '264 Cach Mang Thang 8, Phu Nhuan', 'QL02001', 'R002'),
+('NV03001', 'Le Bao Dung', 448376135, '0982618537', '1992-02-07', 'Nam', 11056, 'Nhân viên', '239 Le Loi, Binh Thanh', 'QL03001', 'R003'),
+('NV03002', 'Le Minh Hong Ha', 183261052, '0940456153', '2003-01-10', 'Nu', 12413, 'Nhân viên', '27 Le Loi, Phu Nhuan', 'QL03001', 'R003'),
+('NV03003', 'Le Thanh Truc', 879585085, '0999008767', '2001-12-26', 'Nu', 10111, 'Nhân viên', '6 Tran Hung Dao, Thu Duc', 'QL03001', 'R003'),
+('NV03004', 'Bui Ngoc Thi Truc', 498955819, '0954595318', '2003-05-01', 'Nu', 9738, 'Nhân viên', '243 Hai Ba Trung, Quan 1', 'QL03001', 'R003'),
+('NV03005', 'Hoang Ngoc Troi', 564111846, '0949386784', '1992-06-04', 'Nu', 14739, 'Nhân viên', '464 Le Duan, Quan 3', 'QL03001', 'R003'),
+('NV03006', 'Vo Minh Quang Lam', 605741550, '0948437694', '1994-10-19', 'Nu', 8873, 'Nhân viên', '492 Tran Hung Dao, Thu Duc', 'QL03001', 'R003'),
+('NV03007', 'Le Thi Ngoc Ha', 462872183, '0911455862', '1994-01-06', 'Nam', 10948, 'Nhân viên', '413 Cach Mang Thang 8, Quan 5', 'QL03001', 'R003'),
+('NV04001', 'Le Ngoc Trang', 989045158, '0971493588', '2000-01-08', 'Nu', 13255, 'Nhân viên', '19 Hai Ba Trung, Tan Binh', 'QL04001', 'R004'),
+('NV04002', 'Hoang Bao Van Diep', 808301495, '0969728440', '1992-11-03', 'Nam', 8437, 'Nhân viên', '453 Cach Mang Thang 8, Phu Nhuan', 'QL04001', 'R004'),
+('NV04003', 'Vo Anh Thanh Truc', 930568515, '0976724539', '2003-07-19', 'Nam', 10745, 'Nhân viên', '337 Cach Mang Thang 8, Quan 10', 'QL04001', 'R004'),
+('NV04004', 'Hoang Thi Diep', 150837704, '0985235821', '1988-02-04', 'Nu', 8515, 'Nhân viên', '441 Pham Van Dong, Phu Nhuan', 'QL04001', 'R004'),
+('NV04005', 'Tran Thanh Truc', 348091917, '0964364545', '2000-08-15', 'Nu', 13890, 'Nhân viên', '212 Pham Van Dong, Phu Nhuan', 'QL04001', 'R004'),
+('NV04006', 'Nguyen Ngoc Hong Hieu', 827323711, '0955497552', '1994-10-18', 'Nu', 9225, 'Nhân viên', '99 Nguyen Trai, Quan 1', 'QL04001', 'R004'),
+('NV04007', 'Bui Anh Truc', 623787325, '0975597606', '1986-11-15', 'Nu', 8691, 'Nhân viên', '274 Tran Hung Dao, Thu Duc', 'QL04001', 'R004'),
+('NV05001', 'Do Anh Khanh', 303530602, '0921166570', '1997-07-03', 'Nu', 11279, 'Nhân viên', '109 Hai Ba Trung, Tan Binh', 'QL05001', 'R005'),
+('NV05002', 'Le Hong Anh Son', 314757239, '0968010830', '1992-07-04', 'Nu', 8330, 'Nhân viên', '216 Pham Van Dong, Quan 5', 'QL05001', 'R005'),
+('NV05003', 'Dao Hong Son', 975023212, '0987855290', '1989-02-28', 'Nam', 12314, 'Nhân viên', '353 Nguyen Van Cu, Tan Binh', 'QL05001', 'R005'),
+('NV05004', 'Bui Hong Ngoc Son', 407872892, '0972359869', '1993-09-01', 'Nam', 9378, 'Nhân viên', '135 Pham Van Dong, Quan 10', 'QL05001', 'R005'),
+('NV05005', 'Vo Thanh Anh Linh', 125705205, '0931282607', '1991-12-12', 'Nam', 9142, 'Nhân viên', '25 Cach Mang Thang 8, Quan 10', 'QL05001', 'R005'),
+('NV05006', 'Dang Anh Linh', 226989270, '0950697975', '1985-09-28', 'Nu', 9953, 'Nhân viên', '460 Cach Mang Thang 8, Quan 10', 'QL05001', 'R005'),
+('NV05007', 'Le Hong Quang Giai', 505009929, '0967557354', '1993-10-05', 'Nam', 9799, 'Nhân viên', '252 Le Loi, Quan 5', 'QL05001', 'R005');
 
 INSERT INTO nhan_vien_ban_hang (ma_nv) VALUES
 ('NV01001'),('NV01002'),('NV01003'),('NV01004'),('NV01005'),('NV01006'),('NV01007'),
@@ -166,20 +166,7 @@ INSERT INTO ca_lam_viec (ma_nv, ca_lam_viec, ngay_lam) VALUES
 ('NV05005', 'Ca sáng', '2025-11-29'),
 ('NV05006', 'Ca sáng', '2025-11-28'),
 ('NV05006', 'Ca chiều', '2025-11-27'),
-('NV05007', 'Ca sáng', '2025-11-26'),
--- ca làm tháng 12
-('NV01001', 'Ca tối', '2025-12-24'),
-('NV01002', 'Ca tối', '2025-12-24'),
-('NV01003', 'Ca tối', '2025-12-24'),
-('NV01004', 'Ca tối', '2025-12-24'), 
-('NV01005', 'Ca tối', '2025-12-24'),
-('NV01006', 'Ca sáng', '2025-12-24'),
-('NV01007', 'Ca sáng', '2025-12-24'),
-('NV01001', 'Ca sáng', '2025-12-25'),
-('NV01001', 'Ca chiều', '2025-12-26'),
-('NV01001', 'Ca tối', '2025-12-27'),
-('NV01001', 'Ca sáng', '2025-12-28');
-
+('NV05007', 'Ca sáng', '2025-11-26');
 
 
 INSERT INTO cap_do (so_diem_can, ten_cap_do) VALUES
@@ -283,13 +270,10 @@ INSERT INTO suat_chieu (ma_luot_chieu, thoi_gian_bat_dau, thoi_gian_ket_thuc, hi
 ('LC022', '2019-11-22 12:00:00', '2019-11-22 14:00:00', '3D', 'Tieng Viet', 'LongTieng', 'F009', 'R001', 'P006', 'QL01001'),
 ('LC023', '2019-11-22 18:00:00', '2019-11-22 20:00:00', '2D', 'Tieng Anh', 'PhuDe', 'F009', 'R002', 'P001', 'QL02001'),
 ('LC024', '2021-12-17 20:00:00', '2021-12-17 22:00:00', '3D', 'Tieng Anh', 'LongTieng', 'F010', 'R002', 'P002', 'QL02001'),
-('LC025', '2021-12-17 14:00:00', '2021-12-17 16:00:00', '3D', 'Tieng Viet', 'LongTieng', 'F010', 'R001', 'P006', 'QL01001'),
-('LC100', '2025-12-24 19:00:00', '2025-12-24 21:30:00', '3D', 'Tieng Anh', 'PhuDe', 'F010', 'R001', 'P001', 'QL01001'),
-('LC101', '2025-12-24 14:00:00', '2025-12-24 17:15:00', '2D', 'Tieng Anh', 'LongTieng', 'F003', 'R001', 'P002', 'QL01001'),
-('LC102', '2025-12-25 20:00:00', '2025-12-25 23:00:00', '3D', 'Tieng Anh', 'PhuDe', 'F007', 'R002', 'P001', 'QL02001');
-
+('LC025', '2021-12-17 14:00:00', '2021-12-17 16:00:00', '3D', 'Tieng Viet', 'LongTieng', 'F010', 'R001', 'P006', 'QL01001');
 
 INSERT INTO khuyen_mai (ma_km, ten_km, loai_km, thoi_gian_bat_dau, thoi_gian_ket_thuc, gia_tri, ma_nv_quan_ly) VALUES
+('KMTQ006',"giảm 50% ưu đãi valentine",'Khuyến mãi toàn quốc','2022-02-13', '2023-02-14', 50, 'QL02001'),
 ('KMTQ001', 'Giảm 20% toàn hệ thống', 'Khuyến mãi toàn quốc', '2025-01-01', '2026-01-15', 20, 'QL01001'),
 ('KMTQ002', 'Giảm 30% mừng năm mới', 'Khuyến mãi toàn quốc', '2025-02-01', '2026-02-07', 30, 'QL02001'),
 ('KMTQ003', 'Ưu đãi lễ lớn', 'Khuyến mãi toàn quốc', '2025-04-20', '2026-04-30', 25, 'QL03001'),
@@ -299,7 +283,8 @@ INSERT INTO khuyen_mai (ma_km, ten_km, loai_km, thoi_gian_bat_dau, thoi_gian_ket
 ('KMQD002', 'Voucher 30K đổi điểm', 'Khuyến mãi quy đổi', '2025-03-01', '2025-12-31', 30000, 'QL05001'),
 ('KMQD003', 'Voucher 50K đổi điểm', 'Khuyến mãi quy đổi', '2025-03-01', '2025-12-31', 50000, 'QL01001'),
 ('KMQD004', 'Vé miễn phí đổi điểm', 'Khuyến mãi quy đổi', '2025-03-01', '2025-12-31', 100000, 'QL02001'),
-('KMQD005',"Voucher ngày tết cho khách hàng thân thiết",'Khuyến mãi quy đổi','2025-01-01', '2025-01-31', 200000, 'QL01001');
+('KMQD005',"Voucher ngày tết cho khách hàng thân thiết",'Khuyến mãi quy đổi','2025-01-01', '2025-01-31', 200000, 'QL01001'),
+('KMQD006',"Voucher ngày tết cho khách hàng thân thiết",'Khuyến mãi quy đổi','2026-01-01', '2026-01-31', 200000, 'QL01001');
 
 
 
@@ -338,6 +323,7 @@ INSERT INTO quy_doi_khuyen_mai (ma_km, ma_khach_hang, ten_tai_khoan) VALUES
 ('KMQD003', 'KH015', 'hoang_minh_van_khanh');
 
 INSERT INTO do_an_thuc_uong (ma_sp, ten, kich_co, gia_tien, ma_nhan_vien_phuc_vu, ma_khach_hang) VALUES
+('DA0011', 'Combo Bắp + Nước', 3, 75000, 'NV05007', 'KH010'),
 ('DA0001', 'Bắp rang bơ', 2, 45000, 'NV01001', 'KH001'),
 ('DA0002', 'Bắp caramel', 3, 55000, 'NV01003', 'KH002'),
 ('DA0003', 'Coca-Cola', 2, 35000, 'NV02002', 'KH003'),
@@ -349,6 +335,7 @@ INSERT INTO do_an_thuc_uong (ma_sp, ten, kich_co, gia_tien, ma_nhan_vien_phuc_vu
 ('DA0009', 'Nước suối', 1, 20000, 'NV05002', 'KH009'),
 ('DA0010', 'Combo Bắp + Nước', 3, 75000, 'NV05007', 'KH010');
 
+
 INSERT INTO hoa_don (ma_hoa_don, trang_thai_thanh_toan, thoi_gian, phuong_thuc_thanh_toan, ma_nhan_vien_phu_trach, ma_khach_hang, ma_km)VALUES
 ('HD0001', TRUE, '2025-01-10 14:20:00', 'Tien Mat', 'NV01001', 'KH001', 'KMTQ001'),
 ('HD0002', TRUE, '2025-01-11 16:45:00', 'Momo', 'NV01003', 'KH002', 'KMTQ002'),
@@ -359,14 +346,7 @@ INSERT INTO hoa_don (ma_hoa_don, trang_thai_thanh_toan, thoi_gian, phuong_thuc_t
 ('HD0007', TRUE, '2025-01-14 17:35:00', 'ZaloPay', 'NV04003', 'KH007', NULL),
 ('HD0008', TRUE, '2025-01-15 15:55:00', 'Visa', 'NV04006', 'KH008', 'KMQD002'),
 ('HD0009', TRUE, '2025-01-15 20:05:00', 'Tien Mat', 'NV05002', 'KH009', NULL),
-('HD0010', TRUE, '2025-01-16 21:00:00', 'Momo', 'NV05007', 'KH010', 'KMQD001'),
--- tạo hóa đơn sll vd cho func 
-('HD1001', TRUE, '2025-12-24 18:00:00', 'Momo', 'NV01001', 'KH001', NULL),
-('HD1002', TRUE, '2025-12-24 18:05:00', 'ZaloPay', 'NV01002', 'KH002', NULL),
-('HD1003', TRUE, '2025-12-24 18:10:00', 'Tien Mat', 'NV01001', 'KH003', NULL),
-('HD1004', TRUE, '2025-12-24 18:15:00', 'Visa', 'NV01003', 'KH004', 'KMTQ002'),
--- phim ế 
-('HD1005', TRUE, '2025-12-24 13:50:00', 'Tien Mat', 'NV01004', 'KH005', NULL);
+('HD0010', TRUE, '2025-01-16 21:00:00', 'Momo', 'NV05007', 'KH010', 'KMQD001');
 
 INSERT INTO hoa_don_bao_gom_do_an_thuc_uong (ma_hoa_don, ma_do_an_thuc_uong, so_luong) VALUES
 ('HD0001', 'DA0001', 1),
@@ -390,52 +370,7 @@ INSERT INTO ve (ma_ve, gia_ve, ma_rap, ma_phong, ma_ghe, ma_luot_chieu, ma_hoa_d
 ('VE007', 150000,'R002', 'P001', 'A7',  'LC004', 'HD0004', 'NV02001', '2025-01-13 13:51:00', 'KH007'),
 ('VE008', 150000,'R002', 'P001', 'A8',  'LC004', 'HD0004', 'NV02002', '2025-01-13 13:52:00', 'KH008'),
 ('VE009', 120000,'R002', 'P002', 'A9',  'LC005', 'HD0005', 'NV02003', '2025-01-14 11:26:00', 'KH009'),
-('VE010', 120000,'R002', 'P002', 'A10', 'LC005', 'HD0005', 'NV02004', '2025-01-14 11:27:00', 'KH010'),
--- khách 2 mua 10 vé
-('VE1001', 100000, 'R001', 'P001', 'A1', 'LC100', 'HD1001', 'NV01001', '2025-12-24 18:00:00', 'KH001'),
-('VE1002', 100000, 'R001', 'P001', 'A2', 'LC100', 'HD1001', 'NV01001', '2025-12-24 18:00:00', 'KH001'),
-('VE1003', 100000, 'R001', 'P001', 'A3', 'LC100', 'HD1001', 'NV01001', '2025-12-24 18:00:00', 'KH001'),
-('VE1004', 100000, 'R001', 'P001', 'A4', 'LC100', 'HD1001', 'NV01001', '2025-12-24 18:00:00', 'KH001'),
-('VE1005', 100000, 'R001', 'P001', 'A5', 'LC100', 'HD1001', 'NV01001', '2025-12-24 18:00:00', 'KH001'),
-('VE1006', 100000, 'R001', 'P001', 'A6', 'LC100', 'HD1001', 'NV01001', '2025-12-24 18:00:00', 'KH001'),
-('VE1007', 100000, 'R001', 'P001', 'A7', 'LC100', 'HD1001', 'NV01001', '2025-12-24 18:00:00', 'KH001'),
-('VE1008', 100000, 'R001', 'P001', 'A8', 'LC100', 'HD1001', 'NV01001', '2025-12-24 18:00:00', 'KH001'),
-('VE1009', 100000, 'R001', 'P001', 'A9', 'LC100', 'HD1001', 'NV01001', '2025-12-24 18:00:00', 'KH001'),
-('VE1010', 100000, 'R001', 'P001', 'A10', 'LC100', 'HD1001', 'NV01001', '2025-12-24 18:00:00', 'KH001'),
-
--- Khách 2 mua 10 vé 
-('VE1011', 100000, 'R001', 'P001', 'B1', 'LC100', 'HD1002', 'NV01002', '2025-12-24 18:05:00', 'KH002'),
-('VE1012', 100000, 'R001', 'P001', 'B2', 'LC100', 'HD1002', 'NV01002', '2025-12-24 18:05:00', 'KH002'),
-('VE1013', 100000, 'R001', 'P001', 'B3', 'LC100', 'HD1002', 'NV01002', '2025-12-24 18:05:00', 'KH002'),
-('VE1014', 100000, 'R001', 'P001', 'B4', 'LC100', 'HD1002', 'NV01002', '2025-12-24 18:05:00', 'KH002'),
-('VE1015', 100000, 'R001', 'P001', 'B5', 'LC100', 'HD1002', 'NV01002', '2025-12-24 18:05:00', 'KH002'),
-('VE1016', 100000, 'R001', 'P001', 'B6', 'LC100', 'HD1002', 'NV01002', '2025-12-24 18:05:00', 'KH002'),
-('VE1017', 100000, 'R001', 'P001', 'B7', 'LC100', 'HD1002', 'NV01002', '2025-12-24 18:05:00', 'KH002'),
-('VE1018', 100000, 'R001', 'P001', 'B8', 'LC100', 'HD1002', 'NV01002', '2025-12-24 18:05:00', 'KH002'),
-('VE1019', 100000, 'R001', 'P001', 'B9', 'LC100', 'HD1002', 'NV01002', '2025-12-24 18:05:00', 'KH002'),
-('VE1020', 100000, 'R001', 'P001', 'B10', 'LC100', 'HD1002', 'NV01002', '2025-12-24 18:05:00', 'KH002'),
-
--- Khách 3 mua 10 vé
-('VE1021', 120000, 'R001', 'P001', 'C1', 'LC100', 'HD1003', 'NV01001', '2025-12-24 18:10:00', 'KH003'),
-('VE1022', 120000, 'R001', 'P001', 'C2', 'LC100', 'HD1003', 'NV01001', '2025-12-24 18:10:00', 'KH003'),
-('VE1023', 120000, 'R001', 'P001', 'C3', 'LC100', 'HD1003', 'NV01001', '2025-12-24 18:10:00', 'KH003'),
-('VE1024', 120000, 'R001', 'P001', 'C4', 'LC100', 'HD1003', 'NV01001', '2025-12-24 18:10:00', 'KH003'),
-('VE1025', 120000, 'R001', 'P001', 'C5', 'LC100', 'HD1003', 'NV01001', '2025-12-24 18:10:00', 'KH003'),
-('VE1026', 120000, 'R001', 'P001', 'C6', 'LC100', 'HD1003', 'NV01001', '2025-12-24 18:10:00', 'KH003'),
-('VE1027', 120000, 'R001', 'P001', 'C7', 'LC100', 'HD1003', 'NV01001', '2025-12-24 18:10:00', 'KH003'),
-('VE1028', 120000, 'R001', 'P001', 'C8', 'LC100', 'HD1003', 'NV01001', '2025-12-24 18:10:00', 'KH003'),
-('VE1029', 120000, 'R001', 'P001', 'C9', 'LC100', 'HD1003', 'NV01001', '2025-12-24 18:10:00', 'KH003'),
-('VE1030', 120000, 'R001', 'P001', 'C10', 'LC100', 'HD1003', 'NV01001', '2025-12-24 18:10:00', 'KH003'),
-
--- Khách 4 mua 5 vé 
-('VE1031', 120000, 'R001', 'P001', 'D1', 'LC100', 'HD1004', 'NV01003', '2025-12-24 18:15:00', 'KH004'),
-('VE1032', 120000, 'R001', 'P001', 'D2', 'LC100', 'HD1004', 'NV01003', '2025-12-24 18:15:00', 'KH004'),
-('VE1033', 120000, 'R001', 'P001', 'D3', 'LC100', 'HD1004', 'NV01003', '2025-12-24 18:15:00', 'KH004'),
-('VE1034', 120000, 'R001', 'P001', 'D4', 'LC100', 'HD1004', 'NV01003', '2025-12-24 18:15:00', 'KH004'),
-('VE1035', 120000, 'R001', 'P001', 'D5', 'LC100', 'HD1004', 'NV01003', '2025-12-24 18:15:00', 'KH004'),
--- khách 5 mua 2 vé 
-('VE1036', 70000, 'R001', 'P002', 'A1', 'LC101', 'HD1005', 'NV01004', '2025-12-24 13:51:00', 'KH005'),
-('VE1037', 70000, 'R001', 'P002', 'A2', 'LC101', 'HD1005', 'NV01004', '2025-12-24 13:51:00', 'KH005');
+('VE010', 120000,'R002', 'P002', 'A10', 'LC005', 'HD0005', 'NV02004', '2025-01-14 11:27:00', 'KH010');
 
 INSERT INTO su_kien (ma_sk, ten_sk, quy_mo, do_tuoi_gioi_han, chi_phi, thoi_gian, noi_dung_su_kien) VALUES
 ('SK001', 'Hội thảo AI', 'Lớn', 18, 5000000, '2025-01-10 09:00:00', 'Hội thảo chuyên sâu về trí tuệ nhân tạo.'),

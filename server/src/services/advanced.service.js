@@ -51,6 +51,5 @@ export const advancedService = {
 		catch(e){
 			throw new UnprocessableContentError(e.message);
 		}
-
-	}
+	},
 }

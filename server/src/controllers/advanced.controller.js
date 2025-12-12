@@ -11,7 +11,7 @@ BigInt.prototype.toJSON = function () { return Number(this) }
 
 const AdvancedControllerMap = {
 	getAdvanced: advancedService.getAdvanced,
-	getStats: advancedService.getStats
+	getStats: advancedService.getStats,
 }
 
 export default async function advancedController(req, res){

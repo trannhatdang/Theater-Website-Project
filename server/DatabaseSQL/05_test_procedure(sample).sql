@@ -1,6 +1,10 @@
 -- === Thành công ===
+use myDB;
 CALL thu_tuc_them_nhan_vien('NV001', 'Nguyen Van A', '1234562890', '0912345678', '1995-05-01', 'Nam', 20000, 'Nhân viên', 'Hà Nội', NULL, 'R001');
-CALL thu_tuc_them_nhan_vien('NV01020', 'Le Thi B', '1987854321', '0987654321', '1990-03-15', 'Nữ', 35000, 'Nhân viên', 'Hà Nội', 'QL01001', 'R001');
+CALL thu_tuc_them_nhan_vien('NV01020', 'Le Thi B', '1987854321', '0987654321', '1990-03-15', 'Nữ', 20000, 'Nhân viên', 'Hà Nội', 'QL01001', 'R001');
+CALL thu_tuc_them_nhan_vien('NV01029', 'Le Thi C', '1987454321', '0287654321', '1990-03-15', 'Nữ', 20000, 'Nhân viên', 'Hà Nội', 'QL01001', 'R001');
+
+
 
 -- === Lỗi ===
 
