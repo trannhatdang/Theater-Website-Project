@@ -1,40 +1,79 @@
-import Button from '@mui/material/Button'
-import Container from '@mui/material/Container'
-import Paper from '@mui/material/Paper'
-import TextField from '@mui/material/TextField'
-import Typography from '@mui/material/Typography'
-import Box from '@mui/material/Box'
-export default function Login(){
-	const submit = () => {
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Paper from '@mui/material/Paper';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 
-	}
+export default function Login() {
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // handle login
+  };
 
-	return (
+  return (
+    <Container className="flex justify-center items-center min-h-screen">
+      <Paper elevation={6} className="bg-slate-800 p-12 w-full max-w-md">
+        <Typography
+          component="h1"
+          variant="h4"
+          className="text-center mb-8 font-bold text-cyan-400"
+        >
+          Log In
+        </Typography>
 
-		<Container className=" mx-auto max-w-xl max-h-xl">
-			<Paper elevation={1} className='bg-slate-700 p-10'>
-				<Typography component='h1' variant='h5' className='text-center m-10 text-cyan-500'>Log In</Typography>
+        <Box
+          component="form"
+          id="loginForm"
+          className="flex flex-col gap-4"
+          onSubmit={submit}
+        >
+          <TextField
+            placeholder="Username"
+            variant="outlined"
+            fullWidth
+            required
+            autoFocus
+            InputProps={{ className: "bg-white rounded" }}
+          />
+          <TextField
+            placeholder="Password"
+            variant="outlined"
+            type="password"
+            fullWidth
+            required
+            InputProps={{ className: "bg-white rounded" }}
+          />
 
-				<Box id="loginForm" className="m-1" onSubmit={submit}>
-					<div className='w-full h-full flex-col mx-auto text-center'>
-						<TextField className='my-2' placeholder="Username" variant="outlined" fullWidth required autoFocus/>
-						<TextField className='my-2' placeholder="Password" variant="outlined" fullWidth required />
-					</div>
-					<Button type="submit" className='text-white bg-sky-700 mt-1' variant="contained" fullWidth>
-						Login
-					</Button>
+          <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+            className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold mt-2"
+          >
+            Login
+          </Button>
 
-					<Typography id="error" className="hidden">Invalid username or password.</Typography>
-					<div className="mt-10">
-						<a href="forgot.html" className="forgot-link">Forgot Password?</a>
+          <Typography
+            id="error"
+            className="text-red-500 text-center mt-2 hidden"
+          >
+            Invalid username or password.
+          </Typography>
 
-						<p className="signup-text">
-						Don’t have an account?
-						<a href="signup.html" className="mx-1 text-cyan-500">Sign Up</a>
-					</p>
-					</div>
-				</Box>
-			</Paper>
-		</Container>
-	)
+          <div className="flex flex-col items-center mt-4 text-white">
+            <a href="forgot.html" className="text-cyan-300 hover:underline mb-2">
+              Forgot Password?
+            </a>
+            <p>
+              Don’t have an account?{' '}
+              <a href="signup.html" className="text-cyan-400 hover:underline">
+                Sign Up
+              </a>
+            </p>
+          </div>
+        </Box>
+      </Paper>
+    </Container>
+  );
 }

@@ -19,6 +19,8 @@ import { StyledEngineProvider } from '@mui/material/styles';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import PromotionPage from './components/Promotion.tsx'
+import EventPage from './components/EventPage.tsx'
 
 const client = new QueryClient();
 
@@ -34,6 +36,8 @@ createRoot(document.getElementById('root')!).render(
 							<Route path='/login' element={<Login />} />
 							<Route path='/register' element={<Register />} />
 							<Route path='/film' element={<FilmList />} />
+							<Route path='/promotion' element={<PromotionPage />}/>
+							<Route path='/event' element={<EventPage/>}/>
 							<Route path='/admin' element={<Admin />}>
 								<Route path='employee' element={<EmployeeView />} />
 								<Route path='advanced' element={<AdvancedSearch />} />
