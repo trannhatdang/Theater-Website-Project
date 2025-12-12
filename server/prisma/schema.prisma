@@ -13,7 +13,7 @@ model ca_lam_viec {
   ngay_lam      DateTime @db.Date
   thoi_gian_lam Int?     @default(8)
 
-  @@id([ma_nv, ca_lam_viec, ngay_lam])
+  @@id([ma_nv, ca_lam_viec])
 }
 
 model ca_nhan {
@@ -119,7 +119,7 @@ model khuyen_mai_toan_rap {
 model nhan_vien {
   ma_nv         String    @id @db.VarChar(10)
   ten           String?   @db.VarChar(50)
-  cccd          String    @db.VarChar(15)
+  cccd          String    @unique(map: "cccd") @db.VarChar(15)
   sdt           String?   @db.VarChar(10)
   ngay_sinh     DateTime? @db.Date
   gioi_tinh     String?   @db.VarChar(3)

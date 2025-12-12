@@ -18,7 +18,8 @@ export type EmployeeFilters = {
 	sdt?: string,
 	gioi_tinh?: string,
 	ma_nv_quan_ly?: string,
-	ma_rap_phim?: string
+	ma_rap_phim?: string,
+	isStrict?: boolean
 }
 
 export type EmployeeProps = {

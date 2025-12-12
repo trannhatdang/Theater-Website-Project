@@ -2,9 +2,12 @@ import type { EmployeeFilters, EmployeeProps } from '../components/EmployeeView.
 import type { ScreeningFilters, ScreeningProps } from '../components/Screening.tsx'
 import type { FilmFilters, FilmProps } from '../components/Film.tsx'
 import type { AdvancedSearchFilters, AdvancedSearchProps } from '../components/AdvancedSearch.tsx'
+import type { TheaterFilters, TheaterProps } from '../components/Theater.tsx'
 import type { EmployeeProfitsFilters, EmployeeProfitsProps } from '../components/Dashboard.tsx'
+import type { WorkShiftFilters, WorkShiftProps } from '../components/WorkShift.tsx'
 
-import { postEmployeeChecks, patchEmployeeChecks, deleteEmployeeChecks } from './Checks.tsx'
+import { employeeChecks, deleteEmployeeChecks } from './Checks.tsx'
+
 const url = 'http://localhost:3069';
 
 export function createQueryParams(filters: any) : URLSearchParams{
@@ -98,6 +101,14 @@ export const patchEmployee = async (employee : EmployeeProps) : Promise<Employee
 
 	const newDate = new Date(employee.ngay_sinh)
 	newDate.setMinutes(newDate.getMinutes() - newDate.getTimezoneOffset())
+	employee.ngay_sinh = newDate
+
+	try{
+		await employeeChecks(employee);
+	}
+	catch(e : any){
+		throw Error(e.message)
+	}
 
 	const body = {
 		new_ma_nv: employee.ma_nv,
@@ -137,9 +148,13 @@ export const patchEmployee = async (employee : EmployeeProps) : Promise<Employee
 export const postEmployee = async (employee : EmployeeProps) : Promise<EmployeeProps> => {
 	const newDate = new Date(employee.ngay_sinh)
 	newDate.setMinutes(newDate.getMinutes() - newDate.getTimezoneOffset())
+	employee.ngay_sinh = newDate;
 
-	if(employee.luong < 0){
-		throw Error("Luong phai lon hon 0!")
+	try{
+		await employeeChecks(employee);
+	}
+	catch(e : any){
+		throw Error(e.message)
 	}
 
 	const body = {
@@ -175,6 +190,7 @@ export const postEmployee = async (employee : EmployeeProps) : Promise<EmployeeP
 }
 
 export const deleteEmployee = async (ma_nv : string) : Promise<EmployeeProps> => {
+	await deleteEmployeeChecks(ma_nv)
 	const employees = await fetch(url + '/employee?ma_nv=' + ma_nv, {
 		method: "DELETE",
 	});
@@ -246,4 +262,56 @@ export const getEmployeeProfits = async (filters : EmployeeProfitsFilters) : Pro
 	})
 
 	return ret;
+}
+
+export const getTheater = async (filters : TheaterFilters) : Promise<TheaterProps[]> => {
+	const queryParams = createQueryParams(filters);
+
+	const theaters = await fetch(url + '/theater?' + queryParams, {
+		method: "GET",
+	})
+
+	const ret = await theaters.json()
+
+	if(!theaters.ok){
+		throw Error(ret.stack)
+	}
+
+	return ret
+}
+
+export const getWorkShift = async (filters : WorkShiftFilters) : Promise<WorkShiftProps[]> => {
+	const queryParams = createQueryParams(filters);
+
+	const shifts = await fetch(url + '/employee/workShift?' + queryParams, {
+		method: "GET",
+	})
+
+	const ret = await shifts.json()
+
+	if(!shifts.ok){
+		throw Error(ret.stack)
+	}
+
+	return ret
+}
+
+export const deleteWorkShift = async (ma_nv: string, ca_lam_viec: string) : Promise<WorkShiftProps[]> => {
+	const filters : WorkShiftFilters = {
+		ma_nv: ma_nv,
+		ca_lam_viec: ca_lam_viec
+	}
+	const queryParams = createQueryParams(filters);
+
+	const shifts = await fetch(url + '/employee/workShift?' + queryParams, {
+		method: "DELETE",
+	})
+
+	const ret = await shifts.json()
+
+	if(!shifts.ok){
+		throw Error(ret.stack)
+	}
+
+	return ret
 }

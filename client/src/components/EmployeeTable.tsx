@@ -140,7 +140,7 @@ function EditToolbar(slotProps: GridSlotProps['toolbar']) {
 						size="small"
 						required
 						fullWidth
-						defaultValue="999999999"
+						defaultValue="000000000"
 					/>
 
 					<TextField

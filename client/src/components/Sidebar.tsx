@@ -11,6 +11,7 @@ import CelebrationIcon from '@mui/icons-material/Celebration';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import WorkIcon from '@mui/icons-material/Work';
 export default function Sidebar(){
 	const [open, setOpen] = React.useState<Boolean>(false);
 
@@ -29,7 +30,9 @@ export default function Sidebar(){
 				<Button href="/admin/promotion"> {open ? <p className='text-cyan-500'>promotion</p> : <LoyaltyIcon className='text-cyan-500'/>} </Button>
 				<Button href="/admin/event"> {open ? <p className='text-cyan-500'>event</p> : <CelebrationIcon className='text-cyan-500'/>} </Button>
 				<Button href="/admin/advanced"> {open ? <p className='text-cyan-500'>advanced</p> : <ManageSearchIcon className='text-cyan-500'/>} </Button>
+				<Button href="/admin/shifts"> {open ? <p className='text-cyan-500'>shifts</p> : <WorkIcon className='text-cyan-500'/>} </Button>
 				<Button href="/"> {open ? <p className='text-cyan-500'>home</p> : <KeyboardReturnIcon className='text-cyan-500'/>} </Button>
+
 			</Stack>
 		</motion.div>
 	)
