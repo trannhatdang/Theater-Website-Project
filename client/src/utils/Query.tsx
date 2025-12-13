@@ -6,7 +6,7 @@ import type { TheaterFilters, TheaterProps } from '../components/Theater.tsx'
 import type { EmployeeProfitsFilters, EmployeeProfitsProps } from '../components/Dashboard.tsx'
 import type { WorkShiftFilters, WorkShiftProps } from '../components/WorkShift.tsx'
 
-import { employeeChecks, deleteEmployeeChecks } from './Checks.tsx'
+import { patchEmployeeChecks, postEmployeeChecks, deleteEmployeeChecks } from './Checks.tsx'
 
 const url = 'http://localhost:3069';
 
@@ -104,7 +104,7 @@ export const patchEmployee = async (employee : EmployeeProps) : Promise<Employee
 	employee.ngay_sinh = newDate
 
 	try{
-		await employeeChecks(employee);
+		await patchEmployeeChecks(employee);
 	}
 	catch(e : any){
 		throw Error(e.message)
@@ -151,7 +151,7 @@ export const postEmployee = async (employee : EmployeeProps) : Promise<EmployeeP
 	employee.ngay_sinh = newDate;
 
 	try{
-		await employeeChecks(employee);
+		await postEmployeeChecks(employee);
 	}
 	catch(e : any){
 		throw Error(e.message)
